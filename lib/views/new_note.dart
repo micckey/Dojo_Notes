@@ -10,46 +10,52 @@ class NewNote extends StatefulWidget {
 }
 
 class _NewNoteState extends State<NewNote> {
-  
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 85,
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        flexibleSpace: ClipPath(
+          clipper: CustomClipPath(),
+          child: Container(
+            width: double.infinity,
+            height: 140,
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), bottomLeft: Radius.circular(25)),
+                color: CustomColors().HighlightColor
+            ),
+            child: Stack(
+              children: <Widget> [
+                const Center(
+                  child: Text('Add Note',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      )),
+                ),
+                Positioned(
+                    top: 50,
+                    right: 20,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.notifications_active, size: 50, color: Colors.white),
+                    )),
+              ],
+            ),
+          ),
+        ),
+
+      ),
       body: SizedBox(
       height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ClipPath(
-                clipper: CustomClipPath(),
-                child: Container(
-                  width: double.infinity,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), bottomLeft: Radius.circular(25)),
-                    color: CustomColors().HighlightColor
-                  ),
-                  child: Stack(
-                    children: <Widget> [
-                      const Center(
-                        child: Text('Add Note',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                        )),
-                      ),
-                      Positioned(
-                        top: 50,
-                        right: 20,
-                          child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.notifications_active, size: 50, color: Colors.white),
-                          )),
-                    ],
-                  ),
-                ),
-              ),
 
               Container(
                 width: double.infinity,

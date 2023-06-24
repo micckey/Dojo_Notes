@@ -1,7 +1,9 @@
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/views/dashboard.dart';
 import 'package:dojonotes/views/new_note.dart';
+import 'package:dojonotes/views/note_page.dart';
 import 'package:dojonotes/views/onboardingpage.dart';
+import 'package:dojonotes/views/schedule_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'fair'),
       debugShowCheckedModeBanner: false,
-      home: const Dashboard()
+      home: const SchedulePage()
     );
   }
 }
