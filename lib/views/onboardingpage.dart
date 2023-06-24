@@ -90,16 +90,20 @@ class OnboardingScreen extends StatelessWidget {
                 child: Container(
                   color: CustomColors().BackgroundColor,
                   child: TextField(
+                    cursorColor: Colors.black,
                     decoration: InputDecoration(
+
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15)),
                         labelText: 'username',
                         labelStyle: const TextStyle(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black,
+
                         ),
-                        prefixIcon: const Icon(Icons.person),
+                        prefixIcon: const Icon(Icons.person, color: Colors.black54),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: CustomColors().HighlightColor),
                             borderRadius: BorderRadius.circular(15))),
                   ),
                 ),

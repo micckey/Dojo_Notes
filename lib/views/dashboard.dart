@@ -23,8 +23,15 @@ class _DashboardState extends State<Dashboard> {
             child: Stack(
               children: <Widget>[
                 const Positioned(
-                    top: 50,
-                    child: Text('Hi,\nMike',
+                    top: 60,
+                    left: 10,
+                    child: Text('Hi,',
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.w600))),
+                const Positioned(
+                    top: 90,
+                    left: 10,
+                    child: Text('Mike',
                         style: TextStyle(
                             fontSize: 60, fontWeight: FontWeight.w700))),
                 Positioned(
@@ -56,7 +63,7 @@ class _DashboardState extends State<Dashboard> {
                     )),
                 Positioned(
                   bottom: 35,
-                  left: 5,
+                  left: 15,
                   child: SizedBox(
                     height: 50,
                     width: 240,
@@ -114,11 +121,76 @@ class _DashboardState extends State<Dashboard> {
             height: 10,
           ),
           Container(
-            height: 150,
-            width: 360,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: CustomColors().CardColor,
+            height: 450,
+            margin: const EdgeInsets.only(left: 14, right: 14),
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.all(0),
+              children: [
+                Container(
+                  height: 150,
+                  width: 360,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColors().CardColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 150,
+                  width: 360,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColors().CardColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 150,
+                  width: 360,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColors().CardColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 150,
+                  width: 360,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColors().CardColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 150,
+                  width: 360,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColors().CardColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 150,
+                  width: 360,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColors().CardColor,
+                  ),
+                ),
+              ],
             ),
           )
         ],
