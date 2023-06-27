@@ -1,5 +1,9 @@
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/views/completed_schedule.dart';
+import 'package:dojonotes/views/create_schedule.dart';
 import 'package:dojonotes/views/dashboard.dart';
+import 'package:dojonotes/views/kata_list.dart';
+import 'package:dojonotes/views/kata_page.dart';
 import 'package:dojonotes/views/new_note.dart';
 import 'package:dojonotes/views/note_page.dart';
 import 'package:dojonotes/views/onboardingpage.dart';
@@ -16,10 +20,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'fair'),
-      debugShowCheckedModeBanner: false,
-      home: const SchedulePage()
-    );
+        theme: ThemeData(fontFamily: 'fair'),
+        debugShowCheckedModeBanner: false,
+        home: const KataPage());
   }
 }
-
