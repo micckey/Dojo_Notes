@@ -34,6 +34,7 @@ class _KataPageState extends State<KataPage> {
     return Scaffold(
       backgroundColor: CustomColors().HighlightColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 65,
         elevation: 0.0,
         backgroundColor: Colors.transparent,

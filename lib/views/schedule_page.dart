@@ -1,49 +1,60 @@
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/views/completed_schedule.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SchedulePage extends StatelessWidget {
   const SchedulePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 360,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 360.h,
         backgroundColor: Colors.white,
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             color: CustomColors().HighlightColor,
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(30.r), bottomLeft: Radius.circular(30.r)),
           ),
           child: Stack(
             children: <Widget>[
               Positioned(
-                  top: 40,
-                  left: 0,
+                  top: statusBarHeight,
+                  left: 0.w,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back_rounded, size: 30),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.back();
+                    },
                   )),
               Positioned(
-                  top: 78,
-                  left: 15,
+                  top: statusBarHeight+35.h,
+                  left: 0,
+                  right: 0,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      myTextWidget('Today, ', 30.0, FontWeight.bold),
+                      myTextWidget('Today, ', 30.sp, FontWeight.bold),
                       myTextWidget(
-                          'The Date Today Is', 20.0, FontWeight.normal),
+                          'The Date Today Is', 20.sp, FontWeight.normal),
                     ],
                   )),
               Positioned(
-                  top: 120,
-                  left: 20,
+                  top: statusBarHeight+75.h,
+                  left: 0,
+                  right: 0,
                   child: SizedBox(
-                    height: 200,
-                    // color: Colors.pinkAccent,
+                    height: 200.h,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -54,27 +65,26 @@ class SchedulePage extends StatelessWidget {
                     ),
                   )),
               Positioned(
-                  bottom: 20,
-                  right: 80,
+                  bottom: 18.h,
+                  right: 80.w,
                   child: SizedBox(
-                    width: 150,
-                    // color: Colors.pinkAccent,
+                    width: 150.w,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        roundButtons(60.0, Icons.add),
-                        roundButtons(60.0, Icons.edit)
+                        roundButtons(60.sp, Icons.add),
+                        roundButtons(60.sp, Icons.edit)
                       ],
                     ),
                   )),
               Positioned(
-                  bottom: 5,
-                  right: 170,
-                  child: myTextWidget('Add Note', 13.0, FontWeight.bold)),
+                  bottom: 3.h,
+                  right: 170.w,
+                  child: myTextWidget('Add Note', 13.sp, FontWeight.bold)),
               Positioned(
-                  bottom: 5,
-                  right: 82,
-                  child: myTextWidget('Edit Note', 13.0, FontWeight.bold))
+                  bottom: 3.h,
+                  right: 82.w,
+                  child: myTextWidget('Edit Note', 13.sp, FontWeight.bold))
             ],
           ),
         ),
@@ -82,11 +92,14 @@ class SchedulePage extends StatelessWidget {
       body: Container(
         margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
         color: CustomColors().BackgroundColor,
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            Card(
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return Card(
               child: ListTile(
+                onTap: () {
+                  Get.to(CompletedSchedulePage());
+                },
                 title: const Text('Thursday, 16th June, 2023'),
                 leading: const Icon(Icons.album),
                 subtitle: Column(
@@ -98,106 +111,12 @@ class SchedulePage extends StatelessWidget {
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded),
               ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Heian Yondan, Jion, jiin'),
-                    Text('Note: Felt Smooth')
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Heian Yondan, Jion, jiin'),
-                    Text('Note: Felt Smooth')
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Heian Yondan, Jion, jiin'),
-                    Text('Note: Felt Smooth')
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Heian Yondan, Jion, jiin'),
-                    Text('Note: Felt Smooth')
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Heian Yondan, Jion, jiin'),
-                    Text('Note: Felt Smooth')
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Heian Yondan, Jion, jiin'),
-                    Text('Note: Felt Smooth')
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Heian Yondan, Jion, jiin'),
-                    Text('Note: Felt Smooth')
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-              ),
-            ),
-          ],
+            );
+          },
+
+
+
+
         ),
       ),
     );

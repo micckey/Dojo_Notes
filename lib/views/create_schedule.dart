@@ -1,6 +1,7 @@
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CreateSchedulePage extends StatefulWidget {
   const CreateSchedulePage({super.key});
@@ -16,11 +17,13 @@ class _CreateSchedulePageState extends State<CreateSchedulePage> {
       backgroundColor: CustomColors().BackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(Icons.arrow_back_rounded),
         ),
         title:
-            myTextWidget('Select Katas', 25.0, FontWeight.w900, Colors.white),
+        myTextWidget('Select Katas', 25.0, FontWeight.w900, Colors.white),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -57,10 +60,10 @@ class _CreateSchedulePageState extends State<CreateSchedulePage> {
                           borderRadius: BorderRadius.circular(0)),
                       hintText: 'search kata',
                       prefixIcon:
-                          const Icon(Icons.search, color: Colors.black54),
+                      const Icon(Icons.search, color: Colors.black54),
                       focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: CustomColors().HighlightColor),
+                          BorderSide(color: CustomColors().HighlightColor),
                           borderRadius: BorderRadius.circular(0))),
                 ),
               ),

@@ -1,6 +1,8 @@
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class NewNote extends StatefulWidget {
   const NewNote({super.key});
@@ -10,84 +12,104 @@ class NewNote extends StatefulWidget {
 }
 
 class _NewNoteState extends State<NewNote> {
-
-
   @override
   Widget build(BuildContext context) {
+
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final fullScreenHeight = MediaQuery.of(context).size.height;
+    final fullScreenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 85,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 85.h,
         elevation: 0.0,
         backgroundColor: Colors.white,
         flexibleSpace: ClipPath(
           clipper: CustomClipPath(),
           child: Container(
             width: double.infinity,
-            height: 140,
+            height: 140.h,
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), bottomLeft: Radius.circular(25)),
-                color: CustomColors().HighlightColor
-            ),
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(25.r),
+                    bottomLeft: Radius.circular(25.r)),
+                color: CustomColors().HighlightColor),
             child: Stack(
-              children: <Widget> [
-                const Center(
+              children: <Widget>[
+                Center(
                   child: Text('Add Note',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                      )),
+                      style:
+                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
                 ),
                 Positioned(
-                    top: 50,
-                    right: 20,
+                    top: statusBarHeight+5.h,
+                    right: 20.w,
                     child: IconButton(
                       onPressed: () {},
-                      icon: const Icon(Icons.notifications_active, size: 50, color: Colors.white),
+                      icon: Icon(Icons.notifications_active,
+                          size: 50.sp, color: Colors.white),
                     )),
               ],
             ),
           ),
         ),
-
       ),
       body: SizedBox(
-      height: double.infinity,
+        height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
           child: Column(
             children: [
-
               Container(
                 width: double.infinity,
-                height: 600,
-                margin: const EdgeInsets.only(left: 14, right: 14),
+                height: 650.h,
+                margin: EdgeInsets.only(right: 14.w, left: 14.w, top: 20.h),
                 // color: Colors.grey,
                 child: Column(
-                  children: <Widget> [
+                  children: <Widget>[
                     myTextField('category', CustomColors().CardColor),
-                    const SizedBox(height: 25,),
+                    SizedBox(
+                      height: 30.h,
+                    ),
                     myTextField('technique', CustomColors().CardColor),
-                    const SizedBox(height: 25,),
+                    SizedBox(
+                      height: 30.h,
+                    ),
                     myTextField('personal note', CustomColors().CardColor, 8),
-                    const SizedBox(height: 25,),
-                    myTextField('note from sensei', CustomColors().CardColor, 4),
-                    const SizedBox(height: 25,),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    myTextField(
+                        'note from sensei', CustomColors().CardColor, 4),
+                    SizedBox(
+                      height: 50.h,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         TextButton(
-                            onPressed: () {},
-                            child: myTextWidget('cancel', 20.0, FontWeight.w400),),
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: myTextWidget('cancel', 20.sp, FontWeight.w400),
+                        ),
                         SizedBox(
                           width: 90,
                           height: 50,
                           child: ElevatedButton(
-                            style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(CustomColors().ButtonColor),
-                              shape: const MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomRight: Radius.circular(8))))
-                            ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(
+                                      CustomColors().ButtonColor),
+                                  shape: const MaterialStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              bottomRight:
+                                              Radius.circular(8))))),
                               onPressed: () {},
-                              child: myTextWidget('save', 20.0, FontWeight.w400)),
+                              child:
+                              myTextWidget('save', 20.sp, FontWeight.w400)),
                         )
                       ],
                     )
@@ -113,7 +135,7 @@ class CustomClipPath extends CustomClipper<Path> {
     path.lineTo(0, h);
     path.quadraticBezierTo(
       w * 0.5,
-      h - 70,
+      h - 70.h,
       w,
       h,
     );
@@ -128,4 +150,3 @@ class CustomClipPath extends CustomClipper<Path> {
     return false;
   }
 }
-
