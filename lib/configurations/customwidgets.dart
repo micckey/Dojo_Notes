@@ -1,5 +1,6 @@
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Text myTextWidget(label, size, FontWeight weight, [textColor = Colors.black]) {
   return (Text(
@@ -9,21 +10,25 @@ Text myTextWidget(label, size, FontWeight weight, [textColor = Colors.black]) {
 }
 
 Container myTextField(
+    _controller,
   label,
   backgroundColor, [
   lines = 1,
+      obscure = false
 ]) {
   return Container(
     decoration: BoxDecoration(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
       maxLines: lines,
+      controller: _controller,
+      obscureText: obscure,
       cursorColor: Colors.black,
       decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(
+          labelStyle: TextStyle(
             fontWeight: FontWeight.w200,
-            color: Colors.black,
+            color: CustomColors().LightText,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
@@ -47,12 +52,12 @@ SizedBox kataButton(label) {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))))),
-      child: myTextWidget(label, 25.0, FontWeight.normal),
+      child: myTextWidget(label, 25.0, FontWeight.normal, CustomColors().LightText),
     ),
   );
 }
 
-Container roundButtons(containerSize, IconData icon) {
+Container roundButtons(containerSize, IconData icon, buttonFunction) {
   return Container(
     width: containerSize,
     height: containerSize,
@@ -61,7 +66,7 @@ Container roundButtons(containerSize, IconData icon) {
       color: CustomColors().ButtonColor,
     ),
     child: IconButton(
-        onPressed: () {},
+        onPressed: buttonFunction,
         icon: Icon(
           icon,
           size: 40,
@@ -82,5 +87,22 @@ SizedBox kataCategoryButton(label) {
       child: myTextWidget(label, 18.0, FontWeight.bold),
     ),
   );
+}
+
+ElevatedButton buildElevatedButton(label, getFunction) {
+  return ElevatedButton(
+      onPressed: getFunction,
+      style: ButtonStyle(
+          foregroundColor: MaterialStatePropertyAll(CustomColors().DarkText),
+          backgroundColor: MaterialStatePropertyAll(
+              CustomColors().ButtonColor),
+          shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(5.r)))),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 20.sp),
+      ));
 }
 

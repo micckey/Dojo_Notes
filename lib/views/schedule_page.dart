@@ -14,10 +14,11 @@ class SchedulePage extends StatelessWidget {
     final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      backgroundColor: CustomColors().BackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 360.h,
-        backgroundColor: Colors.white,
+        backgroundColor: CustomColors().BackgroundColor,
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -72,8 +73,8 @@ class SchedulePage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        roundButtons(60.sp, Icons.add),
-                        roundButtons(60.sp, Icons.edit)
+                        roundButtons(60.sp, Icons.add, ()=>Null),
+                        roundButtons(60.sp, Icons.edit, ()=>Null)
                       ],
                     ),
                   )),
@@ -93,15 +94,16 @@ class SchedulePage extends StatelessWidget {
         margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
         color: CustomColors().BackgroundColor,
         child: ListView.builder(
+          physics: const BouncingScrollPhysics(),
           itemCount: 10,
           itemBuilder: (context, index) {
             return Card(
               child: ListTile(
                 onTap: () {
-                  Get.to(CompletedSchedulePage());
+                  Get.to(()=>const CompletedSchedulePage());
                 },
                 title: const Text('Thursday, 16th June, 2023'),
-                leading: const Icon(Icons.album),
+                leading: const Icon(Icons.library_add_check_outlined),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [

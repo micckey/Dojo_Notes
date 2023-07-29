@@ -218,27 +218,104 @@ class _KataListPageState extends State<KataListPage>
     );
   }
 
+  // Widget buildKataList(List<String>? docIDs) {
+  //   if (docIDs == null || docIDs.isEmpty) {
+  //     return const Center(child: Text('No katas found.'));
+  //   }
+  //
+  //   return ListView.builder(
+  //     itemCount: docIDs.length,
+  //     itemBuilder: (context, index) {
+  //       return GestureDetector(
+  //         onTap: () {
+  //           Get.to(KataPage(), arguments: [
+  //             KataListModel(kataID: docIDs[index]).
+  //           ]);
+  //         },
+  //         child: Container(
+  //           height: 60,
+  //           width: double.maxFinite,
+  //           margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10.r),
+  //             color: Colors.purpleAccent,
+  //           ),
+  //           child: Center(
+  //             child: Text(''),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
   Widget buildKataList(List<String>? docIDs) {
     if (docIDs == null || docIDs.isEmpty) {
       return const Center(child: Text('No katas found.'));
     }
 
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       itemCount: docIDs.length,
       itemBuilder: (context, index) {
-        return Container(
-          height: 60,
-          width: double.maxFinite,
-          margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.r),
-            color: Colors.purpleAccent,
-          ),
-          child: Center(
-            child: KataListModel(kataID: docIDs[index]),
-          ),
+        String kataID = docIDs[index];
+
+        return FutureBuilder<Map<String, dynamic>?>(
+          future: KataListModel(kataID: kataID).getKataData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData && snapshot.data != null) {
+                Map<String, dynamic> data = snapshot.data!;
+                String name = data['name'] ?? 'No name';
+                String category = data['category'] ?? 'No category';
+                String description = data['description'] ?? 'No description';
+                String meaning = data['meaning'] ?? 'No meaning';
+                String link = data['link'] ?? 'No link';
+                var steps = data['steps'] ?? 'No steps';
+
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(const KataPage(), arguments: [name, category, description, meaning, link, steps]);
+                  },
+                  child: Container(
+                    height: 60,
+                    width: double.maxFinite,
+                    margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: CustomColors().CardColor,
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          myTextWidget(name, 20.0, FontWeight.w400),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                return const SizedBox.shrink(); // If no data, return an empty container
+              }
+            } else {
+
+              return Container(
+                  height: 60,
+                  width: double.maxFinite,
+                  margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    color: CustomColors().CardColor,
+                  ),
+                  child: Center(child: myTextWidget('loading...', 16.0, FontWeight.w300)));
+            }
+          },
         );
       },
     );
   }
+
+
+
 }

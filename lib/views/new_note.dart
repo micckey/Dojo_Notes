@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/views/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,19 +14,73 @@ class NewNote extends StatefulWidget {
 }
 
 class _NewNoteState extends State<NewNote> {
+  // text controllers
+  final _categoryController = TextEditingController();
+  final _techniqueController = TextEditingController();
+  final _personalNoteController = TextEditingController();
+  final _senseiNoteController = TextEditingController();
+
+  //user id
+  final userID = Get.arguments[0];
+
+  @override
+  void dispose() {
+    super.dispose();
+    _categoryController.dispose();
+    _techniqueController.dispose();
+    _personalNoteController.dispose();
+    _senseiNoteController.dispose();
+  }
+
+  void addNewNote() {
+    if (_categoryController.text == '' ||
+        _techniqueController.text == '' ||
+        _personalNoteController.text == '') {
+      Get.snackbar('ERROR!!', 'Fill in all fields first then try again.',
+          snackPosition: SnackPosition.TOP);
+    } else {
+      if (userID == Null) {
+        Get.snackbar('Error Adding Note',
+            'An unexpected error occured while saving the note, please try again later',
+            snackPosition: SnackPosition.TOP);
+      } else {
+        createNote(
+            userID,
+            _categoryController.text.trim(),
+            _techniqueController.text.trim(),
+            _personalNoteController.text.trim(),
+            _senseiNoteController.text.trim());
+      }
+    }
+  }
+
+  Future createNote(String userId, String category, String technique,
+      String personalNote, String senseiNote) async {
+    await FirebaseFirestore.instance.collection('dojo notes').add({
+      'userId': userId,
+      'category': category,
+      'technique': technique,
+      'personal note': personalNote,
+      'sensei note': senseiNote
+    });
+    Get.snackbar('SUCCESS', 'Note added successfully',
+        snackPosition: SnackPosition.TOP, duration: const Duration(seconds: 5));
+    Get.to(() => const Dashboard());
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final fullScreenHeight = MediaQuery.of(context).size.height;
     final fullScreenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: CustomColors().BackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 85.h,
         elevation: 0.0,
-        backgroundColor: Colors.white,
+        backgroundColor: CustomColors().BackgroundColor,
         flexibleSpace: ClipPath(
           clipper: CustomClipPath(),
           child: Container(
@@ -39,11 +95,11 @@ class _NewNoteState extends State<NewNote> {
               children: <Widget>[
                 Center(
                   child: Text('Add Note',
-                      style:
-                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 20.sp, fontWeight: FontWeight.bold)),
                 ),
                 Positioned(
-                    top: statusBarHeight+5.h,
+                    top: statusBarHeight + 5.h,
                     right: 20.w,
                     child: IconButton(
                       onPressed: () {},
@@ -68,20 +124,23 @@ class _NewNoteState extends State<NewNote> {
                 // color: Colors.grey,
                 child: Column(
                   children: <Widget>[
-                    myTextField('category', CustomColors().CardColor),
+                    myTextField(_categoryController, 'category',
+                        CustomColors().CardColor),
                     SizedBox(
                       height: 30.h,
                     ),
-                    myTextField('technique', CustomColors().CardColor),
+                    myTextField(_techniqueController, 'technique/name',
+                        CustomColors().CardColor),
                     SizedBox(
                       height: 30.h,
                     ),
-                    myTextField('personal note', CustomColors().CardColor, 8),
+                    myTextField(_personalNoteController, 'personal note',
+                        CustomColors().CardColor, 8),
                     SizedBox(
                       height: 30.h,
                     ),
-                    myTextField(
-                        'note from sensei', CustomColors().CardColor, 4),
+                    myTextField(_senseiNoteController, 'note from sensei',
+                        CustomColors().CardColor, 4),
                     SizedBox(
                       height: 50.h,
                     ),
@@ -92,7 +151,8 @@ class _NewNoteState extends State<NewNote> {
                           onPressed: () {
                             Get.back();
                           },
-                          child: myTextWidget('cancel', 20.sp, FontWeight.w400),
+                          child: myTextWidget('cancel', 20.sp, FontWeight.w400,
+                              CustomColors().LightText),
                         ),
                         SizedBox(
                           width: 90,
@@ -106,10 +166,10 @@ class _NewNoteState extends State<NewNote> {
                                           borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(8),
                                               bottomRight:
-                                              Radius.circular(8))))),
-                              onPressed: () {},
+                                                  Radius.circular(8))))),
+                              onPressed: () => addNewNote(),
                               child:
-                              myTextWidget('save', 20.sp, FontWeight.w400)),
+                                  myTextWidget('save', 20.sp, FontWeight.w400)),
                         )
                       ],
                     )

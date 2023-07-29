@@ -1,9 +1,10 @@
+import 'package:dojonotes/auth_pages/register_page.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
-import 'package:dojonotes/views/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../auth_pages/login_page.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -65,41 +66,15 @@ class OnboardingScreen extends StatelessWidget {
                             child: Container(
                                 margin: EdgeInsets.only(top: 150.h),
                                 child: Center(
-                                    child: Text(
-                                      'DojoNotes',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 60.sp,
-                                      ),
-                                    ))))
+                                    child: myTextWidget('DojoNotes', 60.sp, FontWeight.w700, CustomColors().LightText))))
                       ]),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 10,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Container(
-                color: CustomColors().BackgroundColor,
-                child: TextField(
-                  cursorColor: Colors.black,
+            const SizedBox(height: 30,),
 
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      hintText: 'Enter username to proceed',
-                      prefixIcon:
-                      const Icon(Icons.person, color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: CustomColors().HighlightColor),
-                          borderRadius: BorderRadius.circular(15))),
-                ),
-              ),
-            ),
-            SizedBox(height: 30.h,),
             SizedBox(
               width: 224.w,
               height: 50.h,
@@ -113,9 +88,22 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   child: TextButton(
                       onPressed: () {
-                        Get.to(const Dashboard());
+                        Get.to(() => const RegisterScreen());
                       },
-                      child: myTextWidget('Get Started', 14.sp, FontWeight.w600))),
+                      child: myTextWidget('Create an account', 18.sp, FontWeight.w600))),
+            ),
+            const SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                myTextWidget('Already have an account?', 16.sp, FontWeight.w500, CustomColors().LightText),
+                const SizedBox(width: 5,),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => const LoginScreen());
+                  },
+                    child: myTextWidget('Login', 20.sp, FontWeight.w500, Colors.blue)),
+              ],
             )
           ],
         ),

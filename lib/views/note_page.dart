@@ -1,6 +1,8 @@
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
@@ -10,8 +12,22 @@ class NotePage extends StatefulWidget {
 }
 
 class _NotePageState extends State<NotePage> {
+
+  List noteTitles = [
+    '',
+    'Category: ',
+    'Technique/ Name: ',
+    'Personal Note: ',
+    'Sensei\'s Note: '
+  ];
+  List noteDetails = Get.arguments;
+
+  
   @override
   Widget build(BuildContext context) {
+
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       backgroundColor: CustomColors().HighlightColor,
       body: Column(
@@ -27,44 +43,53 @@ class _NotePageState extends State<NotePage> {
                     child: myTextWidget(
                         'The Date Today Is', 20.0, FontWeight.w400)),
                 Positioned(
-                    top: 60,
-                    child: SizedBox(
-                      width: 395,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          roundButtons(60.0, Icons.arrow_back_rounded),
-                          const SizedBox(
-                            width: 150,
-                          ),
-                          roundButtons(60.0, Icons.edit),
-                        ],
-                      ),
-                    ))
+                    top: statusBarHeight+10.h,
+                    left: 5,
+                    child: roundButtons(60.0, Icons.arrow_back_rounded, ()=>Get.back()))
               ],
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 696,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15), topLeft: Radius.circular(15)),
-              color: Colors.white,
-            ),
+          Expanded(
             child: Container(
-              color: Colors.grey,
-              margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: ListView(
-                padding: const EdgeInsets.only(top: 0),
-                scrollDirection: Axis.vertical,
-                children: [
-                  myTextWidget('category', 15.0, FontWeight.normal),
-                  Container(
-                    height: 60,
-                    color: CustomColors().CardColor,
-                  )
-                ],
+              height: double.maxFinite,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15), topLeft: Radius.circular(15)),
+                color: CustomColors().BackgroundColor,
+              ),
+              child: Column( children: List.generate(noteDetails.length, (index){
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                  width: double.maxFinite,
+                  color: CustomColors().CardColor,
+                  child: index==0?Container():
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          children: [
+                            myTextWidget(noteTitles[index], 15.sp, FontWeight.w300, CustomColors().LightText),
+                            Flexible(child: myTextWidget(noteDetails[index], 20.sp, FontWeight.w500, CustomColors().LightText)),
+                          ],
+                        ),
+                        index>2?Row(
+
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: ()=>Null,
+                                child: Icon(Icons.edit, color: CustomColors().ButtonColor,))
+                          ],
+                        ):Container(),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+
               ),
             ),
           )

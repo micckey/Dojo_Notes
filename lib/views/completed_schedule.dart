@@ -18,7 +18,7 @@ class CompletedSchedulePage extends StatelessWidget {
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         title:
-        myTextWidget('View Schedule', 20.sp, FontWeight.w500, Colors.white),
+        myTextWidget('View Schedule', 20.sp, FontWeight.w500, CustomColors().LightText),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -31,7 +31,7 @@ class CompletedSchedulePage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: CustomColors().BackgroundColor,
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(15.r), topLeft: Radius.circular(15.r))),
         child: Column(
@@ -39,7 +39,7 @@ class CompletedSchedulePage extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            myTextWidget('The Date Today Is', 20.0, FontWeight.w500),
+            myTextWidget('The Date Today Is', 20.0, FontWeight.w500, CustomColors().LightText),
             SizedBox(
               height: 40.h,
             ),
