@@ -64,7 +64,7 @@ class _NewNoteState extends State<NewNote> {
       'sensei note': senseiNote
     });
     Get.snackbar('SUCCESS', 'Note added successfully',
-        snackPosition: SnackPosition.TOP, duration: const Duration(seconds: 5));
+        snackPosition: SnackPosition.TOP, duration: const Duration(seconds: 5), backgroundColor: CustomColors().CardColor);
     Get.to(() => const Dashboard());
   }
 

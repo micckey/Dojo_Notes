@@ -15,6 +15,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  //Obscure password
+  bool obscurePassword=true;
+  void toggleObscure(){
+    setState(() {
+      obscurePassword = !obscurePassword;
+    });
+  }
+
+  //User email error
+  String emailError = '';
+
+  //Password error
+  String passwordError = '';
+
   // text controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -28,11 +43,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future signIn() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      if(_emailController.text.trim()!=''||_passwordController.text.trim()!=''){
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
 
-      Get.to(() => const Dashboard());
+        Get.to(() => const Dashboard());
+      }else{
+        Get.snackbar('Login Failed!!',
+          'Please fill in all fields then try again',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: CustomColors().CardColor,
+          animationDuration: const Duration(seconds: 2),);
+      }
+
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString().contains('[firebase_auth/channel-error]')||e.toString().contains('[firebase_auth/network-request-failed]')
@@ -42,7 +66,21 @@ class _LoginScreenState extends State<LoginScreen> {
             snackPosition: SnackPosition.TOP,
             backgroundColor: CustomColors().CardColor,
             animationDuration: const Duration(seconds: 2),);
-      }else{
+      }else if(e.toString().contains('[firebase_auth/wrong-password]')){
+        setState(() {
+          passwordError = 'Incorrect password!!';
+        });
+      }
+      else if(e.toString().contains('[firebase_auth/user-not-found]')){
+        setState(() {
+          emailError = 'The email you entered does not exist!!';
+        });
+      }else if(e.toString().contains('[firebase_auth/invalid-email]')){
+        setState(() {
+          emailError = 'Please enter a valid email address';
+        });
+      }
+      else{
         Get.snackbar('Register Failed!!', '$e');
       }
     }
@@ -64,15 +102,18 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 30.h,
             ),
+            emailError==''?const SizedBox.shrink():Center(child: myTextWidget(emailError, 15.sp, FontWeight.w400, Colors.redAccent), ),
+            SizedBox(height: 5.h,),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
               child: myTextField(
                   _emailController, 'Email', CustomColors().HighlightColor),
             ),
+            passwordError==''?const SizedBox.shrink():Center(child: myTextWidget(passwordError, 15.sp, FontWeight.w400, Colors.redAccent), ),
+            SizedBox(height: 5.h,),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
-              child: myTextField(_passwordController, 'Password',
-                  CustomColors().HighlightColor, 1, true),
+              child: myPasswordField(_passwordController, 'Password', obscurePassword, ()=>toggleObscure(),CustomColors().HighlightColor),
             ),
             GestureDetector(
               onTap: () => signIn(),

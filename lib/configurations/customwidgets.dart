@@ -1,4 +1,5 @@
 import 'package:dojonotes/configurations/style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,7 +15,6 @@ Container myTextField(
   label,
   backgroundColor, [
   lines = 1,
-      obscure = false
 ]) {
   return Container(
     decoration: BoxDecoration(
@@ -22,9 +22,46 @@ Container myTextField(
     child: (TextField(
       maxLines: lines,
       controller: _controller,
+
+      cursorColor: Colors.black,
+      decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w200,
+            color: CustomColors().LightText,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: CustomColors().HighlightColor),
+          ),
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15)))),
+    )),
+  );
+}
+
+Container myPasswordField(
+
+    _controller,
+    label,
+    obscure,
+    obscureFunc,
+    backgroundColor,) {
+  return Container(
+    decoration: BoxDecoration(
+        color: backgroundColor, borderRadius: BorderRadius.circular(15)),
+    child: (TextField(
+      controller: _controller,
       obscureText: obscure,
       cursorColor: Colors.black,
       decoration: InputDecoration(
+        suffixIcon: obscure==true?GestureDetector(
+          onTap: obscureFunc,
+            child: Icon(CupertinoIcons.eye)):
+        GestureDetector(
+          onTap: obscureFunc,
+            child: Icon(CupertinoIcons.eye_slash)),
+          suffixIconColor: CustomColors().LightText,
           labelText: label,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w200,
@@ -104,5 +141,19 @@ ElevatedButton buildElevatedButton(label, getFunction) {
         label,
         style: TextStyle(fontSize: 20.sp),
       ));
+}
+
+Padding buildPadding(name, value) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 8.h),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        myTextWidget(name, 15.sp, FontWeight.w300, CustomColors().LightText),
+        Flexible(child: myTextWidget(value, 20.sp, FontWeight.w500, CustomColors().LightText)),
+      ],
+    ),
+  );
 }
 

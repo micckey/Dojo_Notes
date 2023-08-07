@@ -202,7 +202,7 @@ class _DashboardState extends State<Dashboard> {
                             Get.to(()=>const NotePage(), arguments: [user.uid, category, technique, personalNote, senseiNote]);
                           },
                           child: Container(
-                            height: 160,
+                            // height: 160,
                             width: 360,
                             margin: EdgeInsets.only(bottom: 10.h),
                             decoration: BoxDecoration(
@@ -214,34 +214,10 @@ class _DashboardState extends State<Dashboard> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      myTextWidget('Category: ', 15.sp, FontWeight.w300, CustomColors().LightText),
-                                      myTextWidget(category, 20.sp, FontWeight.w500, CustomColors().LightText),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      myTextWidget('Technique/ Name: ', 15.sp, FontWeight.w300, CustomColors().LightText),
-                                      myTextWidget(technique, 20.sp, FontWeight.w500, CustomColors().LightText),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      myTextWidget('Personal Note: ', 15.sp, FontWeight.w300, CustomColors().LightText),
-                                      Flexible(child: myTextWidget(personalNote, 20.sp, FontWeight.w500, CustomColors().LightText)),
-                                    ],
-                                  ),
-                                  senseiNote!=''?Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      myTextWidget('Sensei\'s Note: ', 15.sp, FontWeight.w300, CustomColors().LightText),
-                                      myTextWidget(senseiNote, 20.sp, FontWeight.w500, CustomColors().LightText),
-                                    ],
-                                  ):const SizedBox.shrink()
+                                  buildPadding('Category: ', category),
+                                  buildPadding('Technique/ Name: ', technique),
+                                  buildPadding('Personal Note: ', personalNote),
+                                  senseiNote!=''?buildPadding('Sensei\'s Note: ', senseiNote):const SizedBox.shrink()
                                 ],
                               ),
                             ),

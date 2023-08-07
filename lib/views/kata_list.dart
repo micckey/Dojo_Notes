@@ -17,16 +17,33 @@ class KataListPage extends StatefulWidget {
 
 class _KataListPageState extends State<KataListPage>
     with TickerProviderStateMixin {
-  // //document IDs
-  // List<String> docIDs = [];
-  //
-  // //get docIDs
-  // Future getDocID(String category) async {
-  //   await FirebaseFirestore.instance.collection('kata_list').where('category', isEqualTo: category).get().then(
-  //           (snapshot) => snapshot.docs.forEach((element) {
-  //             docIDs.add(element.reference.id);
-  //           }));
-  // }
+  //Kata List Model
+  Future<KataListModel?> getKataData(kataID) async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection('kata_list')
+        .doc(kataID)
+        .get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data()!;
+
+      return KataListModel(
+        kataName: data['name'],
+        kataCategory: data['category'],
+        kataDescription: data['description'],
+        kataMeaning: data['meaning'],
+        kataLink: data['link'],
+        kataSteps: data['steps'],
+      );
+    } else {
+      return null;
+    }
+  }
+
+  //Search controller
+  final TextEditingController _searchController = TextEditingController();
+  String _searchText = '';
 
   late Map<String, Future<List<String>>> categoryFutures;
 
@@ -114,6 +131,12 @@ class _KataListPageState extends State<KataListPage>
                 height: 50,
                 color: CustomColors().HighlightColor,
                 child: TextField(
+                  controller: _searchController,
+                  onChanged: (text) {
+                    setState(() {
+                      _searchText = text;
+                    });
+                  },
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -218,36 +241,6 @@ class _KataListPageState extends State<KataListPage>
     );
   }
 
-  // Widget buildKataList(List<String>? docIDs) {
-  //   if (docIDs == null || docIDs.isEmpty) {
-  //     return const Center(child: Text('No katas found.'));
-  //   }
-  //
-  //   return ListView.builder(
-  //     itemCount: docIDs.length,
-  //     itemBuilder: (context, index) {
-  //       return GestureDetector(
-  //         onTap: () {
-  //           Get.to(KataPage(), arguments: [
-  //             KataListModel(kataID: docIDs[index]).
-  //           ]);
-  //         },
-  //         child: Container(
-  //           height: 60,
-  //           width: double.maxFinite,
-  //           margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-  //           decoration: BoxDecoration(
-  //             borderRadius: BorderRadius.circular(10.r),
-  //             color: Colors.purpleAccent,
-  //           ),
-  //           child: Center(
-  //             child: Text(''),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
   Widget buildKataList(List<String>? docIDs) {
     if (docIDs == null || docIDs.isEmpty) {
       return const Center(child: Text('No katas found.'));
@@ -259,63 +252,79 @@ class _KataListPageState extends State<KataListPage>
       itemBuilder: (context, index) {
         String kataID = docIDs[index];
 
-        return FutureBuilder<Map<String, dynamic>?>(
-          future: KataListModel(kataID: kataID).getKataData(),
+        return FutureBuilder<KataListModel?>(
+          future: getKataData(kataID),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData && snapshot.data != null) {
-                Map<String, dynamic> data = snapshot.data!;
-                String name = data['name'] ?? 'No name';
-                String category = data['category'] ?? 'No category';
-                String description = data['description'] ?? 'No description';
-                String meaning = data['meaning'] ?? 'No meaning';
-                String link = data['link'] ?? 'No link';
-                var steps = data['steps'] ?? 'No steps';
+                KataListModel data = snapshot.data!;
 
-                return GestureDetector(
-                  onTap: () {
-                    Get.to(const KataPage(), arguments: [name, category, description, meaning, link, steps]);
-                  },
-                  child: Container(
-                    height: 60,
-                    width: double.maxFinite,
-                    margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      color: CustomColors().CardColor,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          myTextWidget(name, 20.0, FontWeight.w400),
-                        ],
+                String name = data.kataName;
+                String category = data.kataCategory;
+                String description = data.kataDescription;
+                String meaning = data.kataMeaning;
+                String link = data.kataLink;
+                var steps = data.kataSteps;
+
+                // Filter katas based on the search text
+                if (_searchText.isEmpty ||
+                    name.toLowerCase().contains(_searchText.toLowerCase())) {
+                  // If the search text matches or is empty, return the kata item
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(const KataPage(), arguments: [
+                        name,
+                        category,
+                        description,
+                        meaning,
+                        link,
+                        steps
+                      ]);
+                    },
+                    child: Container(
+                      height: 60,
+                      width: double.maxFinite,
+                      margin: const EdgeInsets.only(
+                          bottom: 10, left: 20, right: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: CustomColors().CardColor,
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            myTextWidget(name, 20.0, FontWeight.w400),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  // If the search text doesn't match, return an empty container
+                  return const SizedBox.shrink();
+                }
               } else {
-                return const SizedBox.shrink(); // If no data, return an empty container
+                return const SizedBox.shrink();
               }
             } else {
-
               return Container(
                   height: 60,
                   width: double.maxFinite,
-                  margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                  margin:
+                      const EdgeInsets.only(bottom: 10, left: 20, right: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
                     color: CustomColors().CardColor,
                   ),
-                  child: Center(child: myTextWidget('loading...', 16.0, FontWeight.w300)));
+                  child: Center(
+                      child:
+                          myTextWidget('loading...', 16.0, FontWeight.w300)));
             }
           },
         );
       },
     );
   }
-
-
-
 }

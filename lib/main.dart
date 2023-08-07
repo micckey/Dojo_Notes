@@ -1,4 +1,5 @@
 import 'package:dojonotes/auth_pages/auth_provider.dart';
+import 'package:dojonotes/views/kata_list.dart';
 import 'package:dojonotes/views/onboardingpage.dart';
 import 'package:dojonotes/views/stories_page.dart';
 import 'package:firebase_core/firebase_core.dart';

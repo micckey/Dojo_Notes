@@ -117,7 +117,7 @@ class _KataPageState extends State<KataPage> {
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       myTextWidget('Meaning: ', 20.0, FontWeight.w500),
                       Flexible(child: myTextWidget(meaning, 20.0, FontWeight.normal)),
@@ -127,7 +127,8 @@ class _KataPageState extends State<KataPage> {
                     height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       myTextWidget('Description: ', 20.0, FontWeight.w500),
                       Flexible(
@@ -139,7 +140,7 @@ class _KataPageState extends State<KataPage> {
                     height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       myTextWidget('Steps: ', 20.0, FontWeight.w500),
                       myTextWidget('${steps}', 20.0, FontWeight.normal),

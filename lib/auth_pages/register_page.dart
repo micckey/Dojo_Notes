@@ -17,6 +17,21 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
+  //Obscure password
+  bool obscurePassword=true;
+  void toggleObscure(){
+    setState(() {
+      obscurePassword = !obscurePassword;
+    });
+  }
+
+  //Email error
+  String emailError = '';
+
+  //Password error
+  String passwordError = '';
+
   // text controllers
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -34,21 +49,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future signUp() async {
     try{
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      if(_firstNameController.text.trim()!=''|| _lastNameController.text.trim()!=''||
+    _emailController.text.trim()!=''||_passwordController.text.trim()!=''){
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
 
-      String userId = userCredential.user!.uid;
+        String userId = userCredential.user!.uid;
 
-      addUserDetails(
-          userId,
-          _firstNameController.text.trim(),
-          _lastNameController.text.trim(),
-          _emailController.text.trim());
+        addUserDetails(
+            userId,
+            _firstNameController.text.trim(),
+            _lastNameController.text.trim(),
+            _emailController.text.trim());
 
-      Get.to(()=> const Dashboard());
+        Get.to(()=> const Dashboard());
+      }else{
+        Get.snackbar('Register Failed!!',
+          'Please fill in all fields then try again',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: CustomColors().CardColor,
+          animationDuration: const Duration(seconds: 2),);
+      }
+
     } catch (e){
-      // print('THE ERROR MESSAGE IS::: ${e.toString()}');
+      print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString() ==
           '[firebase_auth/channel-error] Unable to establish connection on channel.') {
         Get.snackbar('Register Failed!!',
@@ -56,6 +81,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: CustomColors().CardColor,
           animationDuration: const Duration(seconds: 2),);
+      }else if(e.toString().contains('[firebase_auth/email-already-in-use]')){
+        setState(() {
+          emailError = 'Bummer! The email you entered is already taken.';
+        });
+      }else if(e.toString().contains('[firebase_auth/invalid-email]')){
+        setState(() {
+          emailError = 'Please enter a valid email address';
+        });}
+      else if(e.toString().contains('[firebase_auth/weak-password]')){
+        setState(() {
+          passwordError = e.toString().substring(29);
+        });
       }
       else{
         Get.snackbar('Register Failed!!', '$e');
@@ -98,15 +135,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: myTextField(_lastNameController, 'Last Name',
                     CustomColors().HighlightColor),
               ),
+              emailError==''?const SizedBox.shrink():Center(child: myTextWidget(emailError, 15.sp, FontWeight.w400, Colors.redAccent), ),
+              SizedBox(height: 5.h,),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
                 child: myTextField(
                     _emailController, 'Email', CustomColors().HighlightColor),
               ),
+              passwordError==''?const SizedBox.shrink():Center(child: myTextWidget(passwordError, 15.sp, FontWeight.w400, Colors.redAccent), ),
+              SizedBox(height: 5.h,),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
-                child: myTextField(_passwordController, 'Password',
-                    CustomColors().HighlightColor, 1, true),
+                child: myPasswordField(_passwordController, 'Password', obscurePassword, ()=>toggleObscure(),CustomColors().HighlightColor),
               ),
               GestureDetector(
                 onTap: () => signUp(),

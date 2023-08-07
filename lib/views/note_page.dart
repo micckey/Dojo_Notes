@@ -15,10 +15,10 @@ class _NotePageState extends State<NotePage> {
 
   List noteTitles = [
     '',
-    'Category: ',
-    'Technique/ Name: ',
-    'Personal Note: ',
-    'Sensei\'s Note: '
+    'Category',
+    'Technique/ Name',
+    'Personal Note',
+    'Sensei\'s Note'
   ];
   List noteDetails = Get.arguments;
 
@@ -69,10 +69,19 @@ class _NotePageState extends State<NotePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Row(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            myTextWidget(noteTitles[index], 15.sp, FontWeight.w300, CustomColors().LightText),
-                            Flexible(child: myTextWidget(noteDetails[index], 20.sp, FontWeight.w500, CustomColors().LightText)),
+                            Row(
+                              children: [
+                                myTextWidget(noteTitles[index], 12.sp, FontWeight.w300, CustomColors().LightText),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Flexible(child: myTextWidget(noteDetails[index], 20.sp, FontWeight.w500, CustomColors().LightText)),
+                              ],
+                            ),
                           ],
                         ),
                         index>2?Row(
