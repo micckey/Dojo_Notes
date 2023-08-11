@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -19,19 +20,23 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  //Get username
   Future<Map<String, dynamic>> getUserDetails(String userId) async {
     DocumentSnapshot<Map<String, dynamic>> userSnapshot =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
     return userSnapshot.data()!;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getNotes(String userId) async {
-    QuerySnapshot<Map<String, dynamic>> noteSnapshot = await FirebaseFirestore
-        .instance
-        .collection('dojo notes')
-        .where('userId', isEqualTo: userId)
-        .get();
-    return noteSnapshot;
+  //Delete note
+  void deleteNote(docID) async {
+    try {
+      final docUser =
+          FirebaseFirestore.instance.collection('dojo notes').doc(docID);
+      await docUser.delete();
+      buildSnackBar('SUCCESS', 'Note Deleted Successfully');
+    } catch (e) {
+      buildSnackBar('ERROR', 'An unexpected Error occurred.\nPlease try again');
+    }
   }
 
   @override
@@ -94,26 +99,22 @@ class _DashboardState extends State<Dashboard> {
                     child: IconButton(
                       onPressed: () {
                         Get.defaultDialog(
-                          backgroundColor: CustomColors().CardColor,
-                          title: 'Logout',
-                          middleText: 'Are you sure you want to log out?',
-                          confirm: ElevatedButton(onPressed: (){
-                            FirebaseAuth.instance.signOut();
-                            Get.to(() => const LoginScreen());
-                          },
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(CustomColors().ButtonColor)
-                              ),
-                              child: myTextWidget('Yes', 15.sp, FontWeight.w400)),
-                          cancel: ElevatedButton(onPressed: (){
-                            Get.back();
-                          },
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(CustomColors().ButtonColor)
-                              ),
-                              child: myTextWidget('No', 15.sp, FontWeight.w400))
-                        );
-
+                            // backgroundColor: CustomColors().CardColor,
+                            title: 'Logout',
+                            middleText: 'Are you sure you want to log out?',
+                            confirm: dialogButton(
+                                buttonFunction: () {
+                                  FirebaseAuth.instance.signOut();
+                                  Get.to(() => const LoginScreen());
+                                },
+                                label: 'Yes',
+                                color: CustomColors().HighlightColor),
+                            cancel: dialogButton(
+                                buttonFunction: () {
+                                  Get.back();
+                                },
+                                color: CustomColors().HighlightColor,
+                                label: 'No'));
                       },
                       icon: const Icon(Icons.logout_rounded),
                       color: Colors.black,
@@ -146,13 +147,13 @@ class _DashboardState extends State<Dashboard> {
                     SizedBox(
                       height: 45.h,
                       child: buildElevatedButton('Schedule', () {
-                        Get.to(const SchedulePage());
+                        Get.to(() => SchedulePage());
                       }),
                     ),
                     SizedBox(
                         height: 45.h,
                         child: buildElevatedButton('Kata List', () {
-                          Get.to(const KataListPage());
+                          Get.to(() => const KataListPage());
                         }))
                   ],
                 ),
@@ -176,12 +177,17 @@ class _DashboardState extends State<Dashboard> {
               padding: EdgeInsets.only(bottom: 10.h),
               height: double.maxFinite,
               margin: EdgeInsets.only(left: 14.w, right: 14.w),
-              child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                future: getNotes(user.uid),
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: FirebaseFirestore.instance
+                    .collection('dojo notes')
+                    .where('userId', isEqualTo: user.uid)
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     // Display a loading indicator while fetching data.
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                        child: LoadingAnimationWidget.discreteCircle(
+                            color: CustomColors().HighlightColor, size: 50.r));
                   } else if (snapshot.hasData && snapshot.data != null) {
                     // Data is available, access details here.
                     List<QueryDocumentSnapshot<Map<String, dynamic>>> notes =
@@ -199,7 +205,14 @@ class _DashboardState extends State<Dashboard> {
                         String senseiNote = notes[index]['sensei note'];
                         return GestureDetector(
                           onTap: () {
-                            Get.to(()=>const NotePage(), arguments: [user.uid, category, technique, personalNote, senseiNote]);
+                            String documentId = notes[index].id;
+                            Get.to(() => const NotePage(), arguments: [
+                              documentId,
+                              category,
+                              technique,
+                              personalNote,
+                              senseiNote
+                            ]);
                           },
                           child: Container(
                             // height: 160,
@@ -212,12 +225,50 @@ class _DashboardState extends State<Dashboard> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15.w),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   buildPadding('Category: ', category),
                                   buildPadding('Technique/ Name: ', technique),
                                   buildPadding('Personal Note: ', personalNote),
-                                  senseiNote!=''?buildPadding('Sensei\'s Note: ', senseiNote):const SizedBox.shrink()
+                                  senseiNote != ''
+                                      ? buildPadding(
+                                          'Sensei\'s Note: ', senseiNote)
+                                      : const SizedBox.shrink(),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                          onTap: () {
+                                            String documentID = notes[index].id;
+                                            Get.defaultDialog(
+                                                title: 'Alert!!',
+                                                middleText:
+                                                    'Are you sure you want to delete? \n This action is irreversible!!',
+                                                confirm: dialogButton(
+                                                    buttonFunction: () {
+                                                      deleteNote(documentID);
+                                                      Get.back();
+                                                    },
+                                                    label: 'Yes',
+                                                    color: CustomColors()
+                                                        .HighlightColor),
+                                                cancel: dialogButton(
+                                                  buttonFunction: () {
+                                                    Get.back();
+                                                  },
+                                                  label: 'No',
+                                                  color: CustomColors()
+                                                      .HighlightColor,
+                                                ));
+                                          },
+                                          child: Icon(Icons.delete,
+                                              color: Colors.red, size: 30.sp)),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  )
                                 ],
                               ),
                             ),

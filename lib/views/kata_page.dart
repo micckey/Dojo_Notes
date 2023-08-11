@@ -81,78 +81,82 @@ class _KataPageState extends State<KataPage> {
             color: CustomColors().BackgroundColor,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            myTextWidget(name, 35.0, FontWeight.w800, Colors.white),
-            SizedBox(
-              height: bodyHeight*0.53.h,
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: YoutubePlayer(
-                    showVideoProgressIndicator: true,
-                    bottomActions: [
-                      CurrentPosition(),
-                      FullScreenButton(),
-                      ProgressBar(
-                        isExpanded: true,
-                        colors: ProgressBarColors(
-                            playedColor: CustomColors().HighlightColor,
-                            handleColor: Colors.black
-                        ),
-                      )
-                    ],
-                    controller: _controller),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  color: CustomColors().CardColor,
-                  borderRadius: BorderRadius.circular(5)),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      myTextWidget('Meaning: ', 20.0, FontWeight.w500),
-                      Flexible(child: myTextWidget(meaning, 20.0, FontWeight.normal)),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      myTextWidget('Description: ', 20.0, FontWeight.w500),
-                      Flexible(
-                          child: myTextWidget(
-                              description, 20.0, FontWeight.normal)),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      myTextWidget('Steps: ', 20.0, FontWeight.w500),
-                      myTextWidget('${steps}', 20.0, FontWeight.normal),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+              myTextWidget(name, 35.0, FontWeight.w800, Colors.white),
+              SizedBox(
+                height: bodyHeight*0.53.h,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: YoutubePlayer(
+                      showVideoProgressIndicator: true,
+                      bottomActions: [
+                        CurrentPosition(),
+                        FullScreenButton(),
+                        ProgressBar(
+                          isExpanded: true,
+                          colors: ProgressBarColors(
+                              playedColor: CustomColors().HighlightColor,
+                              handleColor: Colors.black
+                          ),
+                        )
+                      ],
+                      controller: _controller),
+                ),
               ),
-            )
-          ],
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                    color: CustomColors().CardColor,
+                    borderRadius: BorderRadius.circular(5)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          myTextWidget('Meaning: ', 20.0, FontWeight.w500),
+                          Flexible(child: myTextWidget(meaning, 20.0, FontWeight.normal)),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          myTextWidget('Description: ', 20.0, FontWeight.w500),
+                          Flexible(
+                              child: myTextWidget(
+                                  description, 20.0, FontWeight.normal)),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          myTextWidget('Steps: ', 20.0, FontWeight.w500),
+                          myTextWidget('${steps}', 20.0, FontWeight.normal),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -15,10 +15,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   //Obscure password
-  bool obscurePassword=true;
-  void toggleObscure(){
+  bool obscurePassword = true;
+
+  void toggleObscure() {
     setState(() {
       obscurePassword = !obscurePassword;
     });
@@ -43,45 +43,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future signIn() async {
     try {
-      if(_emailController.text.trim()!=''||_passwordController.text.trim()!=''){
+      if (_emailController.text.trim() != '' ||
+          _passwordController.text.trim() != '') {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
 
         Get.to(() => const Dashboard());
-      }else{
-        Get.snackbar('Login Failed!!',
-          'Please fill in all fields then try again',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: CustomColors().CardColor,
-          animationDuration: const Duration(seconds: 2),);
+      } else {
+        buildSnackBar(
+            'Login Failed!!', 'Please fill in all fields then try again');
       }
-
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
-      if (e.toString().contains('[firebase_auth/channel-error]')||e.toString().contains('[firebase_auth/network-request-failed]')
-          ) {
-        Get.snackbar('Login Failed!!',
-            'Error connecting to the internet, please check your connection!',
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: CustomColors().CardColor,
-            animationDuration: const Duration(seconds: 2),);
-      }else if(e.toString().contains('[firebase_auth/wrong-password]')){
+      if (e.toString().contains('[firebase_auth/channel-error]') ||
+          e.toString().contains('[firebase_auth/network-request-failed]')) {
+        buildSnackBar('Login Failed!!',
+            'Error connecting to the internet, please check your connection!');
+      } else if (e.toString().contains('[firebase_auth/wrong-password]')) {
         setState(() {
           passwordError = 'Incorrect password!!';
         });
-      }
-      else if(e.toString().contains('[firebase_auth/user-not-found]')){
+      } else if (e.toString().contains('[firebase_auth/user-not-found]')) {
         setState(() {
           emailError = 'The email you entered does not exist!!';
         });
-      }else if(e.toString().contains('[firebase_auth/invalid-email]')){
+      } else if (e.toString().contains('[firebase_auth/invalid-email]')) {
         setState(() {
           emailError = 'Please enter a valid email address';
         });
-      }
-      else{
-        Get.snackbar('Register Failed!!', '$e');
+      } else {
+        buildSnackBar('Register Failed!!', e);
       }
     }
   }
@@ -102,18 +94,37 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 30.h,
             ),
-            emailError==''?const SizedBox.shrink():Center(child: myTextWidget(emailError, 15.sp, FontWeight.w400, Colors.redAccent), ),
-            SizedBox(height: 5.h,),
+            emailError == ''
+                ? const SizedBox.shrink()
+                : Center(
+                    child: myTextWidget(
+                        emailError, 15.sp, FontWeight.w400, Colors.redAccent),
+                  ),
+            SizedBox(
+              height: 5.h,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
               child: myTextField(
                   _emailController, 'Email', CustomColors().HighlightColor),
             ),
-            passwordError==''?const SizedBox.shrink():Center(child: myTextWidget(passwordError, 15.sp, FontWeight.w400, Colors.redAccent), ),
-            SizedBox(height: 5.h,),
+            passwordError == ''
+                ? const SizedBox.shrink()
+                : Center(
+                    child: myTextWidget(passwordError, 15.sp, FontWeight.w400,
+                        Colors.redAccent),
+                  ),
+            SizedBox(
+              height: 5.h,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
-              child: myPasswordField(_passwordController, 'Password', obscurePassword, ()=>toggleObscure(),CustomColors().HighlightColor),
+              child: myPasswordField(
+                  _passwordController,
+                  'Password',
+                  obscurePassword,
+                  () => toggleObscure(),
+                  CustomColors().HighlightColor),
             ),
             GestureDetector(
               onTap: () => signIn(),

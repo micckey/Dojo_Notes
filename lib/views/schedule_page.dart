@@ -4,13 +4,16 @@ import 'package:dojonotes/views/completed_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class SchedulePage extends StatelessWidget {
-  const SchedulePage({super.key});
+  SchedulePage({super.key});
+
+  final currentDay = DateFormat('E').format(DateTime.now());
+  final currentDate = DateFormat('d MMM yyyy').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
-
     final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
@@ -23,7 +26,9 @@ class SchedulePage extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             color: CustomColors().HighlightColor,
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(30.r), bottomLeft: Radius.circular(30.r)),
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(30.r),
+                bottomLeft: Radius.circular(30.r)),
           ),
           child: Stack(
             children: <Widget>[
@@ -37,7 +42,7 @@ class SchedulePage extends StatelessWidget {
                     },
                   )),
               Positioned(
-                  top: statusBarHeight+35.h,
+                  top: statusBarHeight + 35.h,
                   left: 0,
                   right: 0,
                   child: Row(
@@ -45,13 +50,12 @@ class SchedulePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      myTextWidget('Today, ', 30.sp, FontWeight.bold),
-                      myTextWidget(
-                          'The Date Today Is', 20.sp, FontWeight.normal),
+                      myTextWidget('$currentDay, ', 30.sp, FontWeight.bold),
+                      myTextWidget(currentDate, 20.sp, FontWeight.normal),
                     ],
                   )),
               Positioned(
-                  top: statusBarHeight+75.h,
+                  top: statusBarHeight + 75.h,
                   left: 0,
                   right: 0,
                   child: SizedBox(
@@ -73,8 +77,8 @@ class SchedulePage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        roundButtons(60.sp, Icons.add, ()=>Null),
-                        roundButtons(60.sp, Icons.edit, ()=>Null)
+                        roundButtons(60.sp, Icons.add, () => Null),
+                        roundButtons(60.sp, Icons.edit, () => Null)
                       ],
                     ),
                   )),
@@ -100,7 +104,7 @@ class SchedulePage extends StatelessWidget {
             return Card(
               child: ListTile(
                 onTap: () {
-                  Get.to(()=>const CompletedSchedulePage());
+                  Get.to(() => const CompletedSchedulePage());
                 },
                 title: const Text('Thursday, 16th June, 2023'),
                 leading: const Icon(Icons.library_add_check_outlined),
@@ -115,10 +119,6 @@ class SchedulePage extends StatelessWidget {
               ),
             );
           },
-
-
-
-
         ),
       ),
     );

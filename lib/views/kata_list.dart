@@ -6,6 +6,7 @@ import 'package:dojonotes/views/kata_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class KataListPage extends StatefulWidget {
@@ -80,6 +81,12 @@ class _KataListPageState extends State<KataListPage>
     docIDs = snapshot.docs.map((doc) => doc.id).toList();
 
     return docIDs;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
   }
 
   @override
@@ -195,8 +202,8 @@ class _KataListPageState extends State<KataListPage>
                         if (snapshot.connectionState == ConnectionState.done) {
                           return buildKataList(snapshot.data);
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return  Center(
+                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().HighlightColor, size: 50.r));
                         }
                       },
                     ),
@@ -206,8 +213,8 @@ class _KataListPageState extends State<KataListPage>
                         if (snapshot.connectionState == ConnectionState.done) {
                           return buildKataList(snapshot.data);
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().HighlightColor, size: 50.r));
                         }
                       },
                     ),
@@ -217,8 +224,8 @@ class _KataListPageState extends State<KataListPage>
                         if (snapshot.connectionState == ConnectionState.done) {
                           return buildKataList(snapshot.data);
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().HighlightColor, size: 50.r));
                         }
                       },
                     ),
@@ -228,8 +235,8 @@ class _KataListPageState extends State<KataListPage>
                         if (snapshot.connectionState == ConnectionState.done) {
                           return buildKataList(snapshot.data);
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().HighlightColor, size: 50.r));
                         }
                       },
                     ),

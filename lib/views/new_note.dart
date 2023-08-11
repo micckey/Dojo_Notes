@@ -36,13 +36,11 @@ class _NewNoteState extends State<NewNote> {
     if (_categoryController.text == '' ||
         _techniqueController.text == '' ||
         _personalNoteController.text == '') {
-      Get.snackbar('ERROR!!', 'Fill in all fields first then try again.',
-          snackPosition: SnackPosition.TOP);
+      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.');
     } else {
       if (userID == Null) {
-        Get.snackbar('Error Adding Note',
-            'An unexpected error occured while saving the note, please try again later',
-            snackPosition: SnackPosition.TOP);
+        buildSnackBar('Error Adding Note',
+            'An unexpected error occurred while saving the note, please try again later');
       } else {
         createNote(
             userID,
@@ -63,8 +61,9 @@ class _NewNoteState extends State<NewNote> {
       'personal note': personalNote,
       'sensei note': senseiNote
     });
-    Get.snackbar('SUCCESS', 'Note added successfully',
-        snackPosition: SnackPosition.TOP, duration: const Duration(seconds: 5), backgroundColor: CustomColors().CardColor);
+
+    buildSnackBar('SUCCESS', 'Note added successfully');
+
     Get.to(() => const Dashboard());
   }
 
@@ -115,6 +114,7 @@ class _NewNoteState extends State<NewNote> {
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Container(

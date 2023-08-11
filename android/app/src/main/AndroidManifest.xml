@@ -2,7 +2,7 @@
     package="com.example.dojonotes">
 
    <application
-        android:label="dojonotes"
+        android:label="DojoNotes"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

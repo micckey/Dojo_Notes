@@ -2,6 +2,7 @@ import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 Text myTextWidget(label, size, FontWeight weight, [textColor = Colors.black]) {
   return (Text(
@@ -11,7 +12,7 @@ Text myTextWidget(label, size, FontWeight weight, [textColor = Colors.black]) {
 }
 
 Container myTextField(
-    _controller,
+  _controller,
   label,
   backgroundColor, [
   lines = 1,
@@ -22,7 +23,6 @@ Container myTextField(
     child: (TextField(
       maxLines: lines,
       controller: _controller,
-
       cursorColor: Colors.black,
       decoration: InputDecoration(
           labelText: label,
@@ -41,12 +41,12 @@ Container myTextField(
 }
 
 Container myPasswordField(
-
-    _controller,
-    label,
-    obscure,
-    obscureFunc,
-    backgroundColor,) {
+  _controller,
+  label,
+  obscure,
+  obscureFunc,
+  backgroundColor,
+) {
   return Container(
     decoration: BoxDecoration(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
@@ -55,12 +55,11 @@ Container myPasswordField(
       obscureText: obscure,
       cursorColor: Colors.black,
       decoration: InputDecoration(
-        suffixIcon: obscure==true?GestureDetector(
-          onTap: obscureFunc,
-            child: Icon(CupertinoIcons.eye)):
-        GestureDetector(
-          onTap: obscureFunc,
-            child: Icon(CupertinoIcons.eye_slash)),
+          suffixIcon: obscure == true
+              ? GestureDetector(
+                  onTap: obscureFunc, child: Icon(CupertinoIcons.eye))
+              : GestureDetector(
+                  onTap: obscureFunc, child: Icon(CupertinoIcons.eye_slash)),
           suffixIconColor: CustomColors().LightText,
           labelText: label,
           labelStyle: TextStyle(
@@ -89,7 +88,8 @@ SizedBox kataButton(label) {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))))),
-      child: myTextWidget(label, 25.0, FontWeight.normal, CustomColors().LightText),
+      child: myTextWidget(
+          label, 25.0, FontWeight.normal, CustomColors().LightText),
     ),
   );
 }
@@ -131,12 +131,9 @@ ElevatedButton buildElevatedButton(label, getFunction) {
       onPressed: getFunction,
       style: ButtonStyle(
           foregroundColor: MaterialStatePropertyAll(CustomColors().DarkText),
-          backgroundColor: MaterialStatePropertyAll(
-              CustomColors().ButtonColor),
-          shape: MaterialStatePropertyAll(
-              RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.circular(5.r)))),
+          backgroundColor: MaterialStatePropertyAll(CustomColors().ButtonColor),
+          shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.r)))),
       child: Text(
         label,
         style: TextStyle(fontSize: 20.sp),
@@ -151,9 +148,46 @@ Padding buildPadding(name, value) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         myTextWidget(name, 15.sp, FontWeight.w300, CustomColors().LightText),
-        Flexible(child: myTextWidget(value, 20.sp, FontWeight.w500, CustomColors().LightText)),
+        Flexible(
+            child: myTextWidget(
+                value, 20.sp, FontWeight.w500, CustomColors().LightText)),
       ],
     ),
   );
 }
 
+Container myEditField(
+  _controller,
+) {
+  return Container(
+    decoration: BoxDecoration(
+        color: CustomColors().HighlightColor,
+        borderRadius: BorderRadius.circular(15)),
+    child: (TextField(
+      maxLines: 5,
+      controller: _controller,
+      cursorColor: Colors.black,
+      decoration: InputDecoration(
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: CustomColors().HighlightColor),
+          ),
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15)))),
+    )),
+  );
+}
+
+ElevatedButton dialogButton({buttonFunction, color, label}) {
+  return ElevatedButton(
+      onPressed: buttonFunction,
+      style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(color)),
+      child: myTextWidget(label, 15.sp, FontWeight.w400));
+}
+
+buildSnackBar(title, message, [duration = 2]) {
+  Get.snackbar(title, message,
+      snackPosition: SnackPosition.TOP,
+      animationDuration: Duration(seconds: duration),
+      backgroundColor: CustomColors().CardColor);
+}
