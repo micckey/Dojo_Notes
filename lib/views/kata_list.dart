@@ -302,7 +302,7 @@ class _KataListPageState extends State<KataListPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            myTextWidget(name, 20.0, FontWeight.w400),
+                            myTextWidget(name, 20.0, FontWeight.w400, CustomColors().LightText),
                           ],
                         ),
                       ),

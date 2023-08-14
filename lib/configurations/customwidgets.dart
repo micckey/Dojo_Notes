@@ -21,6 +21,9 @@ Container myTextField(
     decoration: BoxDecoration(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
+      style: TextStyle(
+        color: CustomColors().LightText
+      ),
       maxLines: lines,
       controller: _controller,
       cursorColor: Colors.black,
@@ -51,6 +54,9 @@ Container myPasswordField(
     decoration: BoxDecoration(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
+      style: TextStyle(
+          color: CustomColors().LightText
+      ),
       controller: _controller,
       obscureText: obscure,
       cursorColor: Colors.black,
@@ -164,6 +170,9 @@ Container myEditField(
         color: CustomColors().HighlightColor,
         borderRadius: BorderRadius.circular(15)),
     child: (TextField(
+      style: TextStyle(
+          color: CustomColors().LightText
+      ),
       maxLines: 5,
       controller: _controller,
       cursorColor: Colors.black,
@@ -187,6 +196,9 @@ ElevatedButton dialogButton({buttonFunction, color, label}) {
 
 buildSnackBar(title, message, [duration = 2]) {
   Get.snackbar(title, message,
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      colorText: CustomColors().LightText,
       snackPosition: SnackPosition.TOP,
       animationDuration: Duration(seconds: duration),
       backgroundColor: CustomColors().CardColor);

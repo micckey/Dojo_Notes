@@ -4,6 +4,7 @@ import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
@@ -18,8 +19,41 @@ class _NotePageState extends State<NotePage> {
   String technique = Get.arguments[2];
   String personalNote = Get.arguments[3];
   String senseiNote = Get.arguments[4];
+  Timestamp? timestamp = Get.arguments[5];
 
-  TextEditingController _editController = TextEditingController();
+  String formatTimestamp(Timestamp? timestamp) {
+    // Convert Firestore Timestamp to DateTime
+    if (timestamp != null) {
+      DateTime dateTime = timestamp.toDate();
+
+      if (DateTime.now().difference(dateTime) < const Duration(days: 1)) {
+        if (DateTime.now().difference(dateTime) < const Duration(seconds: 60)) {
+          return 'Just Now';
+        } else if (DateTime.now().difference(dateTime) <
+            const Duration(hours: 1)) {
+          if (DateTime.now().difference(dateTime) <
+              const Duration(minutes: 2)) {
+            return '1 minute ago';
+          }
+          return ' ${dateTime.difference(DateTime.now()).inMinutes.toString().substring(1)} minutes ago';
+        } else if (DateTime.now().difference(dateTime) <
+            const Duration(hours: 2)) {
+          return '1 hour ago';
+        }
+        return ' ${dateTime.difference(DateTime.now()).inHours.toString().substring(1)} hours ago';
+      } else {
+        // Format DateTime using intl package's DateFormat
+        return DateFormat('MMM d, y - HH:mm a').format(dateTime);
+      }
+    }
+    return '...';
+  }
+
+  //Edit Controllers
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _techniqueController = TextEditingController();
+  final TextEditingController _personalNoteController = TextEditingController();
+  final TextEditingController _senseiNoteController = TextEditingController();
 
   //Content state
   bool isCategorySaved = false;
@@ -28,30 +62,30 @@ class _NotePageState extends State<NotePage> {
   bool isSenseiNoteSaved = false;
 
   //Content values
-  String savedNoteValue = '';
   String savedCategoryValue = '';
   String savedTechniqueValue = '';
   String savedPersonalNoteValue = '';
   String savedSenseiNoteValue = '';
 
-  void editNote(category, content, docID, savedTitle) {
+  void editNote(category, content, docID, savedTitle,
+      TextEditingController editController, savedNoteValue) {
     if (savedTitle == 'category' && savedCategoryValue != '') {
-      _editController = TextEditingController(text: savedCategoryValue);
+      editController = TextEditingController(text: savedCategoryValue);
     } else if (savedTitle == 'technique' && savedTechniqueValue != '') {
-      _editController = TextEditingController(text: savedTechniqueValue);
+      editController = TextEditingController(text: savedTechniqueValue);
     } else if (savedTitle == 'personalNote' && savedPersonalNoteValue != '') {
-      _editController = TextEditingController(text: savedPersonalNoteValue);
+      editController = TextEditingController(text: savedPersonalNoteValue);
     } else if (savedTitle == 'senseiNote' && savedSenseiNoteValue != '') {
-      _editController = TextEditingController(text: savedSenseiNoteValue);
+      editController = TextEditingController(text: savedSenseiNoteValue);
     } else {
-      _editController = TextEditingController(text: content);
+      editController = TextEditingController(text: content);
     }
 
     Get.dialog(AlertDialog(
       backgroundColor: CustomColors().BackgroundColor,
       title: myTextWidget(
           category, 15.sp, FontWeight.w400, CustomColors().LightText),
-      content: myEditField(_editController),
+      content: myEditField(editController),
       actions: [
         TextButton(
             onPressed: () => Get.back(),
@@ -59,16 +93,19 @@ class _NotePageState extends State<NotePage> {
                 'cancel', 15.sp, FontWeight.w400, CustomColors().LightText)),
         ElevatedButton(
             onPressed: () async {
-              if (_editController.text.trim() != content) {
+              if (editController.text.trim() != content) {
                 try {
                   final docUser = FirebaseFirestore.instance
                       .collection('dojo notes')
                       .doc(docID);
 
-                  await docUser.update({category: _editController.text.trim()});
+                  await docUser.update({
+                    category: editController.text.trim(),
+                    'updateAt': FieldValue.serverTimestamp()
+                  });
 
                   setState(() {
-                    savedNoteValue = _editController.text.trim();
+                    savedNoteValue = editController.text.trim();
 
                     if (savedTitle == 'category') {
                       isCategorySaved = true;
@@ -84,8 +121,6 @@ class _NotePageState extends State<NotePage> {
                       savedSenseiNoteValue = savedNoteValue;
                     }
                   });
-
-                  // _editController = TextEditingController(text: savedNoteValue);
 
                   Get.back();
                   buildSnackBar('SUCCESS', 'Note Edited Successfully', 1);
@@ -107,7 +142,10 @@ class _NotePageState extends State<NotePage> {
 
   @override
   void dispose() {
-    _editController.dispose();
+    _categoryController.dispose();
+    _techniqueController.dispose();
+    _personalNoteController.dispose();
+    _senseiNoteController.dispose();
     super.dispose();
   }
 
@@ -133,12 +171,19 @@ class _NotePageState extends State<NotePage> {
                       children: [
                         myTextWidget('Last edited: ', 18.0, FontWeight.w400),
                         myTextWidget(
-                            'The Date Today Is', 20.0, FontWeight.w600),
+                            isCategorySaved ||
+                                    isTechniqueSaved ||
+                                    isPersonalNoteSaved ||
+                                    isSenseiNoteSaved
+                                ? 'Just Now'
+                                : formatTimestamp(timestamp),
+                            20.0,
+                            FontWeight.w600),
                       ],
                     )),
                 Positioned(
                     top: statusBarHeight + 10.h,
-                    left: 5,
+                    left: 10.w,
                     child: roundButtons(
                         60.0, Icons.arrow_back_rounded, () => Get.back()))
               ],
@@ -156,18 +201,39 @@ class _NotePageState extends State<NotePage> {
               ),
               child: SingleChildScrollView(
                 child: Column(
-                  // children: [
-                  //
-                  // ],
                   children: [
-                    notePageContainer('Category', category, 'category',
-                        isCategorySaved, 'category'),
-                    notePageContainer('Technique/ Name', technique, 'technique',
-                        isTechniqueSaved, 'technique'),
-                    notePageContainer('Personal Note', personalNote,
-                        'personal note', isPersonalNoteSaved, 'personalNote'),
-                    notePageContainer('Sensei\'s Note', senseiNote,
-                        'sensei note', isSenseiNoteSaved, 'senseiNote'),
+                    notePageContainer(
+                        'Category',
+                        category,
+                        'category',
+                        isCategorySaved,
+                        'category',
+                        _categoryController,
+                        savedCategoryValue),
+                    notePageContainer(
+                        'Technique/ Name',
+                        technique,
+                        'technique',
+                        isTechniqueSaved,
+                        'technique',
+                        _techniqueController,
+                        savedTechniqueValue),
+                    notePageContainer(
+                        'Personal Note',
+                        personalNote,
+                        'personal note',
+                        isPersonalNoteSaved,
+                        'personalNote',
+                        _personalNoteController,
+                        savedPersonalNoteValue),
+                    notePageContainer(
+                        'Sensei\'s Note',
+                        senseiNote,
+                        'sensei note',
+                        isSenseiNoteSaved,
+                        'senseiNote',
+                        _senseiNoteController,
+                        savedSenseiNoteValue),
                   ],
                 ),
               ),
@@ -178,8 +244,8 @@ class _NotePageState extends State<NotePage> {
     );
   }
 
-  Container notePageContainer(
-      title, content, firebaseTitle, bool isSaved, savedTitle) {
+  Container notePageContainer(title, content, firebaseTitle, bool isSaved,
+      savedTitle, editController, savedNoteValue) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       width: double.maxFinite,
@@ -211,12 +277,15 @@ class _NotePageState extends State<NotePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 GestureDetector(
-                    onTap: () => editNote(
-                        firebaseTitle, content, documentID, savedTitle),
-                    child: Icon(
-                      Icons.edit,
-                      color: CustomColors().ButtonColor,
-                    ))
+                    onTap: () => editNote(firebaseTitle, content, documentID,
+                        savedTitle, editController, savedNoteValue),
+                    child: content == ''
+                        ? Icon(Icons.add_circle_rounded,
+                            size: 50.sp, color: CustomColors().ButtonColor)
+                        : Icon(
+                            Icons.edit,
+                            color: CustomColors().ButtonColor,
+                          ))
               ],
             ),
           ],

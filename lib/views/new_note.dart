@@ -59,7 +59,9 @@ class _NewNoteState extends State<NewNote> {
       'category': category,
       'technique': technique,
       'personal note': personalNote,
-      'sensei note': senseiNote
+      'sensei note': senseiNote,
+      'createdAt': FieldValue.serverTimestamp(),
+      'updateAt': FieldValue.serverTimestamp()
     });
 
     buildSnackBar('SUCCESS', 'Note added successfully');

@@ -181,6 +181,7 @@ class _DashboardState extends State<Dashboard> {
                 stream: FirebaseFirestore.instance
                     .collection('dojo notes')
                     .where('userId', isEqualTo: user.uid)
+                .orderBy('createdAt', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -206,12 +207,14 @@ class _DashboardState extends State<Dashboard> {
                         return GestureDetector(
                           onTap: () {
                             String documentId = notes[index].id;
+                            Timestamp? editTimeStamp = notes[index]['updateAt'];
                             Get.to(() => const NotePage(), arguments: [
                               documentId,
                               category,
                               technique,
                               personalNote,
-                              senseiNote
+                              senseiNote,
+                              editTimeStamp
                             ]);
                           },
                           child: Container(
