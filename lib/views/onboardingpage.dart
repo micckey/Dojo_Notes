@@ -1,4 +1,5 @@
 import 'package:dojonotes/auth_pages/register_page.dart';
+import 'package:dojonotes/auth_pages/switch_auth_pages.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   child: TextButton(
                       onPressed: () {
-                        Get.to(() => const RegisterScreen());
+                        Get.to(() =>  SwitchAuthPage(authPage: 'register',));
                       },
                       child: myTextWidget('Create an account', 18.sp, FontWeight.w600))),
             ),
@@ -99,9 +100,7 @@ class OnboardingScreen extends StatelessWidget {
                 myTextWidget('Already have an account?', 16.sp, FontWeight.w500, CustomColors().LightText),
                 const SizedBox(width: 5,),
                 GestureDetector(
-                  onTap: () {
-                    Get.to(() => const LoginScreen());
-                  },
+                  onTap: (){ Get.to( () => SwitchAuthPage(authPage: 'login', ) );},
                     child: myTextWidget('Login', 20.sp, FontWeight.w500, Colors.blue)),
               ],
             )

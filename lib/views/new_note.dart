@@ -36,11 +36,11 @@ class _NewNoteState extends State<NewNote> {
     if (_categoryController.text == '' ||
         _techniqueController.text == '' ||
         _personalNoteController.text == '') {
-      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.');
+      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.', CustomColors().AlertText);
     } else {
       if (userID == Null) {
         buildSnackBar('Error Adding Note',
-            'An unexpected error occurred while saving the note, please try again later');
+            'An unexpected error occurred while saving the note, please try again later', CustomColors().AlertText);
       } else {
         createNote(
             userID,
@@ -64,7 +64,7 @@ class _NewNoteState extends State<NewNote> {
       'updateAt': FieldValue.serverTimestamp()
     });
 
-    buildSnackBar('SUCCESS', 'Note added successfully');
+    buildSnackBar('SUCCESS', 'Note added successfully', CustomColors().SuccessText);
 
     Get.to(() => const Dashboard());
   }

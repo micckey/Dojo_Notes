@@ -146,7 +146,7 @@ ElevatedButton buildElevatedButton(label, getFunction) {
       ));
 }
 
-Padding buildPadding(name, value) {
+Padding dashboardNoteCard(name, value,) {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: 8.h),
     child: Row(
@@ -155,8 +155,12 @@ Padding buildPadding(name, value) {
       children: [
         myTextWidget(name, 15.sp, FontWeight.w300, CustomColors().LightText),
         Flexible(
-            child: myTextWidget(
-                value, 20.sp, FontWeight.w500, CustomColors().LightText)),
+            child: Text(value, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(
+              fontSize: 20.sp, fontWeight: FontWeight.w500, color: CustomColors().LightText
+            ),)
+            // myTextWidget(
+            //     value, 20.sp, FontWeight.w500, CustomColors().LightText)
+        ),
       ],
     ),
   );
@@ -194,12 +198,13 @@ ElevatedButton dialogButton({buttonFunction, color, label}) {
       child: myTextWidget(label, 15.sp, FontWeight.w400));
 }
 
-buildSnackBar(title, message, [duration = 2]) {
+buildSnackBar(title, message, textColor, [duration = 2]) {
   Get.snackbar(title, message,
       isDismissible: true,
       dismissDirection: DismissDirection.horizontal,
-      colorText: CustomColors().LightText,
+      colorText: textColor,
       snackPosition: SnackPosition.TOP,
       animationDuration: Duration(seconds: duration),
       backgroundColor: CustomColors().CardColor);
+
 }

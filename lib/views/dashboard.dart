@@ -1,7 +1,8 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dojonotes/auth_pages/login_page.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/views/dashboard_drawer.dart';
 import 'package:dojonotes/views/kata_list.dart';
 import 'package:dojonotes/views/new_note.dart';
 import 'package:dojonotes/views/note_page.dart';
@@ -33,11 +34,14 @@ class _DashboardState extends State<Dashboard> {
       final docUser =
           FirebaseFirestore.instance.collection('dojo notes').doc(docID);
       await docUser.delete();
-      buildSnackBar('SUCCESS', 'Note Deleted Successfully');
+      buildSnackBar(
+          'SUCCESS', 'Note Deleted Successfully', CustomColors().SuccessText);
     } catch (e) {
-      buildSnackBar('ERROR', 'An unexpected Error occurred.\nPlease try again');
+      buildSnackBar('ERROR', 'An unexpected Error occurred.\nPlease try again',
+          CustomColors().AlertText);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,112 +60,117 @@ class _DashboardState extends State<Dashboard> {
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(15.r),
                 bottomRight: Radius.circular(15.r))),
-        flexibleSpace: Stack(
-          children: <Widget>[
-            Positioned(
-                top: statusBarHeight + 5.h,
+        flexibleSpace: Builder(builder: (context) {
+          return Stack(
+            children: <Widget>[
+              Positioned(
+                top: statusBarHeight + 10.h,
                 left: 10.w,
-                child: Text('Hi,',
-                    style: TextStyle(
-                        fontSize: 30.sp, fontWeight: FontWeight.w600))),
-            Positioned(
-              top: statusBarHeight + 40.h,
-              left: 10.w,
-              child: FutureBuilder<Map<String, dynamic>>(
-                future: getUserDetails(user.uid),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // Display a loading indicator while fetching data.
-                    return myTextWidget('...', 60.sp, FontWeight.w700);
-                  } else if (snapshot.hasData) {
-                    // Data is available, access first name here.
-                    String firstName = snapshot.data!['first name'];
-                    return myTextWidget(firstName, 60.sp, FontWeight.w700);
-                  } else {
-                    // Data not found or an error occurred.
-                    return myTextWidget('Karateka', 60.sp, FontWeight.w700);
-                  }
-                },
-              ),
-            ),
-            Positioned(
-              right: 0,
-              top: statusBarHeight + 10.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
+                child: GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer(); // Open the custom drawer
+                  },
+                  child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      // border: Border.all(color: CustomColors().ButtonColor, width: 5),
+                        border: Border.all(
+                          width: 1.5.sp,
+                          color: CustomColors().LightText,
+                        ),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Icon(
+                      Icons.menu_rounded,
+                      size: 40,
                       color: CustomColors().ButtonColor,
                     ),
-                    child: IconButton(
-                      onPressed: () {
-                        Get.defaultDialog(
-                            // backgroundColor: CustomColors().CardColor,
-                            title: 'Logout',
-                            middleText: 'Are you sure you want to log out?',
-                            confirm: dialogButton(
-                                buttonFunction: () {
-                                  FirebaseAuth.instance.signOut();
-                                  Get.to(() => const LoginScreen());
-                                },
-                                label: 'Yes',
-                                color: CustomColors().HighlightColor),
-                            cancel: dialogButton(
-                                buttonFunction: () {
-                                  Get.back();
-                                },
-                                color: CustomColors().HighlightColor,
-                                label: 'No'));
-                      },
-                      icon: const Icon(Icons.logout_rounded),
-                      color: Colors.black,
-                      iconSize: 30.sp,
-                      padding: const EdgeInsets.all(1),
-                    ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      Get.to(() => const NewNote(), arguments: [user.uid]);
-                    },
-                    icon: const Icon(Icons.add_circle_rounded),
-                    color: CustomColors().ButtonColor,
-                    iconSize: 110.sp,
-                    // padding: EdgeInsets.all(1),
-                  ),
-                ],
+                ),
               ),
-            ),
-            Positioned(
-              bottom: 30.h,
-              left: 15.w,
-              child: SizedBox(
-                height: 50.h,
-                width: 240.w,
-                // color: Colors.grey,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Positioned(
+                  top: statusBarHeight + 55.h,
+                  left: 10.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      myTextWidget('Hi,', 30.sp, FontWeight.w600),
+                      // myTextWidget('Mike', 60.sp, FontWeight.w700),
+                      FutureBuilder<Map<String, dynamic>>(
+                        future: getUserDetails(user.uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            // Display a loading indicator while fetching data.
+                            return myTextWidget('...', 60.sp, FontWeight.w700);
+                          } else if (snapshot.hasData) {
+                            // Data is available, access first name here.
+                            String firstName = snapshot.data!['first name'];
+                            return Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: myTextWidget(
+                                  firstName, 60.sp, FontWeight.w700),
+                            );
+                          } else {
+                            // Data not found or an error occurred.
+                            return myTextWidget(
+                                'Karateka', 60.sp, FontWeight.w700);
+                          }
+                        },
+                      ),
+                    ],
+                  )),
+              Positioned(
+                right: 0,
+                top: statusBarHeight + 10.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 45.h,
-                      child: buildElevatedButton('Schedule', () {
-                        Get.to(() => SchedulePage());
-                      }),
+                    Pulse(
+                      duration: const Duration(seconds: 2),
+                      delay: const Duration(seconds: 4),
+
+                      child: IconButton(
+                        onPressed: () {
+                          Get.to(() => const NewNote(), arguments: [user.uid]);
+                        },
+                        icon: const Icon(Icons.add_circle_rounded),
+                        color: CustomColors().ButtonColor,
+                        iconSize: 110.sp,
+                        // padding: EdgeInsets.all(1),
+                      ),
                     ),
-                    SizedBox(
-                        height: 45.h,
-                        child: buildElevatedButton('Kata List', () {
-                          Get.to(() => const KataListPage());
-                        }))
                   ],
                 ),
               ),
-            )
-          ],
-        ),
+              Positioned(
+                bottom: 16.h,
+                left: 15.w,
+                child: SizedBox(
+                  height: 50.h,
+                  width: 240.w,
+                  // color: Colors.grey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 45.h,
+                        child: buildElevatedButton('Schedule', () {
+                          Get.to(() => SchedulePage());
+                        }),
+                      ),
+                      SizedBox(
+                          height: 45.h,
+                          child: buildElevatedButton('Kata List', () {
+                            Get.to(() => const KataListPage());
+                          }))
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        }),
       ),
+      drawer: const MyDrawer(),
       body: Column(
         children: [
           SizedBox(
@@ -181,7 +190,7 @@ class _DashboardState extends State<Dashboard> {
                 stream: FirebaseFirestore.instance
                     .collection('dojo notes')
                     .where('userId', isEqualTo: user.uid)
-                .orderBy('createdAt', descending: true)
+                    .orderBy('createdAt', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -193,6 +202,7 @@ class _DashboardState extends State<Dashboard> {
                     // Data is available, access details here.
                     List<QueryDocumentSnapshot<Map<String, dynamic>>> notes =
                         snapshot.data!.docs;
+
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       itemCount: notes.length,
@@ -204,6 +214,7 @@ class _DashboardState extends State<Dashboard> {
                         String technique = notes[index]['technique'];
                         String personalNote = notes[index]['personal note'];
                         String senseiNote = notes[index]['sensei note'];
+
                         return GestureDetector(
                           onTap: () {
                             String documentId = notes[index].id;
@@ -217,62 +228,72 @@ class _DashboardState extends State<Dashboard> {
                               editTimeStamp
                             ]);
                           },
-                          child: Container(
-                            // height: 160,
-                            width: 360,
-                            margin: EdgeInsets.only(bottom: 10.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: CustomColors().CardColor,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15.w),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  buildPadding('Category: ', category),
-                                  buildPadding('Technique/ Name: ', technique),
-                                  buildPadding('Personal Note: ', personalNote),
-                                  senseiNote != ''
-                                      ? buildPadding(
-                                          'Sensei\'s Note: ', senseiNote)
-                                      : const SizedBox.shrink(),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                          onTap: () {
-                                            String documentID = notes[index].id;
-                                            Get.defaultDialog(
-                                                title: 'Alert!!',
-                                                middleText:
-                                                    'Are you sure you want to delete? \n This action is irreversible!!',
-                                                confirm: dialogButton(
+                          child: FadeInRight(
+                            duration: const Duration(milliseconds: 1500),
+                            delay: index == 0 ? const Duration(seconds: 0): const Duration(milliseconds: 1500),
+                            child: Container(
+                              width: 360,
+                              margin: EdgeInsets.only(bottom: 10.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: CustomColors().CardColor,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    dashboardNoteCard('Category: ', category),
+                                    dashboardNoteCard(
+                                        'Technique/ Name: ', technique),
+                                    dashboardNoteCard(
+                                      'Personal Note: ',
+                                      personalNote,
+                                    ),
+                                    senseiNote != ''
+                                        ? dashboardNoteCard(
+                                            'Sensei\'s Note: ',
+                                            senseiNote,
+                                          )
+                                        : const SizedBox.shrink(),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        GestureDetector(
+                                            onTap: () {
+                                              String documentID = notes[index].id;
+                                              Get.defaultDialog(
+                                                  title: 'Alert!!',
+                                                  middleText:
+                                                      'Are you sure you want to delete? \n This action is irreversible!!',
+                                                  confirm: dialogButton(
+                                                      buttonFunction: () {
+                                                        deleteNote(documentID);
+                                                        Get.back();
+                                                      },
+                                                      label: 'Yes',
+                                                      color: CustomColors()
+                                                          .HighlightColor),
+                                                  cancel: dialogButton(
                                                     buttonFunction: () {
-                                                      deleteNote(documentID);
                                                       Get.back();
                                                     },
-                                                    label: 'Yes',
+                                                    label: 'No',
                                                     color: CustomColors()
-                                                        .HighlightColor),
-                                                cancel: dialogButton(
-                                                  buttonFunction: () {
-                                                    Get.back();
-                                                  },
-                                                  label: 'No',
-                                                  color: CustomColors()
-                                                      .HighlightColor,
-                                                ));
-                                          },
-                                          child: Icon(Icons.delete,
-                                              color: Colors.red, size: 30.sp)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  )
-                                ],
+                                                        .HighlightColor,
+                                                  ));
+                                            },
+                                            child: Icon(Icons.delete,
+                                                color: CustomColors().AlertText,
+                                                size: 30.sp)),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -281,7 +302,9 @@ class _DashboardState extends State<Dashboard> {
                     );
                   } else {
                     // Data not found or an error occurred.
-                    return const Center(child: Text('No Notes found.'));
+                    return Center(
+                        child: myTextWidget('Add Notes to View', 15.sp,
+                            FontWeight.w400, CustomColors().LightText));
                   }
                 },
               ),

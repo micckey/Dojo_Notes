@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
-import 'package:dojonotes/models/kata_list.dart';
+import 'package:dojonotes/models/kata_list_model.dart';
 import 'package:dojonotes/views/kata_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

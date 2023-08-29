@@ -123,9 +123,9 @@ class _NotePageState extends State<NotePage> {
                   });
 
                   Get.back();
-                  buildSnackBar('SUCCESS', 'Note Edited Successfully', 1);
+                  buildSnackBar('SUCCESS', 'Note Edited Successfully', CustomColors().SuccessText, 1);
                 } catch (e) {
-                  buildSnackBar('ERROR', e);
+                  buildSnackBar('ERROR', e, CustomColors().AlertText);
                 }
               } else {
                 Get.back();
@@ -259,9 +259,25 @@ class _NotePageState extends State<NotePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     myTextWidget(title, 12.sp, FontWeight.w300,
                         CustomColors().LightText),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                            onTap: () => editNote(firebaseTitle, content, documentID,
+                                savedTitle, editController, savedNoteValue),
+                            child: content == ''
+                                ? Icon(Icons.add_circle_rounded,
+                                size: 50.sp, color: CustomColors().SuccessText)
+                                : Icon(
+                              Icons.edit,
+                              color: CustomColors().SuccessText,
+                            ))
+                      ],
+                    ),
                   ],
                 ),
                 Row(
@@ -271,21 +287,6 @@ class _NotePageState extends State<NotePage> {
                             20.sp, FontWeight.w500, CustomColors().LightText)),
                   ],
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                    onTap: () => editNote(firebaseTitle, content, documentID,
-                        savedTitle, editController, savedNoteValue),
-                    child: content == ''
-                        ? Icon(Icons.add_circle_rounded,
-                            size: 50.sp, color: CustomColors().ButtonColor)
-                        : Icon(
-                            Icons.edit,
-                            color: CustomColors().ButtonColor,
-                          ))
               ],
             ),
           ],

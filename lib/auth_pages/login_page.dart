@@ -8,7 +8,9 @@ import '../configurations/customwidgets.dart';
 import '../configurations/style.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.switchAuthPageFunction});
+
+  final Function()? switchAuthPageFunction;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -52,14 +54,14 @@ class _LoginScreenState extends State<LoginScreen> {
         Get.to(() => const Dashboard());
       } else {
         buildSnackBar(
-            'Login Failed!!', 'Please fill in all fields then try again');
+            'Error!!', 'Please fill in all fields then try again', CustomColors().AlertText);
       }
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString().contains('[firebase_auth/channel-error]') ||
           e.toString().contains('[firebase_auth/network-request-failed]')) {
         buildSnackBar('Login Failed!!',
-            'Error connecting to the internet, please check your connection!');
+            'Error connecting to the internet, please check your connection!', CustomColors().AlertText);
       } else if (e.toString().contains('[firebase_auth/wrong-password]')) {
         setState(() {
           passwordError = 'Incorrect password!!';
@@ -73,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
           emailError = 'Please enter a valid email address';
         });
       } else {
-        buildSnackBar('Register Failed!!', e);
+        buildSnackBar('Register Failed!!', e, CustomColors().AlertText);
       }
     }
   }
@@ -151,9 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 5,
                 ),
                 GestureDetector(
-                    onTap: () {
-                      Get.to(() => const RegisterScreen());
-                    },
+                    onTap: widget.switchAuthPageFunction,
                     child: myTextWidget(
                         'Register', 20.sp, FontWeight.w500, Colors.blue)),
               ],

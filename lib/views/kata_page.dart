@@ -50,10 +50,14 @@ class _KataPageState extends State<KataPage> {
     final bodyHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         kToolbarHeight;
+    Orientation currentDeviceOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
       backgroundColor: CustomColors().HighlightColor,
-      appBar: AppBar(
+      appBar: currentDeviceOrientation == Orientation.landscape ?
+      AppBar(toolbarHeight: 0.0, backgroundColor: CustomColors().BackgroundColor,)
+      :
+      AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 65,
         elevation: 0.0,
@@ -74,7 +78,17 @@ class _KataPageState extends State<KataPage> {
           ),
         ),
       ),
-      body: Container(
+      body: currentDeviceOrientation == Orientation.landscape?
+      Container(
+        width: double.maxFinite,
+        color: CustomColors().ButtonColor,
+        child: AspectRatio(
+            aspectRatio: 16/9,
+          child: buildYoutubePlayer(),
+        ),
+      )
+      :
+      Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
@@ -82,6 +96,7 @@ class _KataPageState extends State<KataPage> {
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(
@@ -92,20 +107,7 @@ class _KataPageState extends State<KataPage> {
                 height: bodyHeight*0.53.h,
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: YoutubePlayer(
-                      showVideoProgressIndicator: true,
-                      bottomActions: [
-                        CurrentPosition(),
-                        FullScreenButton(),
-                        ProgressBar(
-                          isExpanded: true,
-                          colors: ProgressBarColors(
-                              playedColor: CustomColors().HighlightColor,
-                              handleColor: Colors.black
-                          ),
-                        )
-                      ],
-                      controller: _controller),
+                  child: buildYoutubePlayer(),
                 ),
               ),
               Container(
@@ -121,8 +123,8 @@ class _KataPageState extends State<KataPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          myTextWidget('Meaning: ', 20.0, FontWeight.w500),
-                          Flexible(child: myTextWidget(meaning, 20.0, FontWeight.normal)),
+                          myTextWidget('Meaning: ', 20.0, FontWeight.w500, CustomColors().LightText),
+                          Flexible(child: myTextWidget(meaning, 20.0, FontWeight.normal, CustomColors().LightText)),
                         ],
                       ),
                       const SizedBox(
@@ -132,10 +134,10 @@ class _KataPageState extends State<KataPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          myTextWidget('Description: ', 20.0, FontWeight.w500),
+                          myTextWidget('Description: ', 20.0, FontWeight.w500, CustomColors().LightText),
                           Flexible(
                               child: myTextWidget(
-                                  description, 20.0, FontWeight.normal)),
+                                  description, 20.0, FontWeight.normal, CustomColors().LightText)),
                         ],
                       ),
                       const SizedBox(
@@ -144,8 +146,8 @@ class _KataPageState extends State<KataPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          myTextWidget('Steps: ', 20.0, FontWeight.w500),
-                          myTextWidget('${steps}', 20.0, FontWeight.normal),
+                          myTextWidget('Steps: ', 20.0, FontWeight.w500, CustomColors().LightText),
+                          myTextWidget('$steps', 20.0, FontWeight.normal, CustomColors().LightText),
                         ],
                       ),
                       const SizedBox(
@@ -160,5 +162,22 @@ class _KataPageState extends State<KataPage> {
         ),
       ),
     );
+  }
+
+  YoutubePlayer buildYoutubePlayer() {
+    return YoutubePlayer(
+            showVideoProgressIndicator: true,
+            bottomActions: [
+              CurrentPosition(),
+              FullScreenButton(),
+              ProgressBar(
+                isExpanded: true,
+                colors: ProgressBarColors(
+                    playedColor: CustomColors().HighlightColor,
+                    handleColor: Colors.black
+                ),
+              )
+            ],
+            controller: _controller);
   }
 }

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "565384506145",
-    "project_id": "dojo-notes",
-    "storage_bucket": "dojo-notes.appspot.com"
+    "project_number": "372359207000",
+    "project_id": "dojonotes-92acc",
+    "storage_bucket": "dojonotes-92acc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:565384506145:android:c174a48ae083789a08ac60",
+        "mobilesdk_app_id": "1:372359207000:android:0302cbcb91c95b59c6d22d",
         "android_client_info": {
           "package_name": "com.example.dojonotes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "565384506145-22o72opjpvbtd9mau8rhiclpa85ihd2h.apps.googleusercontent.com",
+          "client_id": "372359207000-ssmssoor9071isrlmdsa1s55otcfogc5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBzPVgXWLUsUJJktUMcK14FXxufeX_guss"
+          "current_key": "AIzaSyDdRRzWFqKE__699XIa3h7V0eKJJUaZDtk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "565384506145-22o72opjpvbtd9mau8rhiclpa85ihd2h.apps.googleusercontent.com",
+              "client_id": "372359207000-ssmssoor9071isrlmdsa1s55otcfogc5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

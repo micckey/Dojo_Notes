@@ -10,7 +10,9 @@ import 'package:get/get.dart';
 import 'login_page.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({super.key, this.switchAuthPageFunction});
+
+  final Function()? switchAuthPageFunction;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -66,14 +68,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Get.to(() => const Dashboard());
       } else {
         buildSnackBar(
-            'Register Failed!!', 'Please fill in all fields then try again');
+            'Error!!', 'Please fill in all fields then try again', CustomColors().AlertText);
       }
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString() ==
           '[firebase_auth/channel-error] Unable to establish connection on channel.') {
         buildSnackBar('Register Failed!!',
-            'Error connecting to the internet, please check your connection!');
+            'Error connecting to the internet, please check your connection!', CustomColors().AlertText);
       } else if (e
           .toString()
           .contains('[firebase_auth/email-already-in-use]')) {
@@ -89,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           passwordError = e.toString().substring(29);
         });
       } else {
-        buildSnackBar('Register Failed', e);
+        buildSnackBar('Register Failed', e, CustomColors().AlertText);
       }
     }
   }
@@ -187,9 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     width: 5,
                   ),
                   GestureDetector(
-                      onTap: () {
-                        Get.to(() => const LoginScreen());
-                      },
+                      onTap: widget.switchAuthPageFunction,
                       child: myTextWidget(
                           'Login', 20.sp, FontWeight.w500, Colors.blue)),
                 ],

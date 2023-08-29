@@ -7,4 +7,7 @@ class CustomColors {
   var ButtonColor = const Color(0xfffdfcf7);
   var LightText = Colors.white;
   var DarkText = Colors.black;
+  var LinkText = Colors.blue;
+  var AlertText = Colors.red.shade900;
+  var SuccessText = Colors.green.shade600;
 }

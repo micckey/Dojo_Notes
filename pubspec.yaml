@@ -44,6 +44,8 @@ dependencies:
   firebase_auth: ^4.7.2
   loading_animation_widget: ^1.2.0+4
   intl:
+  animate_do: ^3.0.2
+
 
 
 dev_dependencies:
