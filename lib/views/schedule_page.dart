@@ -17,15 +17,15 @@ class SchedulePage extends StatelessWidget {
     final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 360.h,
-        backgroundColor: CustomColors().BackgroundColor,
+        backgroundColor: CustomColors().backgroundColor,
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            color: CustomColors().HighlightColor,
+            color: CustomColors().highlightColor,
             borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(30.r),
                 bottomLeft: Radius.circular(30.r)),
@@ -96,7 +96,7 @@ class SchedulePage extends StatelessWidget {
       ),
       body: Container(
         margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-        color: CustomColors().BackgroundColor,
+        color: CustomColors().backgroundColor,
         child: ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: 10,

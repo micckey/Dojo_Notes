@@ -2,32 +2,35 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/configurations/time_formatter.dart';
 import 'package:dojonotes/views/dashboard_drawer.dart';
 import 'package:dojonotes/views/kata_list.dart';
 import 'package:dojonotes/views/new_note.dart';
 import 'package:dojonotes/views/note_page.dart';
-import 'package:dojonotes/views/schedule_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dojonotes/views/schedule_page_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  const Dashboard(
+      {super.key,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.userID});
+
+  final String userID;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  //Get username
-  Future<Map<String, dynamic>> getUserDetails(String userId) async {
-    DocumentSnapshot<Map<String, dynamic>> userSnapshot =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
-    return userSnapshot.data()!;
-  }
-
   //Delete note
   void deleteNote(docID) async {
     try {
@@ -35,25 +38,22 @@ class _DashboardState extends State<Dashboard> {
           FirebaseFirestore.instance.collection('dojo notes').doc(docID);
       await docUser.delete();
       buildSnackBar(
-          'SUCCESS', 'Note Deleted Successfully', CustomColors().SuccessText);
+          'SUCCESS', 'Note Deleted Successfully', CustomColors().successText);
     } catch (e) {
       buildSnackBar('ERROR', 'An unexpected Error occurred.\nPlease try again',
-          CustomColors().AlertText);
+          CustomColors().alertText);
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-
     final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: CustomColors().HighlightColor,
+        backgroundColor: CustomColors().highlightColor,
         elevation: 0,
         toolbarHeight: 240.h,
         shape: RoundedRectangleBorder(
@@ -70,17 +70,20 @@ class _DashboardState extends State<Dashboard> {
                   onTap: () {
                     Scaffold.of(context).openDrawer(); // Open the custom drawer
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.5.sp,
-                          color: CustomColors().LightText,
-                        ),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Icon(
-                      Icons.menu_rounded,
-                      size: 40,
-                      color: CustomColors().ButtonColor,
+                  child: Spin(
+                    delay: const Duration(seconds: 4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1.5.sp,
+                            color: CustomColors().buttonColor,
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Icon(
+                        Icons.menu_rounded,
+                        size: 40,
+                        color: CustomColors().buttonColor,
+                      ),
                     ),
                   ),
                 ),
@@ -93,29 +96,7 @@ class _DashboardState extends State<Dashboard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       myTextWidget('Hi,', 30.sp, FontWeight.w600),
-                      // myTextWidget('Mike', 60.sp, FontWeight.w700),
-                      FutureBuilder<Map<String, dynamic>>(
-                        future: getUserDetails(user.uid),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            // Display a loading indicator while fetching data.
-                            return myTextWidget('...', 60.sp, FontWeight.w700);
-                          } else if (snapshot.hasData) {
-                            // Data is available, access first name here.
-                            String firstName = snapshot.data!['first name'];
-                            return Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: myTextWidget(
-                                  firstName, 60.sp, FontWeight.w700),
-                            );
-                          } else {
-                            // Data not found or an error occurred.
-                            return myTextWidget(
-                                'Karateka', 60.sp, FontWeight.w700);
-                          }
-                        },
-                      ),
+                      myTextWidget(widget.firstName, 60.sp, FontWeight.w700),
                     ],
                   )),
               Positioned(
@@ -126,14 +107,14 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     Pulse(
                       duration: const Duration(seconds: 2),
-                      delay: const Duration(seconds: 4),
-
+                      delay: const Duration(seconds: 2),
                       child: IconButton(
                         onPressed: () {
-                          Get.to(() => const NewNote(), arguments: [user.uid]);
+                          Get.to(() => const NewNote(),
+                              arguments: [widget.userID], transition: Transition.circularReveal, duration: const Duration(milliseconds: 1500));
                         },
                         icon: const Icon(Icons.add_circle_rounded),
-                        color: CustomColors().ButtonColor,
+                        color: CustomColors().buttonColor,
                         iconSize: 110.sp,
                         // padding: EdgeInsets.all(1),
                       ),
@@ -153,15 +134,22 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       SizedBox(
                         height: 45.h,
-                        child: buildElevatedButton('Schedule', () {
-                          Get.to(() => SchedulePage());
-                        }),
+                        child: Dance(
+                          delay: const Duration(milliseconds: 3500),
+                          child: dashboardElevatedButton('Schedule', () {
+                            // Get.to(() => SchedulePage(), transition: Transition.upToDown, duration: const Duration(milliseconds: 1500));
+                            Get.to(() => SchedulePageSwitcher(userID: widget.userID));
+                          }),
+                        ),
                       ),
                       SizedBox(
                           height: 45.h,
-                          child: buildElevatedButton('Kata List', () {
-                            Get.to(() => const KataListPage());
-                          }))
+                          child: Dance(
+                            delay: const Duration(milliseconds: 3500),
+                            child: dashboardElevatedButton('Kata List', () {
+                              Get.to(() => const KataListPage(), transition: Transition.upToDown, duration: const Duration(milliseconds: 1500));
+                            }),
+                          ))
                     ],
                   ),
                 ),
@@ -170,14 +158,18 @@ class _DashboardState extends State<Dashboard> {
           );
         }),
       ),
-      drawer: const MyDrawer(),
+      drawer: MyDrawer(
+        firstName: widget.firstName,
+        lastName: widget.lastName,
+        email: widget.email,
+      ),
       body: Column(
         children: [
           SizedBox(
             height: 10.h,
           ),
-          myTextWidget(
-              'Saved Notes', 30.sp, FontWeight.w900, CustomColors().LightText),
+          myTextWidget('Saved Notes', 30.sp, FontWeight.w900,
+              CustomColors().contentText),
           SizedBox(
             height: 10.h,
           ),
@@ -189,7 +181,7 @@ class _DashboardState extends State<Dashboard> {
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: FirebaseFirestore.instance
                     .collection('dojo notes')
-                    .where('userId', isEqualTo: user.uid)
+                    .where('userId', isEqualTo: widget.userID)
                     .orderBy('createdAt', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
@@ -197,7 +189,7 @@ class _DashboardState extends State<Dashboard> {
                     // Display a loading indicator while fetching data.
                     return Center(
                         child: LoadingAnimationWidget.discreteCircle(
-                            color: CustomColors().HighlightColor, size: 50.r));
+                            color: CustomColors().highlightColor, size: 50.r));
                   } else if (snapshot.hasData && snapshot.data != null) {
                     // Data is available, access details here.
                     List<QueryDocumentSnapshot<Map<String, dynamic>>> notes =
@@ -214,89 +206,43 @@ class _DashboardState extends State<Dashboard> {
                         String technique = notes[index]['technique'];
                         String personalNote = notes[index]['personal note'];
                         String senseiNote = notes[index]['sensei note'];
+                        Timestamp? editTimeStamp = notes[index]['updateAt'];
 
                         return GestureDetector(
                           onTap: () {
                             String documentId = notes[index].id;
-                            Timestamp? editTimeStamp = notes[index]['updateAt'];
+
                             Get.to(() => const NotePage(), arguments: [
                               documentId,
                               category,
                               technique,
                               personalNote,
                               senseiNote,
-                              editTimeStamp
-                            ]);
+                            ], transition: Transition.fadeIn, duration: const Duration(milliseconds: 1500));
                           },
-                          child: FadeInRight(
-                            duration: const Duration(milliseconds: 1500),
-                            delay: index == 0 ? const Duration(seconds: 0): const Duration(milliseconds: 1500),
-                            child: Container(
-                              width: 360,
-                              margin: EdgeInsets.only(bottom: 10.h),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: CustomColors().CardColor,
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    dashboardNoteCard('Category: ', category),
-                                    dashboardNoteCard(
-                                        'Technique/ Name: ', technique),
-                                    dashboardNoteCard(
-                                      'Personal Note: ',
+                          child: index % 2 == 0
+                              ? FadeInRight(
+                                  duration: const Duration(milliseconds: 1500),
+                                  // delay: index == 0 ? const Duration(seconds: 0): const Duration(milliseconds: 1500),
+                                  child: dashboardNoteCard(
+                                      category,
+                                      technique,
                                       personalNote,
-                                    ),
-                                    senseiNote != ''
-                                        ? dashboardNoteCard(
-                                            'Sensei\'s Note: ',
-                                            senseiNote,
-                                          )
-                                        : const SizedBox.shrink(),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                            onTap: () {
-                                              String documentID = notes[index].id;
-                                              Get.defaultDialog(
-                                                  title: 'Alert!!',
-                                                  middleText:
-                                                      'Are you sure you want to delete? \n This action is irreversible!!',
-                                                  confirm: dialogButton(
-                                                      buttonFunction: () {
-                                                        deleteNote(documentID);
-                                                        Get.back();
-                                                      },
-                                                      label: 'Yes',
-                                                      color: CustomColors()
-                                                          .HighlightColor),
-                                                  cancel: dialogButton(
-                                                    buttonFunction: () {
-                                                      Get.back();
-                                                    },
-                                                    label: 'No',
-                                                    color: CustomColors()
-                                                        .HighlightColor,
-                                                  ));
-                                            },
-                                            child: Icon(Icons.delete,
-                                                color: CustomColors().AlertText,
-                                                size: 30.sp)),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                                      senseiNote,
+                                      notes,
+                                      index,
+                                      formatTimestamp(editTimeStamp)),
+                                )
+                              : FadeInLeft(
+                                  duration: const Duration(milliseconds: 1500),
+                                  child: dashboardNoteCard(
+                                      category,
+                                      technique,
+                                      personalNote,
+                                      senseiNote,
+                                      notes,
+                                      index,
+                                      formatTimestamp(editTimeStamp))),
                         );
                       },
                     );
@@ -304,13 +250,89 @@ class _DashboardState extends State<Dashboard> {
                     // Data not found or an error occurred.
                     return Center(
                         child: myTextWidget('Add Notes to View', 15.sp,
-                            FontWeight.w400, CustomColors().LightText));
+                            FontWeight.w400, CustomColors().titleText));
                   }
                 },
               ),
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Container dashboardNoteCard(
+      String category,
+      String technique,
+      String personalNote,
+      String senseiNote,
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> notes,
+      int index,
+      time) {
+    return Container(
+      width: 360,
+      margin: EdgeInsets.only(bottom: 10.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: CustomColors().cardColor,
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            dashboardNoteCardContent('Category: ', category),
+            dashboardNoteCardContent('Technique/ Name: ', technique),
+            dashboardNoteCardContent(
+              'Personal Note: ',
+              personalNote,
+            ),
+            senseiNote != ''
+                ? dashboardNoteCardContent(
+                    'Sensei\'s Note: ',
+                    senseiNote,
+                  )
+                : const SizedBox.shrink(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                myTextWidget(
+                    time, 15.sp, FontWeight.w400, CustomColors().infoText),
+                SizedBox(
+                  width: 20.w,
+                ),
+                GestureDetector(
+                    onTap: () {
+                      String documentID = notes[index].id;
+                      Get.defaultDialog(
+                          title: 'Alert!!',
+                          middleText:
+                              'Are you sure you want to delete? \n This action is irreversible!!',
+                          confirm: dialogButton(
+                              buttonFunction: () {
+                                deleteNote(documentID);
+                                Get.back();
+                              },
+                              label: 'Yes',
+                              color: CustomColors().highlightColor),
+                          cancel: dialogButton(
+                            buttonFunction: () {
+                              Get.back();
+                            },
+                            label: 'No',
+                            color: CustomColors().highlightColor,
+                          ));
+                    },
+                    child: Icon(Icons.delete,
+                        color: CustomColors().alertText, size: 30.sp)),
+              ],
+            ),
+            SizedBox(
+              height: 5.h,
+            )
+          ],
+        ),
       ),
     );
   }

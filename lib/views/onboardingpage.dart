@@ -13,7 +13,7 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -31,7 +31,7 @@ class OnboardingScreen extends StatelessWidget {
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(15.r),
                             bottomRight: Radius.circular(15.r)),
-                        color: CustomColors().HighlightColor,
+                        color: CustomColors().highlightColor,
                       ),
                       child: Center(
                         child: Text(
@@ -49,7 +49,7 @@ class OnboardingScreen extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       height: 400.h,
-                      color: CustomColors().CardColor,
+                      color: CustomColors().cardColor,
                       child: Stack(children: <Widget>[
                         Positioned(
                           height: 250.h,
@@ -67,7 +67,7 @@ class OnboardingScreen extends StatelessWidget {
                             child: Container(
                                 margin: EdgeInsets.only(top: 150.h),
                                 child: Center(
-                                    child: myTextWidget('DojoNotes', 60.sp, FontWeight.w700, CustomColors().LightText))))
+                                    child: myTextWidget('DojoNotes', 60.sp, FontWeight.w700, CustomColors().titleText))))
                       ]),
                     ),
                   ),
@@ -83,7 +83,7 @@ class OnboardingScreen extends StatelessWidget {
                   onPressed: () {},
                   style: ButtonStyle(
                     backgroundColor:
-                    MaterialStatePropertyAll(CustomColors().ButtonColor),
+                    MaterialStatePropertyAll(CustomColors().buttonColor),
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                   ),
@@ -97,7 +97,7 @@ class OnboardingScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                myTextWidget('Already have an account?', 16.sp, FontWeight.w500, CustomColors().LightText),
+                myTextWidget('Already have an account?', 16.sp, FontWeight.w500, CustomColors().titleText),
                 const SizedBox(width: 5,),
                 GestureDetector(
                   onTap: (){ Get.to( () => SwitchAuthPage(authPage: 'login', ) );},

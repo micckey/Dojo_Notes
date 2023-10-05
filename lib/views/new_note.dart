@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dojonotes/auth_pages/auth_provider.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/views/dashboard.dart';
@@ -36,11 +37,11 @@ class _NewNoteState extends State<NewNote> {
     if (_categoryController.text == '' ||
         _techniqueController.text == '' ||
         _personalNoteController.text == '') {
-      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.', CustomColors().AlertText);
+      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.', CustomColors().alertText);
     } else {
       if (userID == Null) {
         buildSnackBar('Error Adding Note',
-            'An unexpected error occurred while saving the note, please try again later', CustomColors().AlertText);
+            'An unexpected error occurred while saving the note, please try again later', CustomColors().alertText);
       } else {
         createNote(
             userID,
@@ -48,6 +49,9 @@ class _NewNoteState extends State<NewNote> {
             _techniqueController.text.trim(),
             _personalNoteController.text.trim(),
             _senseiNoteController.text.trim());
+
+        buildSnackBar('SUCCESS', 'Note added successfully', CustomColors().successText);
+        Get.to(() => const AuthProvider());
       }
     }
   }
@@ -63,10 +67,6 @@ class _NewNoteState extends State<NewNote> {
       'createdAt': FieldValue.serverTimestamp(),
       'updateAt': FieldValue.serverTimestamp()
     });
-
-    buildSnackBar('SUCCESS', 'Note added successfully', CustomColors().SuccessText);
-
-    Get.to(() => const Dashboard());
   }
 
   @override
@@ -76,12 +76,12 @@ class _NewNoteState extends State<NewNote> {
     final fullScreenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 85.h,
         elevation: 0.0,
-        backgroundColor: CustomColors().BackgroundColor,
+        backgroundColor: CustomColors().backgroundColor,
         flexibleSpace: ClipPath(
           clipper: CustomClipPath(),
           child: Container(
@@ -91,7 +91,7 @@ class _NewNoteState extends State<NewNote> {
                 borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(25.r),
                     bottomLeft: Radius.circular(25.r)),
-                color: CustomColors().HighlightColor),
+                color: CustomColors().highlightColor),
             child: Stack(
               children: <Widget>[
                 Center(
@@ -127,22 +127,22 @@ class _NewNoteState extends State<NewNote> {
                 child: Column(
                   children: <Widget>[
                     myTextField(_categoryController, 'category',
-                        CustomColors().CardColor),
+                        CustomColors().cardColor),
                     SizedBox(
                       height: 30.h,
                     ),
                     myTextField(_techniqueController, 'technique/name',
-                        CustomColors().CardColor),
+                        CustomColors().cardColor),
                     SizedBox(
                       height: 30.h,
                     ),
                     myTextField(_personalNoteController, 'personal note',
-                        CustomColors().CardColor, 8),
+                        CustomColors().cardColor, 8),
                     SizedBox(
                       height: 30.h,
                     ),
                     myTextField(_senseiNoteController, 'note from sensei',
-                        CustomColors().CardColor, 4),
+                        CustomColors().cardColor, 4),
                     SizedBox(
                       height: 50.h,
                     ),
@@ -154,7 +154,7 @@ class _NewNoteState extends State<NewNote> {
                             Get.back();
                           },
                           child: myTextWidget('cancel', 20.sp, FontWeight.w400,
-                              CustomColors().LightText),
+                              CustomColors().titleText),
                         ),
                         SizedBox(
                           width: 90,
@@ -162,7 +162,7 @@ class _NewNoteState extends State<NewNote> {
                           child: ElevatedButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStatePropertyAll(
-                                      CustomColors().ButtonColor),
+                                      CustomColors().buttonColor),
                                   shape: const MaterialStatePropertyAll(
                                       RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(

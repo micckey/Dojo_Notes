@@ -1,5 +1,4 @@
-import 'package:dojonotes/auth_pages/register_page.dart';
-import 'package:dojonotes/views/dashboard.dart';
+import 'package:dojonotes/auth_pages/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,17 +50,17 @@ class _LoginScreenState extends State<LoginScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
 
-        Get.to(() => const Dashboard());
+        Get.to(() => const AuthProvider());
       } else {
         buildSnackBar(
-            'Error!!', 'Please fill in all fields then try again', CustomColors().AlertText);
+            'Error!!', 'Please fill in all fields then try again', CustomColors().alertText);
       }
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString().contains('[firebase_auth/channel-error]') ||
           e.toString().contains('[firebase_auth/network-request-failed]')) {
         buildSnackBar('Login Failed!!',
-            'Error connecting to the internet, please check your connection!', CustomColors().AlertText);
+            'Error connecting to the internet, please check your connection!', CustomColors().alertText);
       } else if (e.toString().contains('[firebase_auth/wrong-password]')) {
         setState(() {
           passwordError = 'Incorrect password!!';
@@ -75,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
           emailError = 'Please enter a valid email address';
         });
       } else {
-        buildSnackBar('Register Failed!!', e, CustomColors().AlertText);
+        buildSnackBar('Register Failed!!', e, CustomColors().alertText);
       }
     }
   }
@@ -83,16 +82,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       body: SafeArea(
           child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             myTextWidget('WELCOME BACK', 30.0, FontWeight.w800,
-                CustomColors().LightText),
+                CustomColors().titleText),
             myTextWidget('LOGIN BELOW TO PROCEED', 20.0, FontWeight.w500,
-                CustomColors().LightText),
+                CustomColors().titleText),
             SizedBox(
               height: 30.h,
             ),
@@ -108,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
               child: myTextField(
-                  _emailController, 'Email', CustomColors().HighlightColor),
+                  _emailController, 'Email', CustomColors().highlightColor),
             ),
             passwordError == ''
                 ? const SizedBox.shrink()
@@ -126,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Password',
                   obscurePassword,
                   () => toggleObscure(),
-                  CustomColors().HighlightColor),
+                  CustomColors().highlightColor),
             ),
             GestureDetector(
               onTap: () => signIn(),
@@ -135,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   width: double.maxFinite,
                   height: 60,
-                  color: CustomColors().ButtonColor,
+                  color: CustomColors().buttonColor,
                   child: Center(
                       child: myTextWidget('Login', 30.0, FontWeight.w500)),
                 ),
@@ -148,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 myTextWidget('Don\'t have an account?', 16.sp, FontWeight.w500,
-                    CustomColors().LightText),
+                    CustomColors().titleText),
                 const SizedBox(
                   width: 5,
                 ),

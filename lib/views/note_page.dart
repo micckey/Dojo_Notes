@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../configurations/time_formatter.dart';
+
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
 
@@ -14,40 +16,13 @@ class NotePage extends StatefulWidget {
 }
 
 class _NotePageState extends State<NotePage> {
+  //Get arguments from dashboard card
   String documentID = Get.arguments[0];
   String category = Get.arguments[1];
   String technique = Get.arguments[2];
   String personalNote = Get.arguments[3];
   String senseiNote = Get.arguments[4];
-  Timestamp? timestamp = Get.arguments[5];
 
-  String formatTimestamp(Timestamp? timestamp) {
-    // Convert Firestore Timestamp to DateTime
-    if (timestamp != null) {
-      DateTime dateTime = timestamp.toDate();
-
-      if (DateTime.now().difference(dateTime) < const Duration(days: 1)) {
-        if (DateTime.now().difference(dateTime) < const Duration(seconds: 60)) {
-          return 'Just Now';
-        } else if (DateTime.now().difference(dateTime) <
-            const Duration(hours: 1)) {
-          if (DateTime.now().difference(dateTime) <
-              const Duration(minutes: 2)) {
-            return '1 minute ago';
-          }
-          return ' ${dateTime.difference(DateTime.now()).inMinutes.toString().substring(1)} minutes ago';
-        } else if (DateTime.now().difference(dateTime) <
-            const Duration(hours: 2)) {
-          return '1 hour ago';
-        }
-        return ' ${dateTime.difference(DateTime.now()).inHours.toString().substring(1)} hours ago';
-      } else {
-        // Format DateTime using intl package's DateFormat
-        return DateFormat('MMM d, y - HH:mm a').format(dateTime);
-      }
-    }
-    return '...';
-  }
 
   //Edit Controllers
   final TextEditingController _categoryController = TextEditingController();
@@ -82,15 +57,15 @@ class _NotePageState extends State<NotePage> {
     }
 
     Get.dialog(AlertDialog(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       title: myTextWidget(
-          category, 15.sp, FontWeight.w400, CustomColors().LightText),
+          category, 15.sp, FontWeight.w400, CustomColors().titleText),
       content: myEditField(editController),
       actions: [
         TextButton(
             onPressed: () => Get.back(),
             child: myTextWidget(
-                'cancel', 15.sp, FontWeight.w400, CustomColors().LightText)),
+                'cancel', 15.sp, FontWeight.w400, CustomColors().titleText)),
         ElevatedButton(
             onPressed: () async {
               if (editController.text.trim() != content) {
@@ -123,9 +98,10 @@ class _NotePageState extends State<NotePage> {
                   });
 
                   Get.back();
-                  buildSnackBar('SUCCESS', 'Note Edited Successfully', CustomColors().SuccessText, 1);
+                  buildSnackBar('SUCCESS', 'Note Edited Successfully',
+                      CustomColors().successText, 1);
                 } catch (e) {
-                  buildSnackBar('ERROR', e, CustomColors().AlertText);
+                  buildSnackBar('ERROR', e, CustomColors().alertText);
                 }
               } else {
                 Get.back();
@@ -133,7 +109,7 @@ class _NotePageState extends State<NotePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStatePropertyAll(CustomColors().ButtonColor)),
+                    MaterialStatePropertyAll(CustomColors().buttonColor)),
             child: myTextWidget('Save', 15.sp, FontWeight.w400))
       ],
       actionsAlignment: MainAxisAlignment.center,
@@ -154,39 +130,29 @@ class _NotePageState extends State<NotePage> {
     final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      backgroundColor: CustomColors().HighlightColor,
+      backgroundColor: CustomColors().highlightColor,
       body: Column(
+
         children: [
           SizedBox(
-            height: 130,
             width: double.infinity,
-            child: Stack(
-              children: [
-                Positioned(
-                    top: 100,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        myTextWidget('Last edited: ', 18.0, FontWeight.w400),
-                        myTextWidget(
-                            isCategorySaved ||
-                                    isTechniqueSaved ||
-                                    isPersonalNoteSaved ||
-                                    isSenseiNoteSaved
-                                ? 'Just Now'
-                                : formatTimestamp(timestamp),
-                            20.0,
-                            FontWeight.w600),
-                      ],
-                    )),
-                Positioned(
-                    top: statusBarHeight + 10.h,
-                    left: 10.w,
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 5.w),
                     child: roundButtons(
-                        60.0, Icons.arrow_back_rounded, () => Get.back()))
-              ],
+                        60.0, Icons.arrow_back_rounded, () => Get.back()),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  )
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -197,7 +163,7 @@ class _NotePageState extends State<NotePage> {
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(15),
                     topLeft: Radius.circular(15)),
-                color: CustomColors().BackgroundColor,
+                color: CustomColors().backgroundColor,
               ),
               child: SingleChildScrollView(
                 child: Column(
@@ -249,7 +215,7 @@ class _NotePageState extends State<NotePage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       width: double.maxFinite,
-      color: CustomColors().CardColor,
+      color: CustomColors().cardColor,
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
@@ -262,20 +228,26 @@ class _NotePageState extends State<NotePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     myTextWidget(title, 12.sp, FontWeight.w300,
-                        CustomColors().LightText),
+                        CustomColors().titleText),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
-                            onTap: () => editNote(firebaseTitle, content, documentID,
-                                savedTitle, editController, savedNoteValue),
+                            onTap: () => editNote(
+                                firebaseTitle,
+                                content,
+                                documentID,
+                                savedTitle,
+                                editController,
+                                savedNoteValue),
                             child: content == ''
                                 ? Icon(Icons.add_circle_rounded,
-                                size: 50.sp, color: CustomColors().SuccessText)
+                                    size: 50.sp,
+                                    color: CustomColors().successText)
                                 : Icon(
-                              Icons.edit,
-                              color: CustomColors().SuccessText,
-                            ))
+                                    Icons.edit,
+                                    color: CustomColors().successText,
+                                  ))
                       ],
                     ),
                   ],
@@ -283,8 +255,11 @@ class _NotePageState extends State<NotePage> {
                 Row(
                   children: [
                     Flexible(
-                        child: myTextWidget(isSaved ? savedNoteValue : content,
-                            20.sp, FontWeight.w500, CustomColors().LightText)),
+                        child: myTextWidget(
+                            isSaved ? savedNoteValue : content,
+                            20.sp,
+                            FontWeight.w500,
+                            CustomColors().contentText)),
                   ],
                 ),
               ],

@@ -53,9 +53,9 @@ class _KataPageState extends State<KataPage> {
     Orientation currentDeviceOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-      backgroundColor: CustomColors().HighlightColor,
+      backgroundColor: CustomColors().highlightColor,
       appBar: currentDeviceOrientation == Orientation.landscape ?
-      AppBar(toolbarHeight: 0.0, backgroundColor: CustomColors().BackgroundColor,)
+      AppBar(toolbarHeight: 0.0, backgroundColor: CustomColors().backgroundColor,)
       :
       AppBar(
         automaticallyImplyLeading: false,
@@ -81,7 +81,7 @@ class _KataPageState extends State<KataPage> {
       body: currentDeviceOrientation == Orientation.landscape?
       Container(
         width: double.maxFinite,
-        color: CustomColors().ButtonColor,
+        color: CustomColors().buttonColor,
         child: AspectRatio(
             aspectRatio: 16/9,
           child: buildYoutubePlayer(),
@@ -92,7 +92,7 @@ class _KataPageState extends State<KataPage> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-            color: CustomColors().BackgroundColor,
+            color: CustomColors().backgroundColor,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15))),
         child: SingleChildScrollView(
@@ -115,7 +115,7 @@ class _KataPageState extends State<KataPage> {
                 margin: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                    color: CustomColors().CardColor,
+                    color: CustomColors().cardColor,
                     borderRadius: BorderRadius.circular(5)),
                 child: SingleChildScrollView(
                   child: Column(
@@ -123,8 +123,8 @@ class _KataPageState extends State<KataPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          myTextWidget('Meaning: ', 20.0, FontWeight.w500, CustomColors().LightText),
-                          Flexible(child: myTextWidget(meaning, 20.0, FontWeight.normal, CustomColors().LightText)),
+                          myTextWidget('Meaning: ', 20.0, FontWeight.w500, CustomColors().titleText),
+                          Flexible(child: myTextWidget(meaning, 20.0, FontWeight.normal, CustomColors().contentText)),
                         ],
                       ),
                       const SizedBox(
@@ -134,10 +134,10 @@ class _KataPageState extends State<KataPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          myTextWidget('Description: ', 20.0, FontWeight.w500, CustomColors().LightText),
+                          myTextWidget('Description: ', 20.0, FontWeight.w500, CustomColors().titleText),
                           Flexible(
                               child: myTextWidget(
-                                  description, 20.0, FontWeight.normal, CustomColors().LightText)),
+                                  description, 20.0, FontWeight.normal, CustomColors().contentText)),
                         ],
                       ),
                       const SizedBox(
@@ -146,8 +146,8 @@ class _KataPageState extends State<KataPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          myTextWidget('Steps: ', 20.0, FontWeight.w500, CustomColors().LightText),
-                          myTextWidget('$steps', 20.0, FontWeight.normal, CustomColors().LightText),
+                          myTextWidget('Steps: ', 20.0, FontWeight.w500, CustomColors().titleText),
+                          myTextWidget('$steps', 20.0, FontWeight.normal, CustomColors().contentText),
                         ],
                       ),
                       const SizedBox(
@@ -173,7 +173,7 @@ class _KataPageState extends State<KataPage> {
               ProgressBar(
                 isExpanded: true,
                 colors: ProgressBarColors(
-                    playedColor: CustomColors().HighlightColor,
+                    playedColor: CustomColors().highlightColor,
                     handleColor: Colors.black
                 ),
               )

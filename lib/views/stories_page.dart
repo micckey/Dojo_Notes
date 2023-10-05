@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/views/onboardingpage.dart';
@@ -68,31 +69,36 @@ class StoriesPage extends StatelessWidget {
                         }),
                       ),
                       SizedBox(height: 20.h,),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(() => const OnboardingScreen());
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 50.w),
-                          child: Container(
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: CustomColors().ButtonColor,
-                              borderRadius: BorderRadius.circular(10.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xff65432a).withOpacity(0.5),
-                                  blurRadius: 50,
-                                  spreadRadius: 20
-                                )
-                              ]
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                myTextWidget('GET STARTED', 20.sp, FontWeight.w600),
-                                Flexible(child: Image.asset('assets/images/arrow.png'))
-                              ],
+                      Flash(
+                        animate: index == 2? true : false,
+                        infinite: true,
+                        duration: const Duration(milliseconds: 4500),
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(() => const OnboardingScreen());
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 50.w),
+                            child: Container(
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: CustomColors().buttonColor,
+                                borderRadius: BorderRadius.circular(10.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xff65432a).withOpacity(0.5),
+                                    blurRadius: 50,
+                                    spreadRadius: 20
+                                  )
+                                ]
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  myTextWidget('GET STARTED', 20.sp, FontWeight.w600),
+                                  Flexible(child: Image.asset('assets/images/arrow.png'))
+                                ],
+                              ),
                             ),
                           ),
                         ),

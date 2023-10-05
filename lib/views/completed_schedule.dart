@@ -13,12 +13,12 @@ class CompletedSchedulePage extends StatelessWidget {
     final fullScreenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: CustomColors().HighlightColor,
+      backgroundColor: CustomColors().highlightColor,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         title:
-        myTextWidget('View Schedule', 20.sp, FontWeight.w500, CustomColors().LightText),
+        myTextWidget('View Schedule', 20.sp, FontWeight.w500, CustomColors().titleText),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -31,7 +31,7 @@ class CompletedSchedulePage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-            color: CustomColors().BackgroundColor,
+            color: CustomColors().backgroundColor,
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(15.r), topLeft: Radius.circular(15.r))),
         child: Column(
@@ -39,7 +39,7 @@ class CompletedSchedulePage extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            myTextWidget('The Date Today Is', 20.0, FontWeight.w500, CustomColors().LightText),
+            myTextWidget('The Date Today Is', 20.0, FontWeight.w500, CustomColors().titleText),
             SizedBox(
               height: 40.h,
             ),
@@ -50,7 +50,7 @@ class CompletedSchedulePage extends StatelessWidget {
                 child: ListView(
                   children: [
                     Container(
-                      color: CustomColors().CardColor,
+                      color: CustomColors().cardColor,
                       margin: const EdgeInsets.only(bottom: 30),
                       child: Center(
                         child: Padding(
@@ -61,7 +61,7 @@ class CompletedSchedulePage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      color: CustomColors().CardColor,
+                      color: CustomColors().cardColor,
                       margin: const EdgeInsets.only(bottom: 30),
                       child: Center(
                         child: Padding(
@@ -71,7 +71,7 @@ class CompletedSchedulePage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      color: CustomColors().CardColor,
+                      color: CustomColors().cardColor,
                       margin: const EdgeInsets.only(bottom: 30),
                       child: Center(
                         child: Padding(
@@ -82,7 +82,7 @@ class CompletedSchedulePage extends StatelessWidget {
                     ),
                     Container(
                       height: 250.h,
-                      color: CustomColors().CardColor,
+                      color: CustomColors().cardColor,
                       margin: const EdgeInsets.only(bottom: 30),
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),

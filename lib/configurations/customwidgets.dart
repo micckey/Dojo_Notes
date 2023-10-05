@@ -22,7 +22,7 @@ Container myTextField(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
       style: TextStyle(
-        color: CustomColors().LightText
+        color: CustomColors().titleText
       ),
       maxLines: lines,
       controller: _controller,
@@ -31,11 +31,11 @@ Container myTextField(
           labelText: label,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w200,
-            color: CustomColors().LightText,
+            color: CustomColors().titleText,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: CustomColors().HighlightColor),
+            borderSide: BorderSide(color: CustomColors().highlightColor),
           ),
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)))),
@@ -55,7 +55,7 @@ Container myPasswordField(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
       style: TextStyle(
-          color: CustomColors().LightText
+          color: CustomColors().titleText
       ),
       controller: _controller,
       obscureText: obscure,
@@ -63,18 +63,18 @@ Container myPasswordField(
       decoration: InputDecoration(
           suffixIcon: obscure == true
               ? GestureDetector(
-                  onTap: obscureFunc, child: Icon(CupertinoIcons.eye))
+                  onTap: obscureFunc, child: const Icon(CupertinoIcons.eye_slash))
               : GestureDetector(
-                  onTap: obscureFunc, child: Icon(CupertinoIcons.eye_slash)),
-          suffixIconColor: CustomColors().LightText,
+                  onTap: obscureFunc, child: const Icon(CupertinoIcons.eye)),
+          suffixIconColor: CustomColors().titleText,
           labelText: label,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w200,
-            color: CustomColors().LightText,
+            color: CustomColors().titleText,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: CustomColors().HighlightColor),
+            borderSide: BorderSide(color: CustomColors().highlightColor),
           ),
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)))),
@@ -89,13 +89,13 @@ SizedBox kataButton(label) {
     child: ElevatedButton(
       onPressed: () {},
       style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(CustomColors().CardColor),
+          backgroundColor: MaterialStatePropertyAll(CustomColors().cardColor),
           shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))))),
       child: myTextWidget(
-          label, 25.0, FontWeight.normal, CustomColors().LightText),
+          label, 25.0, FontWeight.normal, CustomColors().titleText),
     ),
   );
 }
@@ -106,7 +106,7 @@ Container roundButtons(containerSize, IconData icon, buttonFunction) {
     height: containerSize,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(100),
-      color: CustomColors().ButtonColor,
+      color: CustomColors().buttonColor,
     ),
     child: IconButton(
         onPressed: buttonFunction,
@@ -117,14 +117,14 @@ Container roundButtons(containerSize, IconData icon, buttonFunction) {
   );
 }
 
-SizedBox kataCategoryButton(label) {
+SizedBox selectedKataWidget(label) {
   return SizedBox(
     width: 115,
     height: 50,
     child: ElevatedButton(
       onPressed: () {},
       style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(CustomColors().ButtonColor),
+          backgroundColor: MaterialStatePropertyAll(CustomColors().buttonColor),
           shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20))))),
       child: myTextWidget(label, 18.0, FontWeight.bold),
@@ -132,12 +132,12 @@ SizedBox kataCategoryButton(label) {
   );
 }
 
-ElevatedButton buildElevatedButton(label, getFunction) {
+ElevatedButton dashboardElevatedButton(label, getFunction) {
   return ElevatedButton(
       onPressed: getFunction,
       style: ButtonStyle(
-          foregroundColor: MaterialStatePropertyAll(CustomColors().DarkText),
-          backgroundColor: MaterialStatePropertyAll(CustomColors().ButtonColor),
+          foregroundColor: MaterialStatePropertyAll(CustomColors().darkText),
+          backgroundColor: MaterialStatePropertyAll(CustomColors().buttonColor),
           shape: MaterialStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.r)))),
       child: Text(
@@ -146,17 +146,17 @@ ElevatedButton buildElevatedButton(label, getFunction) {
       ));
 }
 
-Padding dashboardNoteCard(name, value,) {
+Padding dashboardNoteCardContent(name, value,) {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: 8.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        myTextWidget(name, 15.sp, FontWeight.w300, CustomColors().LightText),
+        myTextWidget(name, 15.sp, FontWeight.w300, CustomColors().titleText),
         Flexible(
             child: Text(value, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(
-              fontSize: 20.sp, fontWeight: FontWeight.w500, color: CustomColors().LightText
+              fontSize: 20.sp, fontWeight: FontWeight.w500, color: CustomColors().contentText
             ),)
             // myTextWidget(
             //     value, 20.sp, FontWeight.w500, CustomColors().LightText)
@@ -171,11 +171,11 @@ Container myEditField(
 ) {
   return Container(
     decoration: BoxDecoration(
-        color: CustomColors().HighlightColor,
+        color: CustomColors().highlightColor,
         borderRadius: BorderRadius.circular(15)),
     child: (TextField(
       style: TextStyle(
-          color: CustomColors().LightText
+          color: CustomColors().titleText
       ),
       maxLines: 5,
       controller: _controller,
@@ -183,7 +183,7 @@ Container myEditField(
       decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: CustomColors().HighlightColor),
+            borderSide: BorderSide(color: CustomColors().highlightColor),
           ),
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)))),
@@ -205,6 +205,6 @@ buildSnackBar(title, message, textColor, [duration = 2]) {
       colorText: textColor,
       snackPosition: SnackPosition.TOP,
       animationDuration: Duration(seconds: duration),
-      backgroundColor: CustomColors().CardColor);
+      backgroundColor: CustomColors().cardColor);
 
 }

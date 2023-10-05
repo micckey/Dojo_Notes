@@ -9,12 +9,16 @@ import '../auth_pages/login_page.dart';
 import '../configurations/style.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+  const MyDrawer({super.key, required this.firstName, required this.lastName, required this.email});
+
+  final String? firstName;
+  final String? lastName;
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       child: Padding(
         padding: EdgeInsets.only(top: 90.h, bottom: 40.h),
         child: Column(
@@ -30,7 +34,7 @@ class MyDrawer extends StatelessWidget {
                     icon: CupertinoIcons.person_fill,
                     title: 'P R O F I L E',
                     onTapFunction: () {
-                      Get.to(() => const ProfilePage());
+                      Get.to(() => const ProfilePage(), arguments: [firstName, lastName, email]);
                       Scaffold.of(context).closeDrawer();
                     }),
               ],
@@ -49,12 +53,12 @@ class MyDrawer extends StatelessWidget {
                             Get.to(() => const LoginScreen());
                           },
                           label: 'Yes',
-                          color: CustomColors().HighlightColor),
+                          color: CustomColors().highlightColor),
                       cancel: dialogButton(
                           buttonFunction: () {
                             Get.back();
                           },
-                          color: CustomColors().HighlightColor,
+                          color: CustomColors().highlightColor,
                           label: 'No'));
                 }),
           ],
@@ -65,9 +69,9 @@ class MyDrawer extends StatelessWidget {
 
   ListTile drawerListTile({required IconData icon, title, onTapFunction}) {
     return ListTile(
-      leading: Icon(icon, color: CustomColors().LightText, size: 40.sp),
+      leading: Icon(icon, color: CustomColors().titleText, size: 40.sp),
       title:
-          myTextWidget(title, 20.sp, FontWeight.w500, CustomColors().LightText),
+          myTextWidget(title, 20.sp, FontWeight.w500, CustomColors().titleText),
       onTap: onTapFunction,
     );
   }

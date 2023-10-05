@@ -2,6 +2,7 @@ import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,14 +12,19 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  String firstName = Get.arguments[0];
+  String lastName = Get.arguments[1];
+  String email = Get.arguments[2];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: CustomColors().BackgroundColor,
+        backgroundColor: CustomColors().backgroundColor,
         title: myTextWidget('Edit Your Profile', 20.sp, FontWeight.w400,
-            CustomColors().LightText),
+            CustomColors().titleText),
       ),
       body: Container(
         width: double.maxFinite,
@@ -26,48 +32,48 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-            CustomColors().BackgroundColor.withOpacity(0.9),
-            CustomColors().CardColor.withOpacity(0.95)
+            CustomColors().backgroundColor.withOpacity(0.9),
+            CustomColors().cardColor.withOpacity(0.95)
           ], begin: Alignment.topLeft, end: Alignment.centerRight),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Icon(
             Icons.person,
             size: 100,
-            color: CustomColors().LightText,
+            color: CustomColors().titleText,
           ),
           const SizedBox(height: 20,),
-          profilePageCard(),
+          profilePageCard('First Name', firstName),
           const SizedBox(height: 30,),
-          profilePageCard(),
+          profilePageCard('Last Name', lastName),
           const SizedBox(height: 30,),
-          profilePageCard(),
+          profilePageCard('Email', email),
         ]),
       ),
     );
   }
 
-  Column profilePageCard() {
+  Column profilePageCard(title, content) {
     return Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                myTextWidget('first name', 18.sp, FontWeight.w400, CustomColors().LightText),
+                myTextWidget(title, 16.sp, FontWeight.w400, CustomColors().titleText.withOpacity(0.7)),
                 const SizedBox(width: 50,),
                 GestureDetector(
                     onTap: () {},
-                    child: Icon(Icons.edit, color: CustomColors().LightText,))
+                    child: Icon(Icons.edit, color: CustomColors().titleText.withOpacity(0.9),))
               ],
             ),
             Container(
               width: double.maxFinite,
               height: 60,
               decoration: BoxDecoration(
-                  color: CustomColors().HighlightColor,
+                  color: CustomColors().highlightColor,
                   borderRadius: BorderRadius.circular(10)
               ),
-              child: Center(child: myTextWidget('flora', 25.sp, FontWeight.w500, CustomColors().LightText)),
+              child: Center(child: myTextWidget(content, 23.sp, FontWeight.w500, CustomColors().titleText)),
             )
           ],
         );

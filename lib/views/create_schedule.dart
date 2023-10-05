@@ -1,7 +1,10 @@
 import 'package:dojonotes/configurations/customwidgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import '../controllers/kata_schedule_controller.dart';
 
 class CreateSchedulePage extends StatefulWidget {
   const CreateSchedulePage({super.key});
@@ -11,10 +14,31 @@ class CreateSchedulePage extends StatefulWidget {
 }
 
 class _CreateSchedulePageState extends State<CreateSchedulePage> {
+
+  int selectedIndex = -1;
+  List<Map<String, dynamic>> daysOfTheWeek = [
+    {'day': 'Mon', 'isSelected': false},
+    {'day': 'Tue', 'isSelected': false},
+    {'day': 'Wen', 'isSelected': false},
+    {'day': 'Thurs', 'isSelected': false},
+    {'day': 'Fri', 'isSelected': false},
+    {'day': 'Sat', 'isSelected': false},
+    {'day': 'Sun', 'isSelected': false},
+    // Add more items as needed
+  ];
+
+  void addSelectedDay (index){
+
+  }
+
+  List <String> selectedDays = [];
+
   @override
   Widget build(BuildContext context) {
+    final scheduleController = Get.put(KataScheduleController());
+
     return Scaffold(
-      backgroundColor: CustomColors().BackgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -23,7 +47,7 @@ class _CreateSchedulePageState extends State<CreateSchedulePage> {
           icon: const Icon(Icons.arrow_back_rounded),
         ),
         title:
-        myTextWidget('Select Katas', 25.0, FontWeight.w900, Colors.white),
+            myTextWidget('Select Katas', 25.0, FontWeight.w900, Colors.white),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -38,188 +62,126 @@ class _CreateSchedulePageState extends State<CreateSchedulePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: Container(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: double.infinity,
-              color: CustomColors().BackgroundColor,
-              padding: const EdgeInsets.only(right: 15),
-              alignment: AlignmentDirectional.centerEnd,
-              child: Container(
-                width: 250,
-                height: 50,
-                color: CustomColors().HighlightColor,
-                child: TextField(
-                  cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0)),
-                      hintText: 'search kata',
-                      prefixIcon:
-                      const Icon(Icons.search, color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: CustomColors().HighlightColor),
-                          borderRadius: BorderRadius.circular(0))),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Column(
               children: [
-                kataCategoryButton('Novice'),
-                kataCategoryButton('Senior'),
-                kataCategoryButton('Advanced'),
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  children: [
+                    myTextWidget(
+                        'How many Katas would you practice in a day?',
+                        15.sp,
+                        FontWeight.w400,
+                        CustomColors().linkText),
+                    SizedBox(
+                      height: 45.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(
+                            5,
+                            (index) => GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                              },
+                              child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        index == selectedIndex ? Icons.circle : Icons.circle_outlined,
+                                        color: index == selectedIndex ? CustomColors().highlightColor : CustomColors().contentText,
+                                      ),
+                                      myTextWidget('${index + 1}', 16.sp, FontWeight.w400, CustomColors().contentText)
+                                    ],
+                                  ),
+                            )),
+                      ),
+                    ),
+
+                  ],
+                ),
+                SizedBox(height: 10.h,),
+                myTextWidget(
+                    'On which days of the week do you practice Kata?',
+                    15.sp,
+                    FontWeight.w400,
+                    CustomColors().linkText)
+,
+                SizedBox(
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(
+                        daysOfTheWeek.length,
+                            (index) => GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  daysOfTheWeek[index]['isSelected'] = !daysOfTheWeek[index]['isSelected'];
+                                  if(daysOfTheWeek[index]['isSelected']){
+                                    selectedDays.add(daysOfTheWeek[index]['day']);
+                                  }else {
+                                    selectedDays.remove(daysOfTheWeek[index]['day']);
+                                  }
+                                });
+                              },
+                              child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                              Icon(
+                                daysOfTheWeek[index]['isSelected'] ? Icons.check_box_outlined : Icons.check_box_outline_blank_outlined,
+                                color: daysOfTheWeek[index]['isSelected'] ? CustomColors().highlightColor : CustomColors().contentText,
+                              ),
+                              myTextWidget(daysOfTheWeek[index]['day'], 16.sp, FontWeight.w400, CustomColors().contentText)
+                          ],
+                        ),
+                            )),
+                  ),
+                ),
               ],
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              // color: Colors.white,
-              height: 560,
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                children: [
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColors().CardColor,
-                        border: Border.all(width: 0.4)),
-                    child: Center(
-                        child: myTextWidget(
-                            'Heian Shodan', 20.0, FontWeight.normal)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+            Expanded(
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: scheduleController.kataList.length,
+                itemBuilder: (context, index) {
+                  return GetX<KataScheduleController>(
+                    builder: (_) {
+                      return GestureDetector(
+                        onTap: () {
+                          scheduleController.toggleSelection(index);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: scheduleController
+                                      .kataList[index].isSelected.value
+                                  ? CustomColors().highlightColor
+                                  : CustomColors().cardColor,
+                              border: Border.all(width: 0.4)),
+                          child: Center(
+                              child: myTextWidget(
+                                  scheduleController.kataList[index].name,
+                                  20.0,
+                                  FontWeight.normal,
+                                  scheduleController
+                                          .kataList[index].isSelected.value
+                                      ? CustomColors().darkText
+                                      : CustomColors().contentText)),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],

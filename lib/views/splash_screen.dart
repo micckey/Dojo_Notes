@@ -1,5 +1,6 @@
 import 'package:dojonotes/auth_pages/auth_provider.dart';
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/views/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -27,11 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: CustomColors().BackgroundColor,
-      child: Center(
-        child: LoadingAnimationWidget.beat(color: CustomColors().HighlightColor, size: 100.r),
-      ),
-    );
+    return const LoadingScreen();
   }
 }
