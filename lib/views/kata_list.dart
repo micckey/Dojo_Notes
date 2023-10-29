@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/models/kata_list_model.dart';
 import 'package:dojonotes/views/kata_page.dart';
@@ -129,40 +129,39 @@ class _KataListPageState extends State<KataListPage>
               height: 10,
             ),
             Container(
-              width: double.infinity,
-              color: CustomColors().backgroundColor,
-              padding: const EdgeInsets.only(right: 15),
-              alignment: AlignmentDirectional.centerEnd,
-              child: Container(
-                width: 250,
-                height: 50,
+              width: double.maxFinite,
+              height: 50,
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
                 color: CustomColors().highlightColor,
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (text) {
-                    setState(() {
-                      _searchText = text;
-                    });
-                  },
-                  cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0)),
-                      hintText: 'search kata',
-                      prefixIcon:
-                          const Icon(Icons.search, color: Colors.black54),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: CustomColors().highlightColor),
-                          borderRadius: BorderRadius.circular(0))),
-                ),
+                borderRadius: BorderRadius.circular(10.r)
+              ),
+
+              child: TextField(
+                controller: _searchController,
+                onChanged: (text) {
+                  setState(() {
+                    _searchText = text;
+                  });
+                },
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(0)),
+                    hintText: 'search kata',
+                    prefixIcon:
+                        const Icon(Icons.search, color: Colors.black54),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: CustomColors().highlightColor),
+                        borderRadius: BorderRadius.circular(0))),
               ),
             ),
             const SizedBox(
               height: 15,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: TabBar(
                   controller: _tabcontroller,
                   // isScrollable: true,

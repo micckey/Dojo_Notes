@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dojonotes/auth_pages/auth_provider.dart';
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
-import 'package:dojonotes/views/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -37,11 +36,14 @@ class _NewNoteState extends State<NewNote> {
     if (_categoryController.text == '' ||
         _techniqueController.text == '' ||
         _personalNoteController.text == '') {
-      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.', CustomColors().alertText);
+      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.',
+          CustomColors().alertText);
     } else {
       if (userID == Null) {
-        buildSnackBar('Error Adding Note',
-            'An unexpected error occurred while saving the note, please try again later', CustomColors().alertText);
+        buildSnackBar(
+            'Error Adding Note',
+            'An unexpected error occurred while saving the note, please try again later',
+            CustomColors().alertText);
       } else {
         createNote(
             userID,
@@ -50,7 +52,8 @@ class _NewNoteState extends State<NewNote> {
             _personalNoteController.text.trim(),
             _senseiNoteController.text.trim());
 
-        buildSnackBar('SUCCESS', 'Note added successfully', CustomColors().successText);
+        buildSnackBar(
+            'SUCCESS', 'Note added successfully', CustomColors().successText);
         Get.to(() => const AuthProvider());
       }
     }
@@ -71,9 +74,9 @@ class _NewNoteState extends State<NewNote> {
 
   @override
   Widget build(BuildContext context) {
-    final statusBarHeight = MediaQuery.of(context).padding.top;
-    final fullScreenHeight = MediaQuery.of(context).size.height;
-    final fullScreenWidth = MediaQuery.of(context).size.width;
+    // final statusBarHeight = MediaQuery.of(context).padding.top;
+    // final fullScreenHeight = MediaQuery.of(context).size.height;
+    // final fullScreenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: CustomColors().backgroundColor,
@@ -99,14 +102,6 @@ class _NewNoteState extends State<NewNote> {
                       style: TextStyle(
                           fontSize: 20.sp, fontWeight: FontWeight.bold)),
                 ),
-                Positioned(
-                    top: statusBarHeight + 5.h,
-                    right: 20.w,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.notifications_active,
-                          size: 50.sp, color: Colors.white),
-                    )),
               ],
             ),
           ),

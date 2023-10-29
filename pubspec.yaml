@@ -46,6 +46,9 @@ dependencies:
   intl:
   animate_do: ^3.0.2
   shared_preferences:
+  http: ^1.1.0
+  awesome_notifications:
+  flutter_datetime_picker_plus:
 
 
 

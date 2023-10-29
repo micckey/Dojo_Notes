@@ -1,6 +1,6 @@
 import 'package:dojonotes/auth_pages/register_page.dart';
 import 'package:dojonotes/auth_pages/switch_auth_pages.dart';
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

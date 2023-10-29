@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/configurations/time_formatter.dart';
 import 'package:dojonotes/views/dashboard_drawer.dart';
@@ -111,7 +112,9 @@ class _DashboardState extends State<Dashboard> {
                       child: IconButton(
                         onPressed: () {
                           Get.to(() => const NewNote(),
-                              arguments: [widget.userID], transition: Transition.circularReveal, duration: const Duration(milliseconds: 1500));
+                              arguments: [widget.userID],
+                              transition: Transition.circularReveal,
+                              duration: const Duration(milliseconds: 1500));
                         },
                         icon: const Icon(Icons.add_circle_rounded),
                         color: CustomColors().buttonColor,
@@ -138,7 +141,8 @@ class _DashboardState extends State<Dashboard> {
                           delay: const Duration(milliseconds: 3500),
                           child: dashboardElevatedButton('Schedule', () {
                             // Get.to(() => SchedulePage(), transition: Transition.upToDown, duration: const Duration(milliseconds: 1500));
-                            Get.to(() => SchedulePageSwitcher(userID: widget.userID));
+                            Get.to(() =>
+                                SchedulePageSwitcher(userID: widget.userID));
                           }),
                         ),
                       ),
@@ -147,7 +151,9 @@ class _DashboardState extends State<Dashboard> {
                           child: Dance(
                             delay: const Duration(milliseconds: 3500),
                             child: dashboardElevatedButton('Kata List', () {
-                              Get.to(() => const KataListPage(), transition: Transition.upToDown, duration: const Duration(milliseconds: 1500));
+                              Get.to(() => const KataListPage(),
+                                  transition: Transition.upToDown,
+                                  duration: const Duration(milliseconds: 1500));
                             }),
                           ))
                     ],
@@ -202,23 +208,24 @@ class _DashboardState extends State<Dashboard> {
                       padding: const EdgeInsets.all(0),
                       itemBuilder: (context, index) {
                         // Access the fields in each note document.
+                        String documentId = notes[index].id;
                         String category = notes[index]['category'];
                         String technique = notes[index]['technique'];
                         String personalNote = notes[index]['personal note'];
                         String senseiNote = notes[index]['sensei note'];
                         Timestamp? editTimeStamp = notes[index]['updateAt'];
-
                         return GestureDetector(
                           onTap: () {
-                            String documentId = notes[index].id;
-
-                            Get.to(() => const NotePage(), arguments: [
-                              documentId,
-                              category,
-                              technique,
-                              personalNote,
-                              senseiNote,
-                            ], transition: Transition.fadeIn, duration: const Duration(milliseconds: 1500));
+                            Get.to(() => const NotePage(),
+                                arguments: [
+                                  documentId,
+                                  category,
+                                  technique,
+                                  personalNote,
+                                  senseiNote,
+                                ],
+                                transition: Transition.fadeIn,
+                                duration: const Duration(milliseconds: 1500));
                           },
                           child: index % 2 == 0
                               ? FadeInRight(

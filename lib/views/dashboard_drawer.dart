@@ -1,15 +1,21 @@
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
+import 'package:dojonotes/configurations/notification_service.dart';
 import 'package:dojonotes/views/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../auth_pages/login_page.dart';
 import '../configurations/style.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key, required this.firstName, required this.lastName, required this.email});
+  const MyDrawer(
+      {super.key,
+      required this.firstName,
+      required this.lastName,
+      required this.email});
 
   final String? firstName;
   final String? lastName;
@@ -34,8 +40,36 @@ class MyDrawer extends StatelessWidget {
                     icon: CupertinoIcons.person_fill,
                     title: 'P R O F I L E',
                     onTapFunction: () {
-                      Get.to(() => const ProfilePage(), arguments: [firstName, lastName, email]);
+                      Get.to(() => const ProfilePage(),
+                          arguments: [firstName, lastName, email]);
                       Scaffold.of(context).closeDrawer();
+                    }),
+                SizedBox(
+                  height: 50.h,
+                ),
+                drawerListTile(
+                    icon: Icons.notifications_off_outlined,
+                    title: 'Cancel all notifications',
+                    onTapFunction: () {
+                      Get.defaultDialog(
+                        title: 'Cancel Notifications',
+                        titleStyle: TextStyle(color: CustomColors().linkText),
+                        middleText:
+                            'Are you sure you want to cancel all scheduled notifications?',
+                        confirm: dialogButton(
+                            buttonFunction: () {
+                              cancelScheduledNotifications();
+                              Scaffold.of(context).closeDrawer();
+                            },
+                            label: 'Yes',
+                            color: CustomColors().highlightColor),
+                        cancel: dialogButton(
+                            buttonFunction: () {
+                              Get.back();
+                            },
+                            color: CustomColors().highlightColor,
+                            label: 'No'),
+                      );
                     }),
               ],
             ),
@@ -44,12 +78,15 @@ class MyDrawer extends StatelessWidget {
                 title: 'Logout',
                 onTapFunction: () {
                   Get.defaultDialog(
-                      // backgroundColor: CustomColors().CardColor,
                       title: 'Logout',
+                      titleStyle: TextStyle(color: CustomColors().linkText),
                       middleText: 'Are you sure you want to log out?',
                       confirm: dialogButton(
-                          buttonFunction: () {
+                          buttonFunction: () async {
                             FirebaseAuth.instance.signOut();
+                            final SharedPreferences sharedPreferences =
+                                await SharedPreferences.getInstance();
+                            sharedPreferences.remove('token');
                             Get.to(() => const LoginScreen());
                           },
                           label: 'Yes',

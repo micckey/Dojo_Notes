@@ -1,4 +1,4 @@
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/views/completed_schedule.dart';
 import 'package:flutter/material.dart';

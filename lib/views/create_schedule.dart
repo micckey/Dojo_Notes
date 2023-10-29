@@ -1,5 +1,6 @@
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/controllers/open_ai_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -26,15 +27,18 @@ class _CreateSchedulePageState extends State<CreateSchedulePage> {
     {'day': 'Sun', 'isSelected': false},
     // Add more items as needed
   ];
+  List <String> selectedDays = [];
 
-  void addSelectedDay (index){
+ OpenAIService openAIService = OpenAIService();
+
+
+  void uploadSchedule(){
 
   }
 
-  List <String> selectedDays = [];
-
   @override
   Widget build(BuildContext context) {
+
     final scheduleController = Get.put(KataScheduleController());
 
     return Scaffold(
@@ -184,6 +188,30 @@ class _CreateSchedulePageState extends State<CreateSchedulePage> {
                 },
               ),
             ),
+            GestureDetector(
+              onTap: () async {
+                if(selectedIndex > 0 || selectedDays.isNotEmpty || scheduleController.selectedKatas.isNotEmpty){
+                  await openAIService.generateSchedule(days: selectedDays, numberOfKatas: selectedIndex+1, kataList: scheduleController.selectedKatas);
+                }else{
+                  print('ERRORRRRRRRRRRRR');
+                }
+
+              },
+
+              child: Container(
+                height: 60,
+                width: double.maxFinite,
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                decoration: BoxDecoration(
+                    color: CustomColors().buttonColor,
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: Center(
+                  child: myTextWidget('Create Schedule', 20.sp, FontWeight.w800),
+                ),
+
+              ),
+            )
           ],
         ),
       ),

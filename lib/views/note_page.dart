@@ -1,12 +1,17 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dojonotes/configurations/customwidgets.dart';
+import 'package:dojonotes/configurations/custom_widgets.dart';
+import 'package:dojonotes/configurations/notification_service.dart';
 import 'package:dojonotes/configurations/style.dart';
+import 'package:dojonotes/models/notification_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as theme;
 
-import '../configurations/time_formatter.dart';
+DateTime scheduleTime = DateTime.now();
 
 class NotePage extends StatefulWidget {
   const NotePage({super.key});
@@ -22,7 +27,6 @@ class _NotePageState extends State<NotePage> {
   String technique = Get.arguments[2];
   String personalNote = Get.arguments[3];
   String senseiNote = Get.arguments[4];
-
 
   //Edit Controllers
   final TextEditingController _categoryController = TextEditingController();
@@ -132,7 +136,6 @@ class _NotePageState extends State<NotePage> {
     return Scaffold(
       backgroundColor: CustomColors().highlightColor,
       body: Column(
-
         children: [
           SizedBox(
             width: double.infinity,
@@ -143,10 +146,56 @@ class _NotePageState extends State<NotePage> {
                   SizedBox(
                     height: 5.h,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.w),
-                    child: roundButtons(
-                        60.0, Icons.arrow_back_rounded, () => Get.back()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 15.w),
+                        child: roundButtons(
+                            60.0, Icons.arrow_back_rounded, () => Get.back()),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 15.w),
+                        child: roundButtons(
+                            60.0, Icons.notifications_active_outlined, () {
+                          AwesomeNotifications()
+                              .isNotificationAllowed()
+                              .then((isAllowed) {
+                            if (isAllowed) {
+                              DatePicker.showDateTimePicker(context,
+                                  showTitleActions: true,
+                                  onChanged: (date) => scheduleTime = date,
+                                  onConfirm: (date) {
+                                    createTrainingNotification(category,
+                                        Schedule(
+                                            details:
+                                                technique,
+                                            time: scheduleTime),
+                                        documentID);
+                                  },
+                                  minTime: DateTime.now(),
+                                  currentTime: DateTime.now(),
+                                  theme: theme.DatePickerTheme(
+                                    backgroundColor: CustomColors()
+                                        .highlightColor
+                                        .withOpacity(0.8),
+                                    containerHeight: 300,
+                                    itemStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                    doneStyle: TextStyle(
+                                        color: CustomColors().successText,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700),
+                                    cancelStyle: TextStyle(
+                                        color: CustomColors().alertText),
+                                  ));
+                            } else {
+                              allowNotifications();
+                            }
+                          });
+                        }),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 5.h,
