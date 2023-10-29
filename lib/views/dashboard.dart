@@ -213,6 +213,8 @@ class _DashboardState extends State<Dashboard> {
                         String technique = notes[index]['technique'];
                         String personalNote = notes[index]['personal note'];
                         String senseiNote = notes[index]['sensei note'];
+                        bool isScheduled = notes[index]['isScheduled'];
+
                         Timestamp? editTimeStamp = notes[index]['updateAt'];
                         return GestureDetector(
                           onTap: () {
@@ -223,6 +225,7 @@ class _DashboardState extends State<Dashboard> {
                                   technique,
                                   personalNote,
                                   senseiNote,
+                                  isScheduled
                                 ],
                                 transition: Transition.fadeIn,
                                 duration: const Duration(milliseconds: 1500));
@@ -238,7 +241,7 @@ class _DashboardState extends State<Dashboard> {
                                       senseiNote,
                                       notes,
                                       index,
-                                      formatTimestamp(editTimeStamp)),
+                                      formatTimestamp(editTimeStamp), isScheduled),
                                 )
                               : FadeInLeft(
                                   duration: const Duration(milliseconds: 1500),
@@ -249,7 +252,7 @@ class _DashboardState extends State<Dashboard> {
                                       senseiNote,
                                       notes,
                                       index,
-                                      formatTimestamp(editTimeStamp))),
+                                      formatTimestamp(editTimeStamp), isScheduled)),
                         );
                       },
                     );
@@ -275,7 +278,9 @@ class _DashboardState extends State<Dashboard> {
       String senseiNote,
       List<QueryDocumentSnapshot<Map<String, dynamic>>> notes,
       int index,
-      time) {
+      time,
+      isScheduled
+      ) {
     return Container(
       width: 360,
       margin: EdgeInsets.only(bottom: 10.h),
@@ -304,6 +309,10 @@ class _DashboardState extends State<Dashboard> {
               mainAxisAlignment: MainAxisAlignment.end,
               textBaseline: TextBaseline.alphabetic,
               children: [
+                Container(
+                  child: isScheduled ? Icon(Icons.notifications, color: CustomColors().successText, size: 30.sp,) : null,
+                ),
+                Expanded(child: Container()),
                 myTextWidget(
                     time, 15.sp, FontWeight.w400, CustomColors().infoText),
                 SizedBox(

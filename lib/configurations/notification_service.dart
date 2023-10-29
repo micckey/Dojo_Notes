@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/models/notification_model.dart';
-import 'package:dojonotes/views/loading_screen.dart';
 import 'package:dojonotes/views/note_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,9 +23,13 @@ String setBigPicturePath(category) {
   }
 }
 
-void handleNotificationActionReceived() {
-  AwesomeNotifications().actionStream.listen((notification) {
+void handleNotificationActionReceived () async {
+  AwesomeNotifications().actionStream.listen((notification) async {
     String? documentID = notification.payload?['documentID'];
+
+    final docUser =
+    FirebaseFirestore.instance.collection('dojo notes').doc(documentID);
+    await docUser.update({'isScheduled': false});
 
     FirebaseFirestore.instance
         .collection('dojo notes')
@@ -43,6 +46,7 @@ void handleNotificationActionReceived() {
         String technique = documentData['technique'];
         String personalNote = documentData['personal note'];
         String senseiNote = documentData['sensei note'];
+        bool isScheduled = documentData['isScheduled'];
 
         Get.to(() => const NotePage(),
             arguments: [
@@ -50,10 +54,14 @@ void handleNotificationActionReceived() {
               category,
               technique,
               personalNote,
-              senseiNote
+              senseiNote,
+              isScheduled
             ],
             transition: Transition.fadeIn,
             duration: const Duration(milliseconds: 1500));
+
+
+
       } else {
         buildSnackBar(
             'Error', 'An unexpected error occurred', CustomColors().alertText);
@@ -91,7 +99,7 @@ Future<void> createTrainingNotification(
         title:
             '\u{1F94B} ${Emojis.sport_boxing_glove} Get up and start grinding!! ${Emojis.sport_boxing_glove} \u{1F94B}',
         body:
-            'Spirit First Technique Second. OSS! Don\'t forget to perfect your \n ${notificationSchedule.details} \u{1F44D} \u{1F4AA}',
+            'OSS! Don\'t forget to perfect your \n ${notificationSchedule.details} \u{1F44D} \u{1F4AA}',
         notificationLayout: NotificationLayout.BigPicture,
         wakeUpScreen: true,
         payload: {'documentID': documentID},
@@ -113,6 +121,11 @@ Future<void> createTrainingNotification(
       millisecond: 0,
     ),
   );
+
+  final docUser =
+      FirebaseFirestore.instance.collection('dojo notes').doc(documentID);
+  await docUser.update({'isScheduled': true});
+
   buildSnackBar(
       'Success', 'Reminder created successfully', CustomColors().successText);
 }

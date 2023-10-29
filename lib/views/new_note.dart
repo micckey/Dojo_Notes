@@ -67,6 +67,7 @@ class _NewNoteState extends State<NewNote> {
       'technique': technique,
       'personal note': personalNote,
       'sensei note': senseiNote,
+      'isScheduled': false,
       'createdAt': FieldValue.serverTimestamp(),
       'updateAt': FieldValue.serverTimestamp()
     });

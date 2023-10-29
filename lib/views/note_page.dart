@@ -27,6 +27,7 @@ class _NotePageState extends State<NotePage> {
   String technique = Get.arguments[2];
   String personalNote = Get.arguments[3];
   String senseiNote = Get.arguments[4];
+  bool isScheduled = Get.arguments[5];
 
   //Edit Controllers
   final TextEditingController _categoryController = TextEditingController();
@@ -156,44 +157,62 @@ class _NotePageState extends State<NotePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(right: 15.w),
-                        child: roundButtons(
-                            60.0, Icons.notifications_active_outlined, () {
-                          AwesomeNotifications()
-                              .isNotificationAllowed()
-                              .then((isAllowed) {
-                            if (isAllowed) {
-                              DatePicker.showDateTimePicker(context,
-                                  showTitleActions: true,
-                                  onChanged: (date) => scheduleTime = date,
-                                  onConfirm: (date) {
-                                    createTrainingNotification(category,
-                                        Schedule(
-                                            details:
-                                                technique,
-                                            time: scheduleTime),
-                                        documentID);
-                                  },
-                                  minTime: DateTime.now(),
-                                  currentTime: DateTime.now(),
-                                  theme: theme.DatePickerTheme(
-                                    backgroundColor: CustomColors()
-                                        .highlightColor
-                                        .withOpacity(0.8),
-                                    containerHeight: 300,
-                                    itemStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                    doneStyle: TextStyle(
-                                        color: CustomColors().successText,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700),
-                                    cancelStyle: TextStyle(
-                                        color: CustomColors().alertText),
-                                  ));
-                            } else {
-                              allowNotifications();
-                            }
-                          });
-                        }),
+                        child: IgnorePointer(
+                          ignoring: isScheduled ? true : false,
+                          child: Container(
+                            width: 60.r,
+                            height: 60.r,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: isScheduled ? CustomColors().infoText : CustomColors().buttonColor,
+                            ),
+                            child: IconButton(
+                                onPressed: () {
+                                  AwesomeNotifications()
+                                      .isNotificationAllowed()
+                                      .then((isAllowed) {
+                                    if (isAllowed) {
+                                      DatePicker.showDateTimePicker(context,
+                                          showTitleActions: true,
+                                          onChanged: (date) =>
+                                              scheduleTime = date,
+                                          onConfirm: (date) {
+                                            createTrainingNotification(
+                                                category,
+                                                Schedule(
+                                                    details: technique,
+                                                    time: scheduleTime),
+                                                documentID);
+                                          },
+                                          minTime: DateTime.now(),
+                                          currentTime: DateTime.now(),
+                                          theme: theme.DatePickerTheme(
+                                            backgroundColor: CustomColors()
+                                                .highlightColor
+                                                .withOpacity(0.8),
+                                            containerHeight: 300,
+                                            itemStyle: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            doneStyle: TextStyle(
+                                                color:
+                                                    CustomColors().successText,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700),
+                                            cancelStyle: TextStyle(
+                                                color:
+                                                    CustomColors().alertText),
+                                          ));
+                                    } else {
+                                      allowNotifications();
+                                    }
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.notifications_active_outlined,
+                                  size: 40,
+                                )),
+                          ),
+                        ),
                       ),
                     ],
                   ),
