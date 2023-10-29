@@ -23,13 +23,13 @@ String setBigPicturePath(category) {
   }
 }
 
-void handleNotificationActionReceived () async {
-  AwesomeNotifications().actionStream.listen((notification) async {
+void handleNotificationActionReceived () {
+  AwesomeNotifications().actionStream.listen((notification) {
     String? documentID = notification.payload?['documentID'];
 
     final docUser =
     FirebaseFirestore.instance.collection('dojo notes').doc(documentID);
-    await docUser.update({'isScheduled': false});
+    docUser.update({'isScheduled': false});
 
     FirebaseFirestore.instance
         .collection('dojo notes')
@@ -124,7 +124,7 @@ Future<void> createTrainingNotification(
 
   final docUser =
       FirebaseFirestore.instance.collection('dojo notes').doc(documentID);
-  await docUser.update({'isScheduled': true});
+  docUser.update({'isScheduled': true});
 
   buildSnackBar(
       'Success', 'Reminder created successfully', CustomColors().successText);
