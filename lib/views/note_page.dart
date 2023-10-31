@@ -164,7 +164,9 @@ class _NotePageState extends State<NotePage> {
                             height: 60.r,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
-                              color: isScheduled ? CustomColors().infoText : CustomColors().buttonColor,
+                              color: isScheduled
+                                  ? CustomColors().infoText
+                                  : CustomColors().buttonColor,
                             ),
                             child: IconButton(
                                 onPressed: () {
@@ -178,11 +180,18 @@ class _NotePageState extends State<NotePage> {
                                               scheduleTime = date,
                                           onConfirm: (date) {
                                             createTrainingNotification(
-                                                category,
-                                                Schedule(
-                                                    details: technique,
-                                                    time: scheduleTime),
-                                                documentID);
+                                                    category,
+                                                    Schedule(
+                                                        details: technique,
+                                                        time: scheduleTime),
+                                                    documentID)
+                                                .then((value) {
+                                              if (value == 'success') {
+                                                setState(() {
+                                                  isScheduled = true;
+                                                });
+                                              }
+                                            });
                                           },
                                           minTime: DateTime.now(),
                                           currentTime: DateTime.now(),

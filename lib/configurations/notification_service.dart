@@ -75,7 +75,7 @@ void handleNotificationActionReceived () {
   });
 }
 
-Future<void> createTrainingNotification(
+Future<String> createTrainingNotification(
   category,
   Schedule notificationSchedule,
   String documentID,
@@ -89,7 +89,7 @@ Future<void> createTrainingNotification(
         'Failed. Choose a different time',
         'Cannot set a reminder before the current time!!!',
         CustomColors().alertText);
-    return; // Exit the function to prevent scheduling the notification
+    return 'error'; // Exit the function to prevent scheduling the notification
   }
 
   await AwesomeNotifications().createNotification(
@@ -128,6 +128,8 @@ Future<void> createTrainingNotification(
 
   buildSnackBar(
       'Success', 'Reminder created successfully', CustomColors().successText);
+
+  return 'success';
 }
 
 Future<void> cancelScheduledNotifications() async {
