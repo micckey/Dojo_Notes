@@ -106,9 +106,9 @@ class MyDrawer extends StatelessWidget {
 
   ListTile drawerListTile({required IconData icon, title, onTapFunction}) {
     return ListTile(
-      leading: Icon(icon, color: CustomColors().titleText, size: 40.sp),
-      title:
-          myTextWidget(title, 20.sp, FontWeight.w500, CustomColors().titleText),
+      leading: Icon(icon, color: CustomColors().darkInfoText, size: 40.sp),
+      title: myTextWidget(
+          title, 20.sp, FontWeight.w500, CustomColors().darkTitleText),
       onTap: onTapFunction,
     );
   }

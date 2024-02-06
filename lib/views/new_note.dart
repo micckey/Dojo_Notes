@@ -54,7 +54,7 @@ class _NewNoteState extends State<NewNote> {
 
         buildSnackBar(
             'SUCCESS', 'Note added successfully', CustomColors().successText);
-        Get.to(() => const AuthProvider());
+        Get.to(() => const MyAuthProvider());
       }
     }
   }
@@ -75,10 +75,6 @@ class _NewNoteState extends State<NewNote> {
 
   @override
   Widget build(BuildContext context) {
-    // final statusBarHeight = MediaQuery.of(context).padding.top;
-    // final fullScreenHeight = MediaQuery.of(context).size.height;
-    // final fullScreenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: CustomColors().backgroundColor,
       appBar: AppBar(
@@ -109,15 +105,15 @@ class _NewNoteState extends State<NewNote> {
         ),
       ),
       body: SizedBox(
-        height: double.infinity,
-        width: double.infinity,
+        height: double.maxFinite,
+        width: double.maxFinite,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Container(
                 width: double.infinity,
-                height: 650.h,
+                // height: 650.h,
                 margin: EdgeInsets.only(right: 14.w, left: 14.w, top: 20.h),
                 // color: Colors.grey,
                 child: Column(
@@ -140,7 +136,7 @@ class _NewNoteState extends State<NewNote> {
                     myTextField(_senseiNoteController, 'note from sensei',
                         CustomColors().cardColor, 4),
                     SizedBox(
-                      height: 50.h,
+                      height: 20.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -150,25 +146,26 @@ class _NewNoteState extends State<NewNote> {
                             Get.back();
                           },
                           child: myTextWidget('cancel', 20.sp, FontWeight.w400,
-                              CustomColors().titleText),
+                              CustomColors().darkTitleText),
                         ),
-                        SizedBox(
-                          width: 90,
-                          height: 50,
-                          child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      CustomColors().buttonColor),
-                                  shape: const MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              bottomRight:
-                                                  Radius.circular(8))))),
-                              onPressed: () => addNewNote(),
-                              child:
-                                  myTextWidget('save', 20.sp, FontWeight.w400)),
-                        )
+                        ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                    CustomColors().buttonColor),
+                                shape: const MaterialStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            bottomRight: Radius.circular(8))))),
+                            onPressed: () => addNewNote(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: myTextWidget(
+                                  'save',
+                                  20.sp,
+                                  FontWeight.w400,
+                                  CustomColors().whiteTitleText),
+                            ))
                       ],
                     )
                   ],

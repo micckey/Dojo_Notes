@@ -67,7 +67,7 @@ class OnboardingScreen extends StatelessWidget {
                             child: Container(
                                 margin: EdgeInsets.only(top: 150.h),
                                 child: Center(
-                                    child: myTextWidget('DojoNotes', 60.sp, FontWeight.w700, CustomColors().titleText))))
+                                    child: myTextWidget('DojoNotes', 60.sp, FontWeight.w700, CustomColors().whiteTitleText))))
                       ]),
                     ),
                   ),
@@ -97,7 +97,7 @@ class OnboardingScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                myTextWidget('Already have an account?', 16.sp, FontWeight.w500, CustomColors().titleText),
+                myTextWidget('Already have an account?', 16.sp, FontWeight.w500, CustomColors().whiteTitleText),
                 const SizedBox(width: 5,),
                 GestureDetector(
                   onTap: (){ Get.to( () => SwitchAuthPage(authPage: 'login', ) );},

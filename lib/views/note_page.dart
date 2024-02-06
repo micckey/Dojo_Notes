@@ -62,15 +62,15 @@ class _NotePageState extends State<NotePage> {
     }
 
     Get.dialog(AlertDialog(
-      backgroundColor: CustomColors().backgroundColor,
+      backgroundColor: CustomColors().backgroundColor.withOpacity(0.8),
       title: myTextWidget(
-          category, 15.sp, FontWeight.w400, CustomColors().titleText),
+          category, 15.sp, FontWeight.w400, CustomColors().whiteTitleText),
       content: myEditField(editController),
       actions: [
         TextButton(
             onPressed: () => Get.back(),
-            child: myTextWidget(
-                'cancel', 15.sp, FontWeight.w400, CustomColors().titleText)),
+            child: myTextWidget('cancel', 15.sp, FontWeight.w400,
+                CustomColors().whiteTitleText)),
         ElevatedButton(
             onPressed: () async {
               if (editController.text.trim() != content) {
@@ -115,7 +115,8 @@ class _NotePageState extends State<NotePage> {
             style: ButtonStyle(
                 backgroundColor:
                     MaterialStatePropertyAll(CustomColors().buttonColor)),
-            child: myTextWidget('Save', 15.sp, FontWeight.w400))
+            child: myTextWidget(
+                'Save', 15.sp, FontWeight.w400, CustomColors().whiteTitleText))
       ],
       actionsAlignment: MainAxisAlignment.center,
     ));
@@ -165,7 +166,7 @@ class _NotePageState extends State<NotePage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: isScheduled
-                                  ? CustomColors().infoText
+                                  ? CustomColors().whiteInfoText
                                   : CustomColors().buttonColor,
                             ),
                             child: IconButton(
@@ -216,9 +217,10 @@ class _NotePageState extends State<NotePage> {
                                     }
                                   });
                                 },
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.notifications_active_outlined,
                                   size: 40,
+                                  color: CustomColors().whiteContentText,
                                 )),
                           ),
                         ),
@@ -305,7 +307,7 @@ class _NotePageState extends State<NotePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     myTextWidget(title, 12.sp, FontWeight.w300,
-                        CustomColors().titleText),
+                        CustomColors().whiteTitleText),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -320,10 +322,10 @@ class _NotePageState extends State<NotePage> {
                             child: content == ''
                                 ? Icon(Icons.add_circle_rounded,
                                     size: 50.sp,
-                                    color: CustomColors().successText)
+                                    color: CustomColors().darkTitleText)
                                 : Icon(
                                     Icons.edit,
-                                    color: CustomColors().successText,
+                                    color: CustomColors().darkTitleText,
                                   ))
                       ],
                     ),
@@ -336,7 +338,7 @@ class _NotePageState extends State<NotePage> {
                             isSaved ? savedNoteValue : content,
                             20.sp,
                             FontWeight.w500,
-                            CustomColors().contentText)),
+                            CustomColors().whiteContentText)),
                   ],
                 ),
               ],

@@ -51,10 +51,10 @@ class _DashboardState extends State<Dashboard> {
     final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      backgroundColor: CustomColors().backgroundColor,
+      backgroundColor: CustomColors().highlightColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: CustomColors().highlightColor,
+        backgroundColor: CustomColors().backgroundColor,
         elevation: 0,
         toolbarHeight: 240.h,
         shape: RoundedRectangleBorder(
@@ -130,7 +130,7 @@ class _DashboardState extends State<Dashboard> {
                 left: 15.w,
                 child: SizedBox(
                   height: 50.h,
-                  width: 240.w,
+                  // width: 240.w,
                   // color: Colors.grey,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,6 +146,7 @@ class _DashboardState extends State<Dashboard> {
                           }),
                         ),
                       ),
+                      const SizedBox(width: 5,),
                       SizedBox(
                           height: 45.h,
                           child: Dance(
@@ -175,7 +176,7 @@ class _DashboardState extends State<Dashboard> {
             height: 10.h,
           ),
           myTextWidget('Saved Notes', 30.sp, FontWeight.w900,
-              CustomColors().contentText),
+              CustomColors().darkContentText),
           SizedBox(
             height: 10.h,
           ),
@@ -195,7 +196,7 @@ class _DashboardState extends State<Dashboard> {
                     // Display a loading indicator while fetching data.
                     return Center(
                         child: LoadingAnimationWidget.discreteCircle(
-                            color: CustomColors().highlightColor, size: 50.r));
+                            color: CustomColors().darkTitleText, size: 50.r));
                   } else if (snapshot.hasData && snapshot.data != null) {
                     // Data is available, access details here.
                     List<QueryDocumentSnapshot<Map<String, dynamic>>> notes =
@@ -260,7 +261,7 @@ class _DashboardState extends State<Dashboard> {
                     // Data not found or an error occurred.
                     return Center(
                         child: myTextWidget('Add Notes to View', 15.sp,
-                            FontWeight.w400, CustomColors().titleText));
+                            FontWeight.w400, CustomColors().whiteTitleText));
                   }
                 },
               ),
@@ -314,7 +315,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 Expanded(child: Container()),
                 myTextWidget(
-                    time, 15.sp, FontWeight.w400, CustomColors().infoText),
+                    time, 15.sp, FontWeight.w400, CustomColors().whiteInfoText),
                 SizedBox(
                   width: 20.w,
                 ),

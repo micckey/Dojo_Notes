@@ -91,7 +91,7 @@ class _KataListPageState extends State<KataListPage>
 
   @override
   Widget build(BuildContext context) {
-    TabController _tabcontroller = TabController(length: 4, vsync: this);
+    TabController tabController = TabController(length: 4, vsync: this);
 
     final bodyHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
@@ -106,8 +106,8 @@ class _KataListPageState extends State<KataListPage>
           },
           icon: const Icon(Icons.arrow_back_rounded),
         ),
-        title:
-            myTextWidget('Shotokan Katas', 25.0, FontWeight.w900, CustomColors().contentText),
+        title: myTextWidget('Shotokan Katas', 25.0, FontWeight.w900,
+            CustomColors().darkTitleText),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
@@ -133,10 +133,8 @@ class _KataListPageState extends State<KataListPage>
               height: 50,
               margin: EdgeInsets.symmetric(horizontal: 20.w),
               decoration: BoxDecoration(
-                color: CustomColors().highlightColor,
-                borderRadius: BorderRadius.circular(10.r)
-              ),
-
+                  color: CustomColors().highlightColor,
+                  borderRadius: BorderRadius.circular(10.r)),
               child: TextField(
                 controller: _searchController,
                 onChanged: (text) {
@@ -149,8 +147,7 @@ class _KataListPageState extends State<KataListPage>
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(0)),
                     hintText: 'search kata',
-                    prefixIcon:
-                        const Icon(Icons.search, color: Colors.black54),
+                    prefixIcon: const Icon(Icons.search, color: Colors.black54),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: CustomColors().highlightColor),
@@ -163,8 +160,10 @@ class _KataListPageState extends State<KataListPage>
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: TabBar(
-                  controller: _tabcontroller,
+                  controller: tabController,
                   // isScrollable: true,
+                  physics: const BouncingScrollPhysics(),
+                  indicatorSize: TabBarIndicatorSize.tab,
                   indicator: RectangularIndicator(
                       paintingStyle: PaintingStyle.fill,
                       bottomLeftRadius: 15.r,
@@ -193,7 +192,7 @@ class _KataListPageState extends State<KataListPage>
               // color: Colors.white,
               child: TabBarView(
                   physics: const BouncingScrollPhysics(),
-                  controller: _tabcontroller,
+                  controller: tabController,
                   children: [
                     FutureBuilder<List<String>>(
                       future: categoryFutures['All'],
@@ -201,8 +200,10 @@ class _KataListPageState extends State<KataListPage>
                         if (snapshot.connectionState == ConnectionState.done) {
                           return buildKataList(snapshot.data);
                         } else {
-                          return  Center(
-                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().highlightColor, size: 50.r));
+                          return Center(
+                              child: LoadingAnimationWidget.discreteCircle(
+                                  color: CustomColors().highlightColor,
+                                  size: 50.r));
                         }
                       },
                     ),
@@ -213,7 +214,9 @@ class _KataListPageState extends State<KataListPage>
                           return buildKataList(snapshot.data);
                         } else {
                           return Center(
-                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().highlightColor, size: 50.r));
+                              child: LoadingAnimationWidget.discreteCircle(
+                                  color: CustomColors().highlightColor,
+                                  size: 50.r));
                         }
                       },
                     ),
@@ -224,7 +227,9 @@ class _KataListPageState extends State<KataListPage>
                           return buildKataList(snapshot.data);
                         } else {
                           return Center(
-                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().highlightColor, size: 50.r));
+                              child: LoadingAnimationWidget.discreteCircle(
+                                  color: CustomColors().highlightColor,
+                                  size: 50.r));
                         }
                       },
                     ),
@@ -235,7 +240,9 @@ class _KataListPageState extends State<KataListPage>
                           return buildKataList(snapshot.data);
                         } else {
                           return Center(
-                              child: LoadingAnimationWidget.discreteCircle(color: CustomColors().highlightColor, size: 50.r));
+                              child: LoadingAnimationWidget.discreteCircle(
+                                  color: CustomColors().highlightColor,
+                                  size: 50.r));
                         }
                       },
                     ),
@@ -301,7 +308,8 @@ class _KataListPageState extends State<KataListPage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            myTextWidget(name, 20.0, FontWeight.w400, CustomColors().contentText),
+                            myTextWidget(name, 20.0, FontWeight.w400,
+                                CustomColors().whiteContentText),
                           ],
                         ),
                       ),
@@ -325,8 +333,8 @@ class _KataListPageState extends State<KataListPage>
                     color: CustomColors().cardColor,
                   ),
                   child: Center(
-                      child:
-                          myTextWidget('loading...', 16.0, FontWeight.w300, CustomColors().contentText)));
+                      child: myTextWidget('loading...', 16.0, FontWeight.w300,
+                          CustomColors().whiteContentText)));
             }
           },
         );

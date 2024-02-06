@@ -9,10 +9,11 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       color: CustomColors().backgroundColor,
       child: Center(
-        child: LoadingAnimationWidget.beat(color: CustomColors().highlightColor, size: 100.r),
+        child: LoadingAnimationWidget.beat(
+            color: CustomColors().darkTitleText, size: 100.r),
       ),
     );
   }

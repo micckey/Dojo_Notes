@@ -12,36 +12,33 @@ class SwitchAuthPage extends StatefulWidget {
 }
 
 class _SwitchAuthPageState extends State<SwitchAuthPage> {
-
   bool isLogin = true;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    String page= widget.authPage;
-    if (page == 'register'){
-       isLogin= false;
+    String page = widget.authPage;
+    if (page == 'register') {
+      isLogin = false;
     }
   }
 
-  void switchAuthPage (){
-
+  void switchAuthPage() {
     setState(() {
       isLogin = !isLogin;
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
-
-
-    if(isLogin){
-      return LoginScreen(switchAuthPageFunction: switchAuthPage,);
+    if (isLogin) {
+      return LoginScreen(
+        switchAuthPageFunction: switchAuthPage,
+      );
     }
-    return RegisterScreen(switchAuthPageFunction: switchAuthPage,);
+    return RegisterScreen(
+      switchAuthPageFunction: switchAuthPage,
+    );
   }
 }

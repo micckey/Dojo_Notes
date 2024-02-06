@@ -11,17 +11,16 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 
-class AuthProvider extends StatefulWidget {
-  const AuthProvider({super.key});
+class MyAuthProvider extends StatefulWidget {
+  const MyAuthProvider({super.key});
 
   @override
-  State<AuthProvider> createState() => _AuthProviderState();
+  State<MyAuthProvider> createState() => _MyAuthProviderState();
 }
 
-class _AuthProviderState extends State<AuthProvider> {
+class _MyAuthProviderState extends State<MyAuthProvider> {
   @override
   void initState() {
-
     super.initState();
     checkAuthStatus();
     getAuthToken();
@@ -47,7 +46,6 @@ class _AuthProviderState extends State<AuthProvider> {
       Future.microtask(() {
         Get.to(() => const SwitchAuthPage(authPage: 'login'));
       });
-
     }
   }
 

@@ -21,9 +21,7 @@ Container myTextField(
     decoration: BoxDecoration(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
-      style: TextStyle(
-        color: CustomColors().titleText
-      ),
+      style: TextStyle(color: CustomColors().darkContentText),
       maxLines: lines,
       controller: _controller,
       cursorColor: Colors.black,
@@ -31,7 +29,7 @@ Container myTextField(
           labelText: label,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w200,
-            color: CustomColors().titleText,
+            color: CustomColors().darkInfoText,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
@@ -54,23 +52,22 @@ Container myPasswordField(
     decoration: BoxDecoration(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
-      style: TextStyle(
-          color: CustomColors().titleText
-      ),
+      style: TextStyle(color: CustomColors().darkContentText),
       controller: _controller,
       obscureText: obscure,
       cursorColor: Colors.black,
       decoration: InputDecoration(
           suffixIcon: obscure == true
               ? GestureDetector(
-                  onTap: obscureFunc, child: const Icon(CupertinoIcons.eye_slash))
+                  onTap: obscureFunc,
+                  child: const Icon(CupertinoIcons.eye_slash))
               : GestureDetector(
                   onTap: obscureFunc, child: const Icon(CupertinoIcons.eye)),
-          suffixIconColor: CustomColors().titleText,
+          suffixIconColor: CustomColors().darkTitleText,
           labelText: label,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w200,
-            color: CustomColors().titleText,
+            color: CustomColors().darkInfoText,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
@@ -95,7 +92,7 @@ SizedBox kataButton(label) {
                   topLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))))),
       child: myTextWidget(
-          label, 25.0, FontWeight.normal, CustomColors().titleText),
+          label, 25.0, FontWeight.normal, CustomColors().whiteTitleText),
     ),
   );
 }
@@ -113,6 +110,7 @@ Container roundButtons(containerSize, IconData icon, buttonFunction) {
         icon: Icon(
           icon,
           size: 40,
+          color: CustomColors().whiteContentText,
         )),
   );
 }
@@ -136,31 +134,42 @@ ElevatedButton dashboardElevatedButton(label, getFunction) {
   return ElevatedButton(
       onPressed: getFunction,
       style: ButtonStyle(
-          foregroundColor: MaterialStatePropertyAll(CustomColors().darkText),
+          foregroundColor:
+              MaterialStatePropertyAll(CustomColors().darkContentText),
           backgroundColor: MaterialStatePropertyAll(CustomColors().buttonColor),
           shape: MaterialStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.r)))),
       child: Text(
         label,
-        style: TextStyle(fontSize: 20.sp),
+        style: TextStyle(fontSize: 20.sp, color: CustomColors().whiteTitleText),
       ));
 }
 
-Padding dashboardNoteCardContent(name, value,) {
+Padding dashboardNoteCardContent(
+  name,
+  value,
+) {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: 8.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        myTextWidget(name, 15.sp, FontWeight.w300, CustomColors().titleText),
+        myTextWidget(
+            name, 15.sp, FontWeight.w300, CustomColors().whiteTitleText),
         Flexible(
-            child: Text(value, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(
-              fontSize: 20.sp, fontWeight: FontWeight.w500, color: CustomColors().contentText
-            ),)
+            child: Text(
+          value,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w500,
+              color: CustomColors().whiteContentText),
+        )
             // myTextWidget(
             //     value, 20.sp, FontWeight.w500, CustomColors().LightText)
-        ),
+            ),
       ],
     ),
   );
@@ -174,9 +183,7 @@ Container myEditField(
         color: CustomColors().highlightColor,
         borderRadius: BorderRadius.circular(15)),
     child: (TextField(
-      style: TextStyle(
-          color: CustomColors().titleText
-      ),
+      style: TextStyle(color: CustomColors().darkContentText),
       maxLines: 5,
       controller: _controller,
       cursorColor: Colors.black,
@@ -206,5 +213,4 @@ buildSnackBar(title, message, textColor, [duration = 2]) {
       snackPosition: SnackPosition.TOP,
       animationDuration: Duration(seconds: duration),
       backgroundColor: CustomColors().cardColor);
-
 }

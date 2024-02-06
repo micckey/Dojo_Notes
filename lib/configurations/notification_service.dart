@@ -24,8 +24,8 @@ String setBigPicturePath(category) {
 }
 
 void handleNotificationActionReceived () {
-  AwesomeNotifications().actionStream.listen((notification) {
-    String? documentID = notification.payload?['documentID'];
+  AwesomeNotifications().getInitialNotificationAction().asStream().listen((notification) {
+    String? documentID = notification?.payload?['documentID'];
 
     final docUser =
     FirebaseFirestore.instance.collection('dojo notes').doc(documentID);
@@ -139,9 +139,9 @@ Future<void> cancelScheduledNotifications() async {
 void allowNotifications() {
   Get.dialog(AlertDialog(
     title: myTextWidget(
-        'Allow Notifications', 24.sp, FontWeight.w600, CustomColors().infoText),
+        'Allow Notifications', 24.sp, FontWeight.w600, CustomColors().whiteInfoText),
     content: myTextWidget('Our app would like to send you notifications', 20.sp,
-        FontWeight.w400, CustomColors().contentText),
+        FontWeight.w400, CustomColors().whiteContentText),
     backgroundColor: CustomColors().cardColor,
     actions: [
       TextButton(

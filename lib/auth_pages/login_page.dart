@@ -50,17 +50,19 @@ class _LoginScreenState extends State<LoginScreen> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
 
-        Get.to(() => const AuthProvider());
+        Get.to(() => const MyAuthProvider());
       } else {
-        buildSnackBar(
-            'Error!!', 'Please fill in all fields then try again', CustomColors().alertText);
+        buildSnackBar('Error!!', 'Please fill in all fields then try again',
+            CustomColors().alertText);
       }
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString().contains('[firebase_auth/channel-error]') ||
           e.toString().contains('[firebase_auth/network-request-failed]')) {
-        buildSnackBar('Login Failed!!',
-            'Error connecting to the internet, please check your connection!', CustomColors().alertText);
+        buildSnackBar(
+            'Login Failed!!',
+            'Error connecting to the internet, please check your connection!',
+            CustomColors().alertText);
       } else if (e.toString().contains('[firebase_auth/wrong-password]')) {
         setState(() {
           passwordError = 'Incorrect password!!';
@@ -89,9 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             myTextWidget('WELCOME BACK', 30.0, FontWeight.w800,
-                CustomColors().titleText),
+                CustomColors().darkContentText),
             myTextWidget('LOGIN BELOW TO PROCEED', 20.0, FontWeight.w500,
-                CustomColors().titleText),
+                CustomColors().darkTitleText),
             SizedBox(
               height: 30.h,
             ),
@@ -136,7 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 60,
                   color: CustomColors().buttonColor,
                   child: Center(
-                      child: myTextWidget('Login', 30.0, FontWeight.w500)),
+                      child: myTextWidget('Login', 30.0, FontWeight.w500,
+                          CustomColors().whiteTitleText)),
                 ),
               ),
             ),
@@ -147,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 myTextWidget('Don\'t have an account?', 16.sp, FontWeight.w500,
-                    CustomColors().titleText),
+                    CustomColors().darkInfoText),
                 const SizedBox(
                   width: 5,
                 ),

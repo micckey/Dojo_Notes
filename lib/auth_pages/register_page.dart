@@ -66,17 +66,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
         addUserDetails(userId, _firstNameController.text.trim(),
             _lastNameController.text.trim(), _emailController.text.trim());
 
-        Get.to(() => const AuthProvider());
+        Get.to(() => const MyAuthProvider());
       } else {
-        buildSnackBar(
-            'Error!!', 'Please fill in all fields then try again', CustomColors().alertText);
+        buildSnackBar('Error!!', 'Please fill in all fields then try again',
+            CustomColors().alertText);
       }
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString() ==
           '[firebase_auth/channel-error] Unable to establish connection on channel.') {
-        buildSnackBar('Register Failed!!',
-            'Error connecting to the internet, please check your connection!', CustomColors().alertText);
+        buildSnackBar(
+            'Register Failed!!',
+            'Error connecting to the internet, please check your connection!',
+            CustomColors().alertText);
       } else if (e
           .toString()
           .contains('[firebase_auth/email-already-in-use]')) {
@@ -117,9 +119,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               myTextWidget('WELCOME TO OUR APP', 30.0, FontWeight.w800,
-                  CustomColors().titleText),
+                  CustomColors().darkContentText),
               myTextWidget('REGISTER BELOW TO PROCEED', 20.0, FontWeight.w500,
-                  CustomColors().titleText),
+                  CustomColors().darkTitleText),
               SizedBox(
                 height: 30.h,
               ),
@@ -174,7 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 60,
                     color: CustomColors().buttonColor,
                     child: Center(
-                        child: myTextWidget('Sign Up', 30.0, FontWeight.w500)),
+                        child: myTextWidget('Sign Up', 30.0, FontWeight.w500,
+                            CustomColors().whiteTitleText)),
                   ),
                 ),
               ),
@@ -185,7 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   myTextWidget('Already have an account?', 16.sp,
-                      FontWeight.w500, CustomColors().titleText),
+                      FontWeight.w500, CustomColors().darkInfoText),
                   const SizedBox(
                     width: 5,
                   ),
