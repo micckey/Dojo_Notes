@@ -60,6 +60,7 @@ class MyDrawer extends StatelessWidget {
                             buttonFunction: () {
                               cancelScheduledNotifications();
                               Scaffold.of(context).closeDrawer();
+                              Get.back();
                             },
                             label: 'Yes',
                             color: CustomColors().highlightColor),

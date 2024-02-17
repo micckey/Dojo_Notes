@@ -36,14 +36,16 @@ class _NewNoteState extends State<NewNote> {
     if (_categoryController.text == '' ||
         _techniqueController.text == '' ||
         _personalNoteController.text == '') {
-      buildSnackBar('ERROR!!', 'Fill in all fields first then try again.',
-          CustomColors().alertText);
+      buildSnackBar(
+        'ERROR!!',
+        'Fill in all fields first then try again.',
+      );
     } else {
       if (userID == Null) {
         buildSnackBar(
-            'Error Adding Note',
-            'An unexpected error occurred while saving the note, please try again later',
-            CustomColors().alertText);
+          'Error Adding Note',
+          'An unexpected error occurred while saving the note, please try again later',
+        );
       } else {
         createNote(
             userID,
@@ -53,7 +55,9 @@ class _NewNoteState extends State<NewNote> {
             _senseiNoteController.text.trim());
 
         buildSnackBar(
-            'SUCCESS', 'Note added successfully', CustomColors().successText);
+          'SUCCESS',
+          'Note added successfully',
+        );
         Get.to(() => const MyAuthProvider());
       }
     }

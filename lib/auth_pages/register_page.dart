@@ -68,17 +68,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         Get.to(() => const MyAuthProvider());
       } else {
-        buildSnackBar('Error!!', 'Please fill in all fields then try again',
-            CustomColors().alertText);
+        buildSnackBar(
+          'Error!!',
+          'Please fill in all fields then try again',
+        );
       }
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
       if (e.toString() ==
           '[firebase_auth/channel-error] Unable to establish connection on channel.') {
         buildSnackBar(
-            'Register Failed!!',
-            'Error connecting to the internet, please check your connection!',
-            CustomColors().alertText);
+          'Register Failed!!',
+          'Error connecting to the internet, please check your connection!',
+        );
       } else if (e
           .toString()
           .contains('[firebase_auth/email-already-in-use]')) {
@@ -94,7 +96,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           passwordError = e.toString().substring(29);
         });
       } else {
-        buildSnackBar('Register Failed', e, CustomColors().alertText);
+        buildSnackBar(
+          'Register Failed',
+          e,
+        );
       }
     }
   }

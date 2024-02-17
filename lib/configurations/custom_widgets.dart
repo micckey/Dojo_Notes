@@ -205,12 +205,15 @@ ElevatedButton dialogButton({buttonFunction, color, label}) {
       child: myTextWidget(label, 15.sp, FontWeight.w400));
 }
 
-buildSnackBar(title, message, textColor, [duration = 2]) {
+buildSnackBar(title, message, [duration = 2]) {
   Get.snackbar(title, message,
       isDismissible: true,
       dismissDirection: DismissDirection.horizontal,
-      colorText: textColor,
+      colorText: CustomColors().whiteContentText,
       snackPosition: SnackPosition.TOP,
       animationDuration: Duration(seconds: duration),
-      backgroundColor: CustomColors().cardColor);
+      backgroundColor: title.toString().toLowerCase().contains('fail') ||
+              title.toString().toLowerCase().contains('error')
+          ? CustomColors().alertText
+          : CustomColors().successText);
 }

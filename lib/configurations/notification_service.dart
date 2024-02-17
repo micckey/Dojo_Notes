@@ -23,55 +23,52 @@ String setBigPicturePath(category) {
   }
 }
 
-void handleNotificationActionReceived () {
-  AwesomeNotifications().getInitialNotificationAction().asStream().listen((notification) {
-    String? documentID = notification?.payload?['documentID'];
+Future<void> handleNotificationActionReceived(notification) async {
+  String? documentID = notification?.payload?['documentID'];
 
-    final docUser =
-    FirebaseFirestore.instance.collection('dojo notes').doc(documentID);
-    docUser.update({'isScheduled': false});
+  final docUser =
+      FirebaseFirestore.instance.collection('dojo notes').doc(documentID);
+  docUser.update({'isScheduled': false});
 
-    FirebaseFirestore.instance
-        .collection('dojo notes')
-        .doc(documentID) // Use .doc() to specify the document by ID
-        .get()
-        .then((docSnapshot) {
-      if (docSnapshot.exists) {
-        // The document with the specified ID exists
-        Map<String, dynamic> documentData =
-            docSnapshot.data() as Map<String, dynamic>;
+  FirebaseFirestore.instance
+      .collection('dojo notes')
+      .doc(documentID) // Use .doc() to specify the document by ID
+      .get()
+      .then((docSnapshot) {
+    if (docSnapshot.exists) {
+      // The document with the specified ID exists
+      Map<String, dynamic> documentData =
+          docSnapshot.data() as Map<String, dynamic>;
 
-        // Pass the data to the NotePage
-        String category = documentData['category'];
-        String technique = documentData['technique'];
-        String personalNote = documentData['personal note'];
-        String senseiNote = documentData['sensei note'];
-        bool isScheduled = documentData['isScheduled'];
+      // Pass the data to the NotePage
+      String category = documentData['category'];
+      String technique = documentData['technique'];
+      String personalNote = documentData['personal note'];
+      String senseiNote = documentData['sensei note'];
+      bool isScheduled = documentData['isScheduled'];
 
-        Get.to(() => const NotePage(),
-            arguments: [
-              documentID,
-              category,
-              technique,
-              personalNote,
-              senseiNote,
-              isScheduled
-            ],
-            transition: Transition.fadeIn,
-            duration: const Duration(milliseconds: 1500));
-
-
-
-      } else {
-        buildSnackBar(
-            'Error', 'An unexpected error occurred', CustomColors().alertText);
-      }
-    }).catchError((error) {
+      Get.to(() => const NotePage(),
+          arguments: [
+            documentID,
+            category,
+            technique,
+            personalNote,
+            senseiNote,
+            isScheduled
+          ],
+          transition: Transition.fadeIn,
+          duration: const Duration(milliseconds: 1500));
+    } else {
       buildSnackBar(
-          'Error',
-          'There might be an error with your internet connection, please ty again later',
-          CustomColors().alertText);
-    });
+        'Error',
+        'An unexpected error occurred with the notifications',
+      );
+    }
+  }).catchError((error) {
+    buildSnackBar(
+      'Error',
+      'There might be an error with your internet connection, please ty again later',
+    );
   });
 }
 
@@ -86,9 +83,9 @@ Future<String> createTrainingNotification(
   if (selectedTime.isBefore(currentTime)) {
     // The selected time is before the current time
     buildSnackBar(
-        'Failed. Choose a different time',
-        'Cannot set a reminder before the current time!!!',
-        CustomColors().alertText);
+      'Failed. Choose a different time',
+      'Cannot set a reminder before the current time!!!',
+    );
     return 'error'; // Exit the function to prevent scheduling the notification
   }
 
@@ -138,8 +135,8 @@ Future<void> cancelScheduledNotifications() async {
 
 void allowNotifications() {
   Get.dialog(AlertDialog(
-    title: myTextWidget(
-        'Allow Notifications', 24.sp, FontWeight.w600, CustomColors().whiteInfoText),
+    title: myTextWidget('Allow Notifications', 24.sp, FontWeight.w600,
+        CustomColors().whiteInfoText),
     content: myTextWidget('Our app would like to send you notifications', 20.sp,
         FontWeight.w400, CustomColors().whiteContentText),
     backgroundColor: CustomColors().cardColor,

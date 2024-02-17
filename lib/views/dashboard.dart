@@ -39,10 +39,14 @@ class _DashboardState extends State<Dashboard> {
           FirebaseFirestore.instance.collection('dojo notes').doc(docID);
       await docUser.delete();
       buildSnackBar(
-          'SUCCESS', 'Note Deleted Successfully', CustomColors().successText);
+        'SUCCESS',
+        'Note Deleted Successfully',
+      );
     } catch (e) {
-      buildSnackBar('ERROR', 'An unexpected Error occurred.\nPlease try again',
-          CustomColors().alertText);
+      buildSnackBar(
+        'ERROR',
+        'An unexpected Error occurred.\nPlease try again',
+      );
     }
   }
 
@@ -146,7 +150,9 @@ class _DashboardState extends State<Dashboard> {
                           }),
                         ),
                       ),
-                      const SizedBox(width: 5,),
+                      const SizedBox(
+                        width: 5,
+                      ),
                       SizedBox(
                           height: 45.h,
                           child: Dance(
@@ -242,7 +248,8 @@ class _DashboardState extends State<Dashboard> {
                                       senseiNote,
                                       notes,
                                       index,
-                                      formatTimestamp(editTimeStamp), isScheduled),
+                                      formatTimestamp(editTimeStamp),
+                                      isScheduled),
                                 )
                               : FadeInLeft(
                                   duration: const Duration(milliseconds: 1500),
@@ -253,7 +260,8 @@ class _DashboardState extends State<Dashboard> {
                                       senseiNote,
                                       notes,
                                       index,
-                                      formatTimestamp(editTimeStamp), isScheduled)),
+                                      formatTimestamp(editTimeStamp),
+                                      isScheduled)),
                         );
                       },
                     );
@@ -280,8 +288,7 @@ class _DashboardState extends State<Dashboard> {
       List<QueryDocumentSnapshot<Map<String, dynamic>>> notes,
       int index,
       time,
-      isScheduled
-      ) {
+      isScheduled) {
     return Container(
       width: 360,
       margin: EdgeInsets.only(bottom: 10.h),
@@ -311,7 +318,13 @@ class _DashboardState extends State<Dashboard> {
               textBaseline: TextBaseline.alphabetic,
               children: [
                 Container(
-                  child: isScheduled ? Icon(Icons.notifications, color: CustomColors().successText, size: 30.sp,) : null,
+                  child: isScheduled
+                      ? Icon(
+                          Icons.notifications,
+                          color: CustomColors().successText,
+                          size: 30.sp,
+                        )
+                      : null,
                 ),
                 Expanded(child: Container()),
                 myTextWidget(

@@ -103,10 +103,12 @@ class _NotePageState extends State<NotePage> {
                   });
 
                   Get.back();
-                  buildSnackBar('SUCCESS', 'Note Edited Successfully',
-                      CustomColors().successText, 1);
+                  buildSnackBar('SUCCESS', 'Note Edited Successfully', 1);
                 } catch (e) {
-                  buildSnackBar('ERROR', e, CustomColors().alertText);
+                  buildSnackBar(
+                    'ERROR',
+                    e,
+                  );
                 }
               } else {
                 Get.back();

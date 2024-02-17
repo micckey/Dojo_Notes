@@ -27,7 +27,8 @@ Future main() async {
         defaultColor: CustomColors().highlightColor.withOpacity(0.5)),
   ]);
 
-  handleNotificationActionReceived();
+  AwesomeNotifications()
+      .setListeners(onActionReceivedMethod: handleNotificationActionReceived);
 
   runApp(const MyApp());
 }

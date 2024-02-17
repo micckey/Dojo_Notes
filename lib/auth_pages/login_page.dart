@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Get.to(() => const MyAuthProvider());
       } else {
         buildSnackBar('Error!!', 'Please fill in all fields then try again',
-            CustomColors().alertText);
+            );
       }
     } catch (e) {
       print('THE ERROR MESSAGE IS::: ${e.toString()}');
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
         buildSnackBar(
             'Login Failed!!',
             'Error connecting to the internet, please check your connection!',
-            CustomColors().alertText);
+            );
       } else if (e.toString().contains('[firebase_auth/wrong-password]')) {
         setState(() {
           passwordError = 'Incorrect password!!';
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
           emailError = 'Please enter a valid email address';
         });
       } else {
-        buildSnackBar('Register Failed!!', e, CustomColors().alertText);
+        buildSnackBar('Register Failed!!', e, );
       }
     }
   }

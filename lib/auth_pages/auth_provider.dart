@@ -34,8 +34,7 @@ class _MyAuthProviderState extends State<MyAuthProvider> {
     if (user != null) {
       currentUser = user;
       IdTokenResult tokenResult = await user.getIdTokenResult();
-      String authToken =
-          tokenResult.token ?? ''; // Access the token as a String
+      String authToken = tokenResult.token ?? ''; // Access the token as a String
 
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
