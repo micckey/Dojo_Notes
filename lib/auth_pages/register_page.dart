@@ -2,13 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dojonotes/auth_pages/auth_provider.dart';
 import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
-import 'package:dojonotes/views/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'login_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key, this.switchAuthPageFunction});

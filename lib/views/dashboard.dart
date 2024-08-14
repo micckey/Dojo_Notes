@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';

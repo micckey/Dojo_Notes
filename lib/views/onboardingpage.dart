@@ -1,11 +1,9 @@
-import 'package:dojonotes/auth_pages/register_page.dart';
 import 'package:dojonotes/auth_pages/switch_auth_pages.dart';
 import 'package:dojonotes/configurations/custom_widgets.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../auth_pages/login_page.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -83,13 +81,13 @@ class OnboardingScreen extends StatelessWidget {
                   onPressed: () {},
                   style: ButtonStyle(
                     backgroundColor:
-                    MaterialStatePropertyAll(CustomColors().buttonColor),
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    WidgetStatePropertyAll(CustomColors().buttonColor),
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                   ),
                   child: TextButton(
                       onPressed: () {
-                        Get.to(() =>  SwitchAuthPage(authPage: 'register',));
+                        Get.to(() =>  const SwitchAuthPage(authPage: 'register',));
                       },
                       child: myTextWidget('Create an account', 18.sp, FontWeight.w600))),
             ),
@@ -100,7 +98,7 @@ class OnboardingScreen extends StatelessWidget {
                 myTextWidget('Already have an account?', 16.sp, FontWeight.w500, CustomColors().whiteTitleText),
                 const SizedBox(width: 5,),
                 GestureDetector(
-                  onTap: (){ Get.to( () => SwitchAuthPage(authPage: 'login', ) );},
+                  onTap: (){ Get.to( () => const SwitchAuthPage(authPage: 'login', ) );},
                     child: myTextWidget('Login', 20.sp, FontWeight.w500, Colors.blue)),
               ],
             )

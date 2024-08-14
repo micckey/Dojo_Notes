@@ -12,7 +12,7 @@ Text myTextWidget(label, size, FontWeight weight, [textColor = Colors.black]) {
 }
 
 Container myTextField(
-  _controller,
+  controller,
   label,
   backgroundColor, [
   lines = 1,
@@ -23,7 +23,7 @@ Container myTextField(
     child: (TextField(
       style: TextStyle(color: CustomColors().darkContentText),
       maxLines: lines,
-      controller: _controller,
+      controller: controller,
       cursorColor: Colors.black,
       decoration: InputDecoration(
           labelText: label,
@@ -42,7 +42,7 @@ Container myTextField(
 }
 
 Container myPasswordField(
-  _controller,
+  controller,
   label,
   obscure,
   obscureFunc,
@@ -53,7 +53,7 @@ Container myPasswordField(
         color: backgroundColor, borderRadius: BorderRadius.circular(15)),
     child: (TextField(
       style: TextStyle(color: CustomColors().darkContentText),
-      controller: _controller,
+      controller: controller,
       obscureText: obscure,
       cursorColor: Colors.black,
       decoration: InputDecoration(
@@ -86,8 +86,8 @@ SizedBox kataButton(label) {
     child: ElevatedButton(
       onPressed: () {},
       style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(CustomColors().cardColor),
-          shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
+          backgroundColor: WidgetStatePropertyAll(CustomColors().cardColor),
+          shape: const WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))))),
@@ -122,8 +122,8 @@ SizedBox selectedKataWidget(label) {
     child: ElevatedButton(
       onPressed: () {},
       style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(CustomColors().buttonColor),
-          shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
+          backgroundColor: WidgetStatePropertyAll(CustomColors().buttonColor),
+          shape: const WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20))))),
       child: myTextWidget(label, 18.0, FontWeight.bold),
     ),
@@ -135,9 +135,9 @@ ElevatedButton dashboardElevatedButton(label, getFunction) {
       onPressed: getFunction,
       style: ButtonStyle(
           foregroundColor:
-              MaterialStatePropertyAll(CustomColors().darkContentText),
-          backgroundColor: MaterialStatePropertyAll(CustomColors().buttonColor),
-          shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+              WidgetStatePropertyAll(CustomColors().darkContentText),
+          backgroundColor: WidgetStatePropertyAll(CustomColors().buttonColor),
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.r)))),
       child: Text(
         label,
@@ -176,7 +176,7 @@ Padding dashboardNoteCardContent(
 }
 
 Container myEditField(
-  _controller,
+  controller,
 ) {
   return Container(
     decoration: BoxDecoration(
@@ -185,7 +185,7 @@ Container myEditField(
     child: (TextField(
       style: TextStyle(color: CustomColors().darkContentText),
       maxLines: 5,
-      controller: _controller,
+      controller: controller,
       cursorColor: Colors.black,
       decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
@@ -201,7 +201,7 @@ Container myEditField(
 ElevatedButton dialogButton({buttonFunction, color, label}) {
   return ElevatedButton(
       onPressed: buttonFunction,
-      style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(color)),
+      style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(color)),
       child: myTextWidget(label, 15.sp, FontWeight.w400));
 }
 

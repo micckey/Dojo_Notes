@@ -1,9 +1,9 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:dojonotes/auth_pages/auth_provider.dart';
 import 'package:dojonotes/configurations/notification_service.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

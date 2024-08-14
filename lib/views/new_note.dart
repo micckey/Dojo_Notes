@@ -154,9 +154,9 @@ class _NewNoteState extends State<NewNote> {
                         ),
                         ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(
+                                backgroundColor: WidgetStatePropertyAll(
                                     CustomColors().buttonColor),
-                                shape: const MaterialStatePropertyAll(
+                                shape: const WidgetStatePropertyAll(
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(8),

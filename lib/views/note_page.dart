@@ -116,7 +116,7 @@ class _NotePageState extends State<NotePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStatePropertyAll(CustomColors().buttonColor)),
+                    WidgetStatePropertyAll(CustomColors().buttonColor)),
             child: myTextWidget(
                 'Save', 15.sp, FontWeight.w400, CustomColors().whiteTitleText))
       ],

@@ -185,8 +185,8 @@ class _KataPageState extends State<KataPage> {
     return YoutubePlayer(
         showVideoProgressIndicator: true,
         bottomActions: [
-          CurrentPosition(),
-          FullScreenButton(),
+          const CurrentPosition(),
+          const FullScreenButton(),
           ProgressBar(
             isExpanded: true,
             colors: ProgressBarColors(

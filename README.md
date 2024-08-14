@@ -1,6 +1,6 @@
 # dojonotes
 
-Karate Notes App
+A new Flutter project.
 
 ## Getting Started
 

@@ -108,9 +108,9 @@ class SchedulePage extends StatelessWidget {
                 },
                 title: const Text('Thursday, 16th June, 2023'),
                 leading: const Icon(Icons.library_add_check_outlined),
-                subtitle: Column(
+                subtitle: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text('Heian Yondan, Jion, jiin'),
                     Text('Note: Felt Smooth')
                   ],

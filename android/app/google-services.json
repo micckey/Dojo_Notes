@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:372359207000:android:0da91f59d42da5e4c6d22d",
+        "android_client_info": {
+          "package_name": "com.example.dojonote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372359207000-ssmssoor9071isrlmdsa1s55otcfogc5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdRRzWFqKE__699XIa3h7V0eKJJUaZDtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372359207000-ssmssoor9071isrlmdsa1s55otcfogc5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:372359207000:android:0302cbcb91c95b59c6d22d",
         "android_client_info": {
           "package_name": "com.example.dojonotes"

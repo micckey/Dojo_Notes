@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dojonotes/auth_pages/login_page.dart';
 import 'package:dojonotes/auth_pages/switch_auth_pages.dart';
 import 'package:dojonotes/configurations/style.dart';
 import 'package:dojonotes/views/dashboard.dart';
@@ -30,6 +29,8 @@ class _MyAuthProviderState extends State<MyAuthProvider> {
 
   Future<void> checkAuthStatus() async {
     final user = FirebaseAuth.instance.currentUser;
+
+
 
     if (user != null) {
       currentUser = user;
